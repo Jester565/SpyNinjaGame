@@ -1,4 +1,4 @@
-package edu.cpp.cs.cs141.prog_assgmnt_Final;
+package edu.cpp.cs.cs141.final_proj;
 
 import java.util.ArrayList;
 
