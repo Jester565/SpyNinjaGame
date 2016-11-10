@@ -1,9 +1,5 @@
-package edu.cpp.cs.cs141.final_proj;
+package edu.cpp.cs.cs141.prog_assgmnt_Final;
 
 public class Main {
 
-	public static void main(String[] args)
-	{
-		System.out.println("hi");
-	}
 }
