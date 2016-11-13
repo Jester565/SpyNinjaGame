@@ -1,8 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
-public class InvincibilityItem extends Item{
+public class Invincibility extends Item{
 	
-	public InvincibilityItem() {
+	public Invincibility() {
 		setObjectType("i");
 	}
 

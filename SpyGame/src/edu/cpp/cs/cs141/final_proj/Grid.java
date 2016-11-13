@@ -12,9 +12,9 @@ public class Grid {
 	private ArrayList<Ninja> ninjas;
 	private Ninja[] ninja = new Ninja[6];
 	private Room[] rooms = new Room[9];
-	private InvincibilityItem invincibilityItem = new InvincibilityItem();
+	private Invincibility invincibility = new Invincibility();
 	private Radar radar = new Radar();
-	private AdditionalBullet additionalBullet = new AdditionalBullet();
+	private Bullet bullet = new Bullet();
 	private int roomsNumber = 0;	//Check how many rooms have been set
 	private int ninjaNumber = 0;
 	//private GameObject[] ninjas = new Ninja[ninjaNumber];
@@ -52,7 +52,7 @@ public class Grid {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
 		}
-		setGameObject(invincibilityItem, diceX, diceY);
+		setGameObject(invincibility, diceX, diceY);
 		
 		//set radar item
 		diceX = rng.nextInt(9);
@@ -70,7 +70,7 @@ public class Grid {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
 		}
-		setGameObject(additionalBullet, diceX, diceY);
+		setGameObject(bullet, diceX, diceY);
 		
 		//set ninjas 
 		for (int i = 0; i < 6; i ++) {
@@ -111,13 +111,13 @@ public class Grid {
 				newObject = new Ninja();
 				break;
 			case "i":
-				newObject = new InvincibilityItem();
+				newObject = new Invincibility();
 				break;
 			case "r":
 				newObject = new Radar();
 				break;
 			case "a":
-				newObject = new AdditionalBullet();
+				newObject = new Bullet();
 				break;
 			case "s":
 				newObject = new Spy();
@@ -152,8 +152,8 @@ public class Grid {
 	/**
 	 * This method can get invincibilityItem object.
 	 */
-	public InvincibilityItem getInvincibilityItem() {
-		return invincibilityItem;
+	public Invincibility getInvincibilityItem() {
+		return invincibility;
 	}
 	
 	/**
@@ -166,8 +166,8 @@ public class Grid {
 	/**
 	 * This method can get additionalBullet item.
 	 */
-	public AdditionalBullet getAdditionlBullet() {
-		return additionalBullet;
+	public Bullet getAdditionlBullet() {
+		return bullet;
 	}
 	
 	/**

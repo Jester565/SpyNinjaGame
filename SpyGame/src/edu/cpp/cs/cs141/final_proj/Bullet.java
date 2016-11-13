@@ -1,8 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
-public class AdditionalBullet extends Item{
+public class Bullet extends Item{
 
-	public AdditionalBullet() {
+	public Bullet() {
 		setObjectType("a");
 	}
 
