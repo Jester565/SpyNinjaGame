@@ -1,4 +1,4 @@
-package edu.cpp.cs.cs141.finalproject;
+package edu.cpp.cs.cs141.final_proj;
 
 import java.util.Scanner;
 

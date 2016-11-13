@@ -1,4 +1,4 @@
-package edu.cpp.cs.cs141.finalproject;
+package edu.cpp.cs.cs141.final_proj;
 
 public class InvincibilityItem extends Item{
 	
