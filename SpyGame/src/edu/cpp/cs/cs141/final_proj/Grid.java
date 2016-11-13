@@ -22,12 +22,16 @@ public class Grid {
 		R, N, I, S
 	};
 
+	public Grid() {
+		
+	}
+	
 	/**
 	 * reset the building 
 	 */
 	public void reset() {
 		//set the player
-		setGameObject(spy, 0, 8);
+		setGameObject(spy, 0, GRID_SIZE - 1);
 		
 		//set rooms
 		int roomIndex = 0;
@@ -39,31 +43,26 @@ public class Grid {
 		}
 		rooms[rng.nextInt(rooms.length)].setBriefCase();
 		
+		int diceX, diceY;
 		//set invincibilityItem
-		int diceX = rng.nextInt(9);
-		int diceY = rng.nextInt(9);
-		while(!emptyGrid(diceX, diceY)) {
+		do {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
-		}
+		} while (!emptyGrid(diceX, diceY));
 		setGameObject(invincibility, diceX, diceY);
 		
 		//set radar item
-		diceX = rng.nextInt(9);
-		diceY = rng.nextInt(9);
-		while(!emptyGrid(diceX, diceY)) {
+		do {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
-		}
+		} while (!emptyGrid(diceX, diceY));
 		setGameObject(radar, diceX, diceY);
 	
 		//set additionalBullet item
-		diceX = rng.nextInt(9);
-		diceY = rng.nextInt(9);
-		while(!emptyGrid(diceX, diceY)) {
+		do {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
-		}
+		} while (!emptyGrid(diceX, diceY));
 		setGameObject(bullet, diceX, diceY);
 		
 		//set ninjas 
@@ -86,7 +85,7 @@ public class Grid {
 	 */
 	public void setGameObject(GameObject gameObject, int x, int y) {
 		gameObject.setLocation(x, y);
-		gameObjects[x][y] = gameObject;
+		gameObjects[y][x] = gameObject;
 	}
 	
 	/**
@@ -94,7 +93,7 @@ public class Grid {
 	 */
 	public void setGameObject(String type, int x, int y) {
 		GameObject newObject = null;
-		if (gameObjects[x][y] == null) {
+		if (gameObjects[y][x] == null) {
 			switch(type) {
 			case "R":
 				newObject = new Room();
@@ -118,7 +117,7 @@ public class Grid {
 				break;
 			}
 
-			gameObjects[x][y] = newObject;
+			gameObjects[y][x] = newObject;
 		}
 	}
 	
