@@ -7,6 +7,6 @@ package edu.cpp.cs.cs141.final_proj;
  */
 public enum MOVE_STATUS {
 	
-	illegalMove, legalMove;
+	illegalMove, legalMove, win, lose, onItem;
 
 }
