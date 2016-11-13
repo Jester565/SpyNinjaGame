@@ -1,34 +1,28 @@
-package edu.cpp.cs.cs141.final_proj;
+package edu.cpp.cs.cs141.finalproject;
 
-public class Ninja extends Character{
+public class Ninja extends ActiveAgent{
+
+	private static enum DIRECTION{};
 	
-	int health;
-	int x;
-	int y;
-	
-	DIRECTION dir;
-	
-	Sword sword;
-	
-	void changeHealth(int something){
-	
-	}
-	
-	void move(DIRECTION dir){
-		
-	}
-	
-	void look(DIRECTION dir){
-		
-	}
-	
-	void slash(Character charecter, int range){
-		
-	}
-	
-	DIRECTION getDirectionFacing(){
-		
-		return null;
+	/**
+	 * Every ninja have 1 live
+	 */
+	public Ninja() {
+		setObjectType("n");
+		setLife(1);
 	}
 
+	/**
+	 * Stab spy and spy will lose one live
+	 */
+	public void stab(Spy spy) {
+		spy.getAttacted();
+	}
+	
+	/**
+	 * move to the direction
+	 */
+	public void move(DIRECTION direction) {
+		
+	}
 }

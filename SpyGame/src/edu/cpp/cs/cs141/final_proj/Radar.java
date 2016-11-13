@@ -1,9 +1,15 @@
-package edu.cpp.cs.cs141.final_proj;
+package edu.cpp.cs.cs141.finalproject;
 
-public class Radar implements Item{
-	
-	public void use(Spy player){
-		player.getRadar();
+public class Radar extends Item{
+
+	public Radar() {
+		setObjectType("r");
 	}
 
+	/**
+	 * Display the biefcase in the room.
+	 */
+	public void toSpy(Spy player) {
+		player.getRadar();
+	}
 }

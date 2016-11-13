@@ -1,30 +1,110 @@
-package edu.cpp.cs.cs141.final_proj;
+package edu.cpp.cs.cs141.finalproject;
 
 public abstract class GameObject {
 	
-	int x;
-	int y;
-	String boardRep;
-	String msg;
+	private int x;
+	private int y;
+	private boolean visible = false;
+	private boolean debugType = false;
+	private String gameObjectType;
 	
-	public String getBoardRepresentation(){
-		
-		return boardRep;
+	/**
+	 * Set the location
+	 * @return
+	 */
+	public void setLocation(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 	
-	public void MoveStatus(){
-		
+	/**
+	 * Set the game object typeÍ
+	 */
+	public void setObjectType(String type) {
+		switch(type) {
+		case "R":
+			visible = true;
+			gameObjectType = "R";
+			break;
+		case "n":
+			gameObjectType = "n";
+			break;
+		case "r":
+			gameObjectType = "r";
+			break;
+		case "i":
+			gameObjectType = "i";
+			break;
+		case "a":
+			gameObjectType = "a";
+			break;
+		case "s":
+			visible = true;
+			gameObjectType = "s";
+			break;
+		}
 	}
 	
-	enum MOVE_RESULT {
-		WIN, LOSE, LEGAL, ILLEGAL, ON_ITEM
+	/**
+	 * Check if the object is visible
+	 */
+	public boolean isVisible() {
+		return visible;
 	}
 	
-	MOVE_RESULT stepOn(DIRECTION dir){
-		
-		return null;
+	/**
+	 * get representation letter in the grid
+	 * @return
+	 */
+	public String getGridRepresentation() {
+		String mark = "*";
+		if (visible) mark = gameObjectType;
+		return mark;
 	}
 	
-	GameObject onTopOfObject;
-
+	public String getGameObjectType() {
+		return gameObjectType;
+	}
+	
+	/**
+	 * move up
+	 */
+	public void moveUp() {
+		y -= 1;
+	}
+	
+	/**
+	 * move down
+	 */
+	public void moveDown() {
+		y += 1;
+	}
+	
+	/**
+	 * move left
+	 */
+	public void moveLeft() {
+		x -= 1;
+	}
+	
+	/**
+	 * move right
+	 */
+	public void moveRight() {
+		x += 1;
+	}
+	
+	/**
+	 * Get location x
+	 */
+	public int getX() {
+		return x;
+	}
+	
+	/**
+	 * Get location y
+	 */
+	public int getY() {
+		return y;
+	}
 }

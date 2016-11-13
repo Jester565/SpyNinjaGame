@@ -1,18 +1,27 @@
-package edu.cpp.cs.cs141.final_proj;
+package edu.cpp.cs.cs141.finalproject;
 
-public class Room {
+public class Room extends GameObject{
+
+	private boolean briefCase = false;
 	
-	boolean briefcase;
-	int y;
-	int x;
-	
-	public Room(boolean briefcase){
-		
+	/**
+	 * Every room has type "s"
+	 */
+	public Room() {
+		setObjectType("r");
 	}
 	
-	public boolean hasBriefcase(){
-		
-		return briefcase;
+	/**
+	 * Check if the room have briefcase();
+	 */
+	public boolean hasBriefcase() {
+		return briefCase;
 	}
-
+	
+	/**
+	 * put a brief in the room
+	 */
+	public void setBriefCase() {
+		briefCase = true;
+	}
 }

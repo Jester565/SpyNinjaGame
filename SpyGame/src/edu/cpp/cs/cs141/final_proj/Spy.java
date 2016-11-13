@@ -1,53 +1,58 @@
-package edu.cpp.cs.cs141.final_proj;
+package edu.cpp.cs.cs141.finalproject;
 
-public class Spy extends Character{
+public class Spy extends ActiveAgent{
+
+	private int bullet = 1;
+	private boolean radar = false;
+	private boolean invincibility = false;
+	private boolean briefCase = false;
 	
-	int health;
-	int numLives;
-	int invincibilityTurns;
-	int x;
-	int y;
-	
-	DIRECTION dir;
-	
-	Gun gun;
-	
-	//debug:
-	//int x;
-	//int y;
-	
-	DIRECTION getDirectionFacing(){
-		
-		return null;
+	/**
+	 * Every spy have three lives first and location at bottom.
+	 */
+	public Spy() {
+		setObjectType("s");
+		setLife(3);
 	}
 	
-	public void changeHealth(int something){
-	
+	/**
+	 * check if the spy have briefcase
+	 */
+	public boolean getBriefCase() {
+		return briefCase;
 	}
-	
-	public void getRadar(){
-		
-	}
-	
-	public void getInvincibility(){
+	/**
+	 * Look in the Grid
+	 */
+	public void look(int direction) {
 		
 	}
 	
-	public void move(DIRECTION dir){
-		
+	/**
+	 * Shoot enemy
+	 */
+	public void shoot(Ninja ninja) {
+		ninja.getAttacted();
 	}
 	
-	public void look(DIRECTION dir){
-		
-	}
-	
-	public void shoot(){
-		
+	/**
+	 * Set invincibility
+	 */
+	public void getInvincibility() {
+		invincibility = true;
 	}
 
-	Gun getGun(){
-		
-		return null;
+	/**
+	 * spy get a radar
+	 */
+	public void getRadar() {
+		radar = true;
 	}
-	
+
+	/**
+	 * Add a bullet to player
+	 */
+	public void getBullet() {
+		bullet += 1;
+	}
 }
