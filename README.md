@@ -4,12 +4,12 @@ CS 141
 
 ### Team Members:
 
-Alex
-Hao
-Jason
-Jessica
-Fransisco
-James Taracevicz
+* Alex
+* Hao
+* Jason
+* Jessica
+* Fransisco
+* James Taracevicz
 
 ### Description:
 
