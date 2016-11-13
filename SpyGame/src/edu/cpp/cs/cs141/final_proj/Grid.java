@@ -10,7 +10,7 @@ public class Grid {
 	private Random rng = new Random();
 	private Spy spy= new Spy();
 	private ArrayList<Ninja> ninjas;
-	private Ninja[] ninja= new Ninja[6];
+	private Ninja[] ninja = new Ninja[6];
 	private Room[] rooms = new Room[9];
 	private InvincibilityItem invincibilityItem = new InvincibilityItem();
 	private Radar radar = new Radar();
@@ -99,12 +99,12 @@ public class Grid {
 	 * Make the object in the grid
 	 */
 	public void setGameObject(String type, int x, int y) {
+		GameObject newObject = null;
 		if (gameObjects[x][y] == null) {
-			GameObject newObject;
 			switch(type) {
 			case "R":
 				newObject = new Room();
-				rooms[roomsNumber] = newObject;
+				rooms[roomsNumber] = (Room)newObject;
 				roomsNumber += 1;
 				break;
 			case "n":
@@ -198,25 +198,20 @@ public class Grid {
 	
 	
 	/**
+	 * Just access {@link #ninjas} instead of whatever this method does
 	 * get ninja in the grid
 	 */
-	public Ninja getNinja() {
-		Ninja ninja = ninjas[]
-		return ninja
-	}
+//	public Ninja getNinja() {
+//		Ninja ninja = ninjas[]
+//		return ninjas
+//	}
 	
 	/**
-	 * Get the ninjas in the grid
+	 * set the ninjas in the grid
 	 */
 	public void setNinja() {
-		ninjaNumber = 0;
-		for (int i = 0; i < gameObjects.length; i ++) {
-			for (int j = 0; i < gameObjects[i].length; j ++) {
-				if (gameObjects[i][j].getGridRepresentation() == "N") {
-					ninjaNumber += 1;
-					ninjas[ninjaNumber - 1] = gameObjects[i][j];
-				}
-			}
+		for (Ninja ninja: ninjas) {
+			gameObjects[ninja.getY()][ninja.getX()] = ninja;
 		}
 	}
 	
