@@ -29,21 +29,15 @@ public class Grid {
 		//set the player
 		setGameObject(spy, 0, 8);
 		
-		//set rooms 
-		for(int i = 0; i < rooms.length; i ++) {
-			rooms[i] = new Room();
+		//set rooms
+		int roomIndex = 0;
+		for (int rowIndex = 1; rowIndex < GRID_SIZE; rowIndex += 3) {
+			for (int colIndex = 1; colIndex < GRID_SIZE; colIndex += 3) {
+				rooms[roomIndex] = new Room();
+				setGameObject(rooms[roomIndex], colIndex, rowIndex);
+			}
 		}
-		setGameObject(rooms[0], 1, 1);
-		setGameObject(rooms[1], 1, 4);
-		setGameObject(rooms[2], 1, 7);
-		setGameObject(rooms[3], 4, 1);
-		setGameObject(rooms[4], 4, 4);
-		setGameObject(rooms[5], 4, 7);
-		setGameObject(rooms[6], 7, 1);
-		setGameObject(rooms[7], 7, 4);
-		setGameObject(rooms[8], 7, 7);
-		int dice = rng.nextInt(9);
-		rooms[dice].setBriefCase();
+		rooms[rng.nextInt(rooms.length)].setBriefCase();
 		
 		//set invincibilityItem
 		int diceX = rng.nextInt(9);
