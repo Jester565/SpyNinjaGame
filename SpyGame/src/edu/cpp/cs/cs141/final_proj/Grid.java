@@ -223,8 +223,8 @@ public class Grid {
 	/**
 	 * Move to the direction
 	 */
-	public MoveStatus move(DIRECTION, int x, int y) {
-		
+	public MOVE_STATUS move(DIRECTION direction, int x, int y) {
+		return MOVE_STATUS.illegalMove;
 	}
 	
 	/**

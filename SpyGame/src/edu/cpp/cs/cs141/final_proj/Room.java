@@ -5,7 +5,7 @@ public class Room extends GameObject{
 	private boolean briefCase = false;
 	
 	/**
-	 * Every room has type "s"
+	 * Every room has type "r"
 	 */
 	public Room() {
 		setObjectType("r");

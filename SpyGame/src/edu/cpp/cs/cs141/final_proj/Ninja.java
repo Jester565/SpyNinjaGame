@@ -1,6 +1,6 @@
 package edu.cpp.cs.cs141.final_proj;
 
-public class Ninja extends ActiveAgent{
+public class Ninja extends Character{
 
 	private static enum DIRECTION{};
 	

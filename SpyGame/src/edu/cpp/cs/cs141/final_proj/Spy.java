@@ -1,6 +1,6 @@
 package edu.cpp.cs.cs141.final_proj;
 
-public class Spy extends ActiveAgent{
+public class Spy extends Character{
 
 	private int bullet = 1;
 	private boolean radar = false;
