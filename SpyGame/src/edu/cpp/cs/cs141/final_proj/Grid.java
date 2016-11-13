@@ -219,14 +219,11 @@ public class Grid {
 	 * Check if the grid can set ninja
 	 */
 	public boolean canSetNinja(int x, int y) {
-		boolean result = true;
-		if(x == spy.getX() & spy.getY() - y < 3)
-			result = false;
-		if(y == spy.getY() & y - spy.getX() < 3)
-			result = false;
-		if(gameObjects[x][y] != null) 
-			result = false;
-		return result;
+		if (Math.abs(spy.getX() - x) + Math.abs(spy.getY() - y) <= 2 ||
+				gameObjects[y][x] != null) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
