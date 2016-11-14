@@ -3,31 +3,32 @@ package edu.cpp.cs.cs141.final_proj;
 public abstract class Character extends GameObject{
 
 
-	private int live;
+	private int lifePts;
 	
 	/**
-	 * Set live of active agent
+	 * Set the amount of life points an active agent has
 	 * @param i
 	 */
 	public void setLife(int i) {
-		live = i;
+		lifePts = i;
 	}
 	
 	/**
-	 * Get stabbed or shoot lose one live
+	 * Get stabbed or shot, lose 1 life point
 	 */
-	public void getAttacted() {
-		live -= 1;
+	public void attacked() {
+		lifePts -= 1;
 	}
 	
 	/**
-	 * Check if the actvie agent is alive
+	 * Checks the life status of a character
+	 * @return True if lifePts <= 0, false otherwise
 	 */
 	public boolean isAlive() {
-		boolean alive = true;
-		if (live <= 0) {
-			alive = false;
-		}
-		return alive;
+		
+		if (lifePts <= 0)
+			return false;
+		else
+			return true;
 	}
 }

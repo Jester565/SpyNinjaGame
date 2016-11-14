@@ -3,13 +3,13 @@ package edu.cpp.cs.cs141.final_proj;
 public class Radar extends Item{
 
 	public Radar() {
-		setObjectType("r");
+		setObjectType("R");
 	}
 
 	/**
-	 * Display the biefcase in the room.
+	 * Display the briefcase in the room.
 	 */
 	public void toSpy(Spy player) {
-		player.getRadar();
+		player.hasRadar();
 	}
 }

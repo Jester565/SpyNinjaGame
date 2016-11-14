@@ -3,7 +3,7 @@ package edu.cpp.cs.cs141.final_proj;
 public class Bullet extends Item{
 
 	public Bullet() {
-		setObjectType("a");
+		setObjectType("A");
 	}
 
 	/**

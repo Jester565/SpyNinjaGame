@@ -2,23 +2,24 @@ package edu.cpp.cs.cs141.final_proj;
 
 public class Spy extends Character{
 
+	
 	private int bullet = 1;
 	private boolean radar = false;
 	private boolean invincibility = false;
 	private boolean briefCase = false;
 	
 	/**
-	 * Every spy have three lives first and location at bottom.
+	 * A spy starts with three lives and location at bottom.
 	 */
 	public Spy() {
-		setObjectType("s");
+		setObjectType("S");
 		setLife(3);
 	}
 	
 	/**
-	 * check if the spy have briefcase
+	 * check if the spy has a briefcase
 	 */
-	public boolean getBriefCase() {
+	public boolean hasBriefCase() {
 		return briefCase;
 	}
 	/**
@@ -32,20 +33,20 @@ public class Spy extends Character{
 	 * Shoot enemy
 	 */
 	public void shoot(Ninja ninja) {
-		ninja.getAttacted();
+		ninja.attacked();
 	}
 	
 	/**
-	 * Set invincibility
+	 * Sets invincibility
 	 */
-	public void getInvincibility() {
+	public void hasInvincibility() {
 		invincibility = true;
 	}
 
 	/**
-	 * spy get a radar
+	 * Spy gets a radar
 	 */
-	public void getRadar() {
+	public void hasRadar() {
 		radar = true;
 	}
 

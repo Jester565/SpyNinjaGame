@@ -5,10 +5,10 @@ public class Ninja extends Character{
 	private static enum DIRECTION{};
 	
 	/**
-	 * Every ninja have 1 live
+	 * Every ninja have 1 life point
 	 */
 	public Ninja() {
-		setObjectType("n");
+		setObjectType("N");
 		setLife(1);
 	}
 
@@ -16,7 +16,7 @@ public class Ninja extends Character{
 	 * Stab spy and spy will lose one live
 	 */
 	public void stab(Spy spy) {
-		spy.getAttacted();
+		spy.attacked();
 	}
 	
 	/**

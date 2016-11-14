@@ -23,7 +23,7 @@ public class GameEngine {
 		 */
 		public boolean checkWinCondition() {
 			gameWin = false;
-			if (grid.getSpy().getBriefCase()) gameWin = true;
+			if (grid.getSpy().hasBriefCase()) gameWin = true;
 			return gameWin;
 		}
 		

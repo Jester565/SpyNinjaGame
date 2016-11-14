@@ -13,15 +13,15 @@ public abstract class Weapon {
 	 * @param damage
 	 */
 	public Weapon(int damage){
-		
+		this.damage = damage;
 	}
 	
 	/**
 	 * This method is also used in both sword and gun class and it is called
 	 * when something dies.
-	 * @param charecter
+	 * @param character
 	 */
-	void kill(Character charecter){
+	void kill(Character character){
 		
 	}
 
