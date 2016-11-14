@@ -1,5 +1,10 @@
 package edu.cpp.cs.cs141.final_proj;
 
+/**
+ * The short ranged and high damage weapons used by {@link Ninja}s.
+ * @author ajcra
+ *
+ */
 public class Sword extends Weapon{
 	
 	/**
@@ -9,8 +14,7 @@ public class Sword extends Weapon{
 	static final int SWORD_DAMAGE = 1;
 	
 	/**
-	 * This method is called to do damage to player.
-	 * @param damage
+	 * Creates an instance of {@link Sword} and sets the damage to {@link #SWORD_DAMAGE}.
 	 */
 	public Sword(){
 		super(SWORD_DAMAGE);

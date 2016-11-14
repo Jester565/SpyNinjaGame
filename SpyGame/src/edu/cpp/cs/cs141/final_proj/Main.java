@@ -1,8 +1,11 @@
 package edu.cpp.cs.cs141.final_proj;
 
+/**
+ * Stores the main method as an entry point to the program.
+ */
 public class Main {
 	/**
-	 * main method to start game
+	 * Initializes the {@link UserInterface} and starts the game.
 	 * @param args
 	 */
 	public static void main(String[] args) {

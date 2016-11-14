@@ -1,7 +1,9 @@
 package edu.cpp.cs.cs141.final_proj;
 
-public abstract class Weapon {
-	
+/**
+ * Represents a Weapon that can attack {@link Character}s.
+ */
+public abstract class Weapon {	
 	/**
 	 * This will store the amount of damage done by the sword or gun.
 	 */
