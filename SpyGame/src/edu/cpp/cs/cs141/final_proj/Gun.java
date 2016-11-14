@@ -6,7 +6,7 @@ public class Gun extends Weapon{
 	 * This integer keeps track of the damage done by the gun. It's kept at 1 for now 
 	 * since the enemies are 1 hit kill.
 	 */
-	static final int damage = 1;
+	private static final int GUN_DAMAGE = 1;
 	
 	/**
 	 * This keeps track of how many bullets the player has.
@@ -17,24 +17,15 @@ public class Gun extends Weapon{
 	 * This method is called to do damage to an enemy.
 	 * @param damage
 	 */
-	public Gun(int damage){
-		super(damage);
+	public Gun(){
+		super(GUN_DAMAGE);
 	}
 	
 	/**
 	 * This is called when the player picks up the bullet upgrade.
 	 * @param numRounds
 	 */
-	void addBullet(int numRounds){
-		
+	void addBullet(int numRoundsAdded){
+		this.numRounds += numRoundsAdded;
 	}
-	
-	/**
-	 * This is called when a player hits an enemy, the method will kill them.
-	 * @param character
-	 */
-	public void kill(Character character){
-		
-	}
-
 }

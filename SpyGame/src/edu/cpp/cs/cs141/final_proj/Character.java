@@ -1,23 +1,19 @@
 package edu.cpp.cs.cs141.final_proj;
 
 public abstract class Character extends GameObject{
-
-
-	private int lifePts;
+	private int health;
 	
-	/**
-	 * Set the amount of life points an active agent has
-	 * @param i
-	 */
-	public void setLife(int i) {
-		lifePts = i;
+	public Character(String gridRepresentation, int initialHealth)
+	{
+		super(gridRepresentation);
+		this.health = initialHealth;
 	}
 	
 	/**
 	 * Get stabbed or shot, lose 1 life point
 	 */
-	public void attacked() {
-		lifePts -= 1;
+	public void takeDamage(int dmg) {
+		health -= dmg;
 	}
 	
 	/**
@@ -26,7 +22,7 @@ public abstract class Character extends GameObject{
 	 */
 	public boolean isAlive() {
 		
-		if (lifePts <= 0)
+		if (health <= 0)
 			return false;
 		else
 			return true;

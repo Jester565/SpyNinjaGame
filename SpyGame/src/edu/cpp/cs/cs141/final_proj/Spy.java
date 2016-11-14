@@ -1,27 +1,18 @@
 package edu.cpp.cs.cs141.final_proj;
 
 public class Spy extends Character{
-
-	
-	private int bullet = 1;
-	private boolean radar = false;
-	private boolean invincibility = false;
-	private boolean briefCase = false;
+	private static final int SPY_MAX_HEALTH = 1;
+	private boolean hasRadar = false;
+	private Gun gun = new Gun();
+	private int invincibleTurns = 0;
 	
 	/**
 	 * A spy starts with three lives and location at bottom.
 	 */
 	public Spy() {
-		setObjectType("S");
-		setLife(3);
+		super("S", SPY_MAX_HEALTH);
 	}
 	
-	/**
-	 * check if the spy has a briefcase
-	 */
-	public boolean hasBriefCase() {
-		return briefCase;
-	}
 	/**
 	 * Look in the Grid
 	 */
@@ -32,28 +23,36 @@ public class Spy extends Character{
 	/**
 	 * Shoot enemy
 	 */
-	public void shoot(Ninja ninja) {
-		ninja.attacked();
+	public void shoot(Character target) {
+		gun.attack(target);
 	}
 	
 	/**
 	 * Sets invincibility
 	 */
-	public void hasInvincibility() {
-		invincibility = true;
+	public void setInvincibility(int turns) {
+		invincibleTurns += turns;
 	}
 
 	/**
 	 * Spy gets a radar
 	 */
-	public void hasRadar() {
-		radar = true;
+	public void setRadar(boolean mode) {
+		hasRadar = mode;
 	}
 
 	/**
-	 * Add a bullet to player
+	 * Accessor for the {@link gun}.
+	 * @return The Spy's gun
 	 */
-	public void getBullet() {
-		bullet += 1;
+	public Gun getGun()
+	{
+		return gun;
+	}
+	
+	//@Override
+	public boolean isVisible()
+	{
+		return true;
 	}
 }

@@ -3,24 +3,21 @@ package edu.cpp.cs.cs141.final_proj;
 import java.util.ArrayList;
 import java.util.Random;
 
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+
 public class Grid {
+	public enum DIRECTION {
+		UP, DOWN, LEFT, RIGHT
+	}
 
 	public static final int GRID_SIZE = 9;
-	private GameObject[][] gameObjects = new GameObject[GRID_SIZE][GRID_SIZE];
+	public static final int ROOMS_SIZE = 9;
+	public static final int NINJAS_SIZE = 6;
 	private Random rng = new Random();
+	private GameObject[][] gameObjects = new GameObject[GRID_SIZE][GRID_SIZE];
 	private Spy spy= new Spy();
 	private ArrayList<Ninja> ninjas;
-	private Ninja[] ninja = new Ninja[6];
-	private Room[] rooms = new Room[9];
-	private Invincibility invincibility = new Invincibility();
-	private Radar radar = new Radar();
-	private Bullet bullet = new Bullet();
-	private int roomsNumber = 0;	//Check how many rooms have been set
-	private int ninjaNumber = 0;
-	//private GameObject[] ninjas = new Ninja[ninjaNumber];
-	public static enum OBJECT_KIND {
-		R, N, I, S
-	};
+	private Room[] rooms = new Room[ROOMS_SIZE];
 
 	public Grid() {
 		
@@ -32,7 +29,6 @@ public class Grid {
 	public void reset() {
 		//set the player
 		setGameObject(spy, 0, GRID_SIZE - 1);
-		
 		//set rooms
 		int roomIndex = 0;
 		for (int rowIndex = 1; rowIndex < GRID_SIZE; rowIndex += 3) {
@@ -50,33 +46,32 @@ public class Grid {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
 		} while (!emptyGrid(diceX, diceY));
-		setGameObject(invincibility, diceX, diceY);
+		setGameObject(new Invincibility(), diceX, diceY);
 		
 		//set radar item
 		do {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
 		} while (!emptyGrid(diceX, diceY));
-		setGameObject(radar, diceX, diceY);
+		setGameObject(new Radar(), diceX, diceY);
 	
 		//set additionalBullet item
 		do {
 			diceX = rng.nextInt(9);
 			diceY = rng.nextInt(9);
 		} while (!emptyGrid(diceX, diceY));
-		setGameObject(bullet, diceX, diceY);
+		setGameObject(new Bullet(), diceX, diceY);
 		
 		//set ninjas 
 		ninjas = new ArrayList<Ninja>();
-		for (int i = 0; i < 6; i ++) {
-			ninjas.add(new Ninja());
-		}
-		for (int i = 0; i < ninjas.size(); i ++) {
+		for (int i = 0; i < NINJAS_SIZE; i ++) {
+			Ninja ninja = new Ninja();
 			do {
 				diceX = rng.nextInt(9);
 				diceY = rng.nextInt(9);
 			} while(!canSetNinja(diceX, diceY));
-			ninjas.get(i).setLocation(diceX, diceY);
+			setGameObject(ninja, diceX, diceY);
+			ninjas.add(ninja);
 		}
 	}
 	
@@ -89,46 +84,6 @@ public class Grid {
 	}
 	
 	/**
-	 * Make the object in the grid
-	 */
-	public void setGameObject(String type, int x, int y) {
-		GameObject newObject = null;
-		if (gameObjects[y][x] == null) {
-			switch(type) {
-			case "R":
-				newObject = new Room();
-				rooms[roomsNumber] = (Room)newObject;
-				roomsNumber += 1;
-				break;
-			case "n":
-				newObject = new Ninja();
-				break;
-			case "i":
-				newObject = new Invincibility();
-				break;
-			case "r":
-				newObject = new Radar();
-				break;
-			case "a":
-				newObject = new Bullet();
-				break;
-			case "s":
-				newObject = new Spy();
-				break;
-			}
-
-			gameObjects[y][x] = newObject;
-		}
-	}
-	
-	/**
-	 * Set the briefcase in the room
-	 */
-	public void putBriefcaseInRoom(int roomNumber)	{
-		rooms[roomNumber].setBriefCase();
-	}
-	
-	/**
 	 * This method can get spy object
 	 */
 	public Spy getSpy() {
@@ -136,92 +91,58 @@ public class Grid {
 	}
 	
 	/**
-	 * This method can get ninja object
+	 * Accessor for the ninjas arraylist
 	 */
-	public Ninja getNinja(int i) {
-		return ninja[i];
-	}
-	
-	/**
-	 * This method can get invincibilityItem object.
-	 */
-	public Invincibility getInvincibilityItem() {
-		return invincibility;
-	}
-	
-	/**
-	 * This method can get radar object.
-	 */
-	public Radar getRadar() {
-		return radar;
-	}
-	
-	/**
-	 * This method can get additionalBullet item.
-	 */
-	public Bullet getAdditionlBullet() {
-		return bullet;
-	}
-	
-	/**
-	 * move gameObject up
-	 */
-	public void moveUpObject(GameObject object) {
-		object.moveUp();
-	}
-	
-	/**
-	 * move gameObject down
-	 */
-	public void moveDownObject(GameObject object) {
-		object.moveDown();
-	}
-	/**
-	 * move gameObject left
-	 */
-	public void moveLeftObject(GameObject object) {
-		object.moveLeft();
-	}
-	/**
-	 * move gameObject right
-	 */
-	public void moveRightObject(GameObject object) {
-		object.moveRight();
-	}
-	
-	
-	/**
-	 * Just access {@link #ninjas} instead of whatever this method does?
-	 * get ninja in the grid
-	 */
-//	public Ninja getNinja() {
-//		Ninja ninja = ninjas[]
-//		return ninjas
-//	}
-	
-	/**
-	 * set the ninjas in the grid
-	 */
-	public void setNinja() {
-		for (Ninja ninja: ninjas) {
-			gameObjects[ninja.getY()][ninja.getX()] = ninja;
-		}
+	public ArrayList <Ninja> getNinjas() {
+		return ninjas;
 	}
 	
 	/**
 	 * Move to the direction
 	 */
-	public MOVE_STATUS move(DIRECTION direction, int x, int y) {
-		// needs update
-		return MOVE_STATUS.illegalMove;
+	public MoveStatus move(DIRECTION direction, int x, int y) {
+		int moveX = x;
+		int moveY = y;
+		if (direction == DIRECTION.UP)
+		{
+			moveY--;
+		}
+		else if (direction == DIRECTION.RIGHT)
+		{
+			moveX++;
+		}
+		else if (direction == DIRECTION.DOWN)
+		{
+			moveY++;
+		}
+		else if (direction == DIRECTION.LEFT)
+		{
+			moveX--;
+		}
+		if (moveX >= 0 && moveX < GRID_SIZE && moveY >= 0 && moveY < GRID_SIZE)
+		{
+			GameObject gameObj = getGameObject(moveX, moveY);
+			if (gameObj == null)
+			{
+				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
+			}
+			else
+			{
+				
+			}
+		}
+		else
+		{
+			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
+		}
+		return null;
 	}
 	
 	/**
 	 * Check if the grid can set ninja
 	 */
 	public boolean canSetNinja(int x, int y) {
-		if (Math.abs(spy.getX() - x) + Math.abs(spy.getY() - y) <= 2 ||
-				gameObjects[y][x] != null) {
+		if (Math.abs(spy.getX() - x) + Math.abs(spy.getY() - y) <= 2 || gameObjects[y][x] != null) {
 			return false;
 		}
 		return true;
@@ -229,19 +150,19 @@ public class Grid {
 	
 	/**
 	 * Get the object in the grid
-	 * @param i
-	 * @param j
+	 * @param x
+	 * @param y
 	 * @return
 	 */
-	public GameObject getGameObject(int i, int j) {
-		return gameObjects[i][j];
+	public GameObject getGameObject(int x, int y) {
+		return gameObjects[y][x];
 	}
 	
 	/**
 	 * Check if there are any object in the grid
 	 */
 	public boolean emptyGrid(int x, int y) {
-			return getGameObject(x, y) == null ? true : false;
+		return getGameObject(x, y) == null ? true : false;
 	}
 	
 	/**
@@ -249,15 +170,21 @@ public class Grid {
 	 */
 	public String toString() {
 		String result = "";
-
 		for (GameObject[] row : gameObjects) {
 			for (GameObject m : row) {
-				result += m == null ? "[ ]" : "[" + m.getGridRepresentation() + "]";
+				String gridFill = "*";
+				if (GameEngine.DebugMode)
+				{
+					gridFill = " ";
+				}
+				else
+				{
+					gridFill = "*";
+				}
+				result += m == null ? "[" + gridFill + "]" : "[" + m.getGridRepresentation() + "]";
 			}
-
 			result += "\n";
 		}
-
 		return result;
 	}
 }

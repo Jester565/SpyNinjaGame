@@ -21,8 +21,8 @@ public abstract class Weapon {
 	 * when something dies.
 	 * @param character
 	 */
-	void kill(Character character){
-		
+	void attack(Character character){
+		character.takeDamage(damage);
 	}
 
 }

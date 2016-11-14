@@ -8,7 +8,7 @@ public class Room extends GameObject{
 	 * Every room has type "R"
 	 */
 	public Room() {
-		setObjectType("R");
+		super("R");
 	}
 	
 	/**
@@ -23,5 +23,11 @@ public class Room extends GameObject{
 	 */
 	public void setBriefCase() {
 		briefCase = true;
+	}
+	
+	@Override
+	public boolean isVisible()
+	{
+		return true;
 	}
 }

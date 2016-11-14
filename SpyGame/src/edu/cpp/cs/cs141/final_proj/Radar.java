@@ -1,15 +1,16 @@
 package edu.cpp.cs.cs141.final_proj;
 
-public class Radar extends Item{
+public class Radar extends GameObject implements Useable{
 
 	public Radar() {
-		setObjectType("R");
+		super("r");
 	}
 
 	/**
 	 * Display the briefcase in the room.
 	 */
-	public void toSpy(Spy player) {
-		player.hasRadar();
+	public void useOn(Spy spy)
+	{
+		spy.setRadar(true);
 	}
 }

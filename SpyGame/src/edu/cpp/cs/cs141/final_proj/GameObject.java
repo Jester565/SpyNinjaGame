@@ -2,12 +2,15 @@ package edu.cpp.cs.cs141.final_proj;
 
 public abstract class GameObject {
 	
-	private int x;
-	private int y;
-	private boolean visible = false;
-	private boolean debugType = false;
-	private String gameObjectType;
+	protected int x;
+	protected int y;
+	protected boolean visible = false;
+	private String gridRepresentation;
 	
+	public GameObject(String gridRepresentation)
+	{
+		this.gridRepresentation = gridRepresentation;
+	}
 	/**
 	 * Set the location
 	 * @return
@@ -18,38 +21,10 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Set the game object typeÍ
-	 */
-	public void setObjectType(String type) {
-		switch(type) {
-		case "R":
-			visible = true;
-			gameObjectType = "R";
-			break;
-		case "n":
-			gameObjectType = "n";
-			break;
-		case "r":
-			gameObjectType = "r";
-			break;
-		case "i":
-			gameObjectType = "i";
-			break;
-		case "a":
-			gameObjectType = "a";
-			break;
-		case "s":
-			visible = true;
-			gameObjectType = "s";
-			break;
-		}
-	}
-	
-	/**
 	 * Check if the object is visible
 	 */
 	public boolean isVisible() {
-		return visible;
+		return visible || GameEngine.DebugMode;
 	}
 	
 	/**
@@ -58,40 +33,10 @@ public abstract class GameObject {
 	 */
 	public String getGridRepresentation() {
 		String mark = "*";
-		if (visible) mark = gameObjectType;
+		if (isVisible()) {
+			mark = gridRepresentation;
+		}
 		return mark;
-	}
-	
-	public String getGameObjectType() {
-		return gameObjectType;
-	}
-	
-	/**
-	 * move up
-	 */
-	public void moveUp() {
-		y -= 1;
-	}
-	
-	/**
-	 * move down
-	 */
-	public void moveDown() {
-		y += 1;
-	}
-	
-	/**
-	 * move left
-	 */
-	public void moveLeft() {
-		x -= 1;
-	}
-	
-	/**
-	 * move right
-	 */
-	public void moveRight() {
-		x += 1;
 	}
 	
 	/**
