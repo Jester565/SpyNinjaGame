@@ -39,6 +39,7 @@ public class Grid {
 			for (int colIndex = 1; colIndex < GRID_SIZE; colIndex += 3) {
 				rooms[roomIndex] = new Room();
 				setGameObject(rooms[roomIndex], colIndex, rowIndex);
+				roomIndex++;
 			}
 		}
 		rooms[rng.nextInt(rooms.length)].setBriefCase();
@@ -66,16 +67,15 @@ public class Grid {
 		setGameObject(bullet, diceX, diceY);
 		
 		//set ninjas 
+		ninjas = new ArrayList<Ninja>();
 		for (int i = 0; i < 6; i ++) {
 			ninjas.add(new Ninja());
-		}	
+		}
 		for (int i = 0; i < ninjas.size(); i ++) {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
-			while(!canSetNinja(diceX, diceY)) {
+			do {
 				diceX = rng.nextInt(9);
 				diceY = rng.nextInt(9);
-			}
+			} while(!canSetNinja(diceX, diceY));
 			ninjas.get(i).setLocation(diceX, diceY);
 		}
 	}
@@ -191,7 +191,7 @@ public class Grid {
 	
 	
 	/**
-	 * Just access {@link #ninjas} instead of whatever this method does
+	 * Just access {@link #ninjas} instead of whatever this method does?
 	 * get ninja in the grid
 	 */
 //	public Ninja getNinja() {
@@ -212,6 +212,7 @@ public class Grid {
 	 * Move to the direction
 	 */
 	public MOVE_STATUS move(DIRECTION direction, int x, int y) {
+		// needs update
 		return MOVE_STATUS.illegalMove;
 	}
 	
