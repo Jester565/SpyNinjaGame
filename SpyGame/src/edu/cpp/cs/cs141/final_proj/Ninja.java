@@ -1,5 +1,9 @@
 package edu.cpp.cs.cs141.final_proj;
 
+/**
+ * Represents the {@link Character} that will be controlled by the computer.  Possesses a {@link Sword}.
+ * @author Hao, ajcra
+ */
 public class Ninja extends Character{
 	/**
 	 * The initial and maximum value of {@link Character#health}.
