@@ -13,6 +13,10 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public class Bullet extends GameObject implements Useable, Serializable {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1032007805159733083L;
+	/**
 	 * This field holds the amount of bullets to be given to the player.
 	 * This will never change and will stay at {@code 1}
 	 */

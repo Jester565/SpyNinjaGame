@@ -7,10 +7,20 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 public class Grid implements Serializable {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8171612926598162473L;
+
+	/**
 	 * Nested class to associate a {@link GameObject} with a boolean indicating if it is a {@link VisibleMark}.
 	 */
 	private class VisiblePair implements Serializable
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 441034524703231252L;
+
 		/**
 		 * Creates instance of visible pair setting the parameter's corresponding attributes.
 		 * @param isMark {@link #isMark} is set to this value.

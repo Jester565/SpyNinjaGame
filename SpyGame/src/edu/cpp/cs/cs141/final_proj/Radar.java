@@ -14,6 +14,11 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 public class Radar extends GameObject implements Useable, Serializable {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8261583359429564007L;
+
+	/**
 	 * Creates an instance of {@link Radar} and sets the gridRepresentation.
 	 * Lower-case due to "Room" using "R"
 	 */

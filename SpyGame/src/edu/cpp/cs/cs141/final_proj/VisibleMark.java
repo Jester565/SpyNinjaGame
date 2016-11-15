@@ -8,6 +8,11 @@ import java.io.Serializable;
  */
 public class VisibleMark extends GameObject implements Serializable {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4887396807856126040L;
+
+	/**
 	 * Creates an instance of {@link VisibleMark} and sets {@link GameObject#visible} to {@code true}.
 	 */
 	public VisibleMark()

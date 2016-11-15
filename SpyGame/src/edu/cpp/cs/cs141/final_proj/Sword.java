@@ -8,6 +8,10 @@ import java.io.Serializable;
 public class Sword extends Weapon implements Serializable {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5577106023978504789L;
+	/**
 	 * This integer keeps track of the damage done by the sword. It's kept at 1 for now 
 	 * since the player is 1 hit kill.
 	 */

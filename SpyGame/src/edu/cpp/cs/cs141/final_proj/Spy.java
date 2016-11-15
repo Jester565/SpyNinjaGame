@@ -13,6 +13,11 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 public class Spy extends Character implements Serializable {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6504743314825475714L;
+
+	/**
 	 * Stores how far the {@link Spy} can look.
 	 */
 	public static final int LOOK_RANGE = 2;

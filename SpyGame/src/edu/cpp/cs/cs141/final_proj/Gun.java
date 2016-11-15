@@ -10,6 +10,11 @@ import java.io.Serializable;
 public class Gun extends Weapon implements Serializable {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4465513368274479943L;
+
+	/**
 	 * This integer keeps track of the damage done by the gun. It's kept at 1 for now 
 	 * since the enemies are 1 hit kill.
 	 */
