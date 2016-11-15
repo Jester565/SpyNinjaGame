@@ -4,8 +4,18 @@ import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
+/**
+ * Prints messages and gets input from the user to command the {@link GameEngine#spy}
+ */
 public class UserInterface {
+	/**
+	 * Used to control the game
+	 */
 	private GameEngine game = null;
+	
+	/**
+	 * Gets input from the user
+	 */
 	private Scanner keyboard = null;
 	
 	/**
@@ -40,13 +50,11 @@ public class UserInterface {
 		}
 	}
 	
-
-	
 	/**
 	 * Prints out the welcome message to the user.
 	 */
 	private void printWelcomeMessage() {
-		System.out.println("Welcome to Spy Game(by Random 6) v1.0!\n");
+		System.out.println("Welcome to Spy Game (by Random 6)!\n");
 	}
 	
 	/**
@@ -55,16 +63,14 @@ public class UserInterface {
 	 * @return input {@code 1} indicates start new game, {@code 2} indicates quit game
 	 */
 	private int mainMenu() {
-		int option = 2;
-		
 		System.out.println("Select an option:\n"
 				+ "1. Start New Game.\n"
 				+ "2. Quit.");
 		
-		option = keyboard.nextInt();
-		keyboard.nextLine();
-		
-		return option;
+		while(!keyboard.hasNextInt()) {
+			keyboard.nextLine();
+		}
+		return keyboard.nextInt();
 	}
 	
 	/**

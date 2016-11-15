@@ -134,6 +134,12 @@ public class Grid {
 		}
 	}
 	
+	/**
+	 * @param x coordinate to select object to move
+	 * @param y coordinate to select object to move 
+	 * @param moveX new x coordinate for object 
+	 * @param moveY new y coordinate for object
+	 */
 	private void move(int x, int y, int moveX, int moveY)
 	{
 		GameObject movingObject = getGameObject(x, y);
@@ -157,10 +163,10 @@ public class Grid {
 	}
 	
 	/**
-	 * Get the object in the grid
+	 * Get the object from a position on grid
 	 * @param x
 	 * @param y
-	 * @return
+	 * @return {@link GameObject} located with parameters x and y on grid
 	 */
 	public GameObject getGameObject(int x, int y) {
 		return gameObjects[y][x];
@@ -173,6 +179,13 @@ public class Grid {
 		return getGameObject(x, y) == null ? true : false;
 	}
 	
+	/**
+	 * Checks if x and y values are in range of the grid or out of bounds
+	 * @param x
+	 * @param y 
+	 * @return {@code true} if x is in the horizontal & y is in the vertical
+	 * range on the grid 
+	 */
 	private boolean inRange(int x, int y)
 	{
 		return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);

@@ -1,5 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
+/**
+ * Represents a room in SpyGame
+ */
 public class Room extends GameObject{
 
 	/**

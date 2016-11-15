@@ -1,5 +1,9 @@
 package edu.cpp.cs.cs141.final_proj;
 
+/**
+ * An abstract class for Spy and Ninja class which has the attributes and behaviors for 
+ * Spy and Ninja
+ */
 public abstract class Character extends GameObject{
 	/**
 	 * Value to keep track of how much more damage can be taken before dead.
@@ -7,7 +11,7 @@ public abstract class Character extends GameObject{
 	private int health;
 	
 	/**
-	 * Sets {@
+	 * Call super constructor passing gridRepresentation & set {@link #health} to initialHealth
 	 * @param gridRepresentation
 	 * @param initialHealth
 	 */
@@ -26,7 +30,7 @@ public abstract class Character extends GameObject{
 	
 	/**
 	 * Checks the life status of a character
-	 * @return True if lifePts <= 0, false otherwise
+	 * @return {@code true} if {@link #health} <= 0, {@code false} otherwise
 	 */
 	public boolean isAlive() {
 		
