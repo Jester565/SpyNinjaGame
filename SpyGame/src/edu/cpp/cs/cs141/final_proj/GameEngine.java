@@ -11,6 +11,7 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 public class GameEngine {
 	/**
 	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
+	 * @param mode The value to set {@link #DebugMode} to.
 	 */
 	public static void SetDebugMode(boolean mode)
 	{
@@ -133,6 +134,7 @@ public class GameEngine {
 	
 	/**
 	 * The {@link GameObject}s next to the {@link #spy} are set to visible.
+	 * @param lookDirection The direction to look in.
 	 */
 	public void playerLook(DIRECTION lookDirection) {
 		switch (lookDirection)
@@ -210,21 +212,24 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Saves the file.
+	 * Saves the file to the fileName specified by the parameter.
+	 * @param fileDir The directory to save in.
 	 */
-	public void save() {
+	public void save(String fileDir) {
 		
 	}
 	
 	/**
-	 * Loads a previous session of the game.
+	 * Loads a previous session of the game from the directory specified.
+	 * @param fileDir The file to load from.
 	 */
-	public void load(String file) {
+	public void load(String fileDir) {
 		
 	}
 	
 	/**
-	 * Displays the game board.
+	 * Shows the {@link Grid} in the String returned.
+	 * @return The String holding the drawing of the {@link Grid}.
 	 */
 	public String displayBoard() {
 		return grid.toString();

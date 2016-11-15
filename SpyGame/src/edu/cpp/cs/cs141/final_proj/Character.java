@@ -11,9 +11,9 @@ public abstract class Character extends GameObject{
 	private int health;
 	
 	/**
-	 * Call super constructor passing gridRepresentation & set {@link #health} to initialHealth
-	 * @param gridRepresentation
-	 * @param initialHealth
+	 * Call super constructor passing gridRepresentation and set {@link #health} to initialHealth
+	 * @param gridRepresentation The letter to represent {@code this} when drawn in the {@link Grid}.
+	 * @param initialHealth The initial value of {@link #health}.
 	 */
 	public Character(String gridRepresentation, int initialHealth)
 	{
@@ -23,6 +23,7 @@ public abstract class Character extends GameObject{
 	
 	/**
 	 * Get stabbed or shot and health is reduced by dmg.
+	 * @param dmg The amount of damage to be dealt.
 	 */
 	public void takeDamage(int dmg) {
 		health -= dmg;
@@ -30,7 +31,7 @@ public abstract class Character extends GameObject{
 	
 	/**
 	 * Checks the life status of a character
-	 * @return {@code true} if {@link #health} <= 0, {@code false} otherwise
+	 * @return {@code true} if {@link #health} is less than 0, {@code false} otherwise
 	 */
 	public boolean isAlive() {
 		

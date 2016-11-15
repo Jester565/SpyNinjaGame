@@ -34,7 +34,7 @@ public abstract class GameObject {
 	
 	/**
 	 * Creates an instance of {@link GameObject}.  Sets the {@link #gridRepresentation}.
-	 * @param gridRepresentation
+	 * @param gridRepresentation The string that is used to draw on the {@link Grid}.
 	 */
 	public GameObject(String gridRepresentation)
 	{
@@ -42,7 +42,7 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * When a {@link Character} attempts to step onto the {@link GridObject}, this will indicate the result of it.
+	 * When a {@link Character} attempts to step onto the {@link GameObject}, this will indicate the result of it.
 	 * @param approachDirection The direction the {@link Character} is approaching from.
 	 * @return A {@link MoveStatus} that indicates the status of the move.
 	 */
@@ -52,6 +52,8 @@ public abstract class GameObject {
 	}
 	/**
 	 * Modifier for the {@link #x} and {@link #y} fields.
+	 * @param x The column {@code this} is on.
+	 * @param y THe row {@code this} is on.
 	 */
 	public void setLocation(int x, int y) {
 		this.x = x;
@@ -78,6 +80,7 @@ public abstract class GameObject {
 	
 	/**
 	 * Check if the object is visible.  Influences output of {@link #getGridRepresentation()}.
+	 * @return {@code true} if visible or in {@link GameEngine#DebugMode}, {@code false} otherwise.
 	 */
 	public boolean isVisible() {
 		return visible || GameEngine.DebugMode;
@@ -106,6 +109,7 @@ public abstract class GameObject {
 	
 	/**
 	 * Gets the column of the {@link Grid} {@code this} is at.
+	 * @return The column {@code this} is on.
 	 */
 	public int getX() {
 		return x;
@@ -113,6 +117,7 @@ public abstract class GameObject {
 	
 	/**
 	 * Gets the row of the {@link Grid} {@code this} is at.
+	 * @return The row {@code this} is on.
 	 */
 	public int getY() {
 		return y;

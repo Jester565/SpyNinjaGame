@@ -136,6 +136,7 @@ public class Grid {
 	 * @param direction The direction to move the element in.
 	 * @param x The column of the element to move.
 	 * @param y The column of the element to move.
+	 * @return The status of the move represented as a {@link MoveStatus}.
 	 */
 	public MoveStatus move(DIRECTION direction, int x, int y) {
 		int moveX = x;

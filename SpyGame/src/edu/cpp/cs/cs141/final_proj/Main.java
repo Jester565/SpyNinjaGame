@@ -6,7 +6,7 @@ package edu.cpp.cs.cs141.final_proj;
 public class Main {
 	/**
 	 * Initializes the {@link UserInterface} and starts the game.
-	 * @param args
+	 * @param args The arguments passed in through command.
 	 */
 	public static void main(String[] args) {
 		UserInterface ui = new UserInterface(new GameEngine());

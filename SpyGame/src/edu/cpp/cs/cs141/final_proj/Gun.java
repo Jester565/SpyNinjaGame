@@ -21,7 +21,6 @@ public class Gun extends Weapon{
 	/**
 	 * This method is called to do damage to an enemy. It creates an instance of {@link Gun}
 	 * and sets damage to {@link #GUN_DAMAGE}.
-	 * @param damage
 	 */
 	public Gun(){
 		super(GUN_DAMAGE);
@@ -30,7 +29,7 @@ public class Gun extends Weapon{
 	/**
 	 * This is called when the player picks up the bullet upgrade. It will add 1 to 
 	 * {@link #numRounds}.
-	 * @param numRounds
+	 * @param numRoundsAdded Number of rounds to add to the gun.
 	 */
 	void addBullet(int numRoundsAdded){
 		this.numRounds += numRoundsAdded;

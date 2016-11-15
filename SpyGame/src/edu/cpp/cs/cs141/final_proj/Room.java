@@ -15,6 +15,7 @@ public class Room extends GameObject{
 	
 	/**
 	 * Creates an instance of {@link Room} and sets the gridRepresentation.
+	 * @param hasBriefCase Used to set whether or not the {@link Room} has a briefcase.
 	 */
 	public Room(boolean hasBriefCase) {
 		super("R");

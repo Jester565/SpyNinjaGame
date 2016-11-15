@@ -65,7 +65,8 @@ public class Spy extends Character{
 	}
 	
 	/**
-	 * Shoot the target {@link Character} with the {@link #gun}
+	 * Shoot the target {@link Character} with the {@link #gun}.
+	 * @param target {@link Character} to deal damage to.
 	 */
 	public void shoot(Character target) {
 		gun.attack(target);
@@ -73,13 +74,15 @@ public class Spy extends Character{
 	
 	/**
 	 * Sets {@link #invincibleTurns} to the parameter turns.
+	 * @param turns Amount of turns to grant invincibility for.
 	 */
 	public void setInvincibility(int turns) {
 		invincibleTurns = turns;
 	}
 
 	/**
-	 * Modifier for the {@link #hashRadar} field.
+	 * Modifier for the {@link #hasRadar} field.
+	 * @param mode Value to set {@link #hasRadar} to.
 	 */
 	public void setRadar(boolean mode) {
 		hasRadar = mode;
@@ -96,7 +99,7 @@ public class Spy extends Character{
 	
 	/**
 	 * Accessor for the {@link #hasRadar} field.
-	 * @return {@code true} if has radar power up, {@link false} otherwise.
+	 * @return {@code true} if has radar power up, {@code false} otherwise.
 	 */
 	public boolean hasRadar()
 	{

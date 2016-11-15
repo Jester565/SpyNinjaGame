@@ -28,6 +28,7 @@ public class Ninja extends Character{
 
 	/**
 	 * Stab spy and spy will lose health.
+	 * @param enemy {@link Character} to deal damage to.
 	 */
 	public void stab(Character enemy) {
 		sword.attack(enemy);

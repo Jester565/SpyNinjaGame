@@ -93,7 +93,7 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Ask the user for a direction to look in then change the {@link Game#spy}
+	 * Ask the user for a direction to look in then change the {@link GameEngine#spy}
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
 	private void playerLookLoop() {
