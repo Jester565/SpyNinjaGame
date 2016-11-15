@@ -8,9 +8,9 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public abstract class GameObject {
 	/**
-	 * Stores the object {@link GameObject}.
+	 * Stores the object {@link GameObject} that {@code this} covers up.
 	 */
-	private GameObject onTopObject = null;
+	private GameObject belowObject = null;
 	
 	/**
 	 * The column of the grid the {@link GameObject} is stored on.
@@ -33,7 +33,7 @@ public abstract class GameObject {
 	private String gridRepresentation;
 	
 	/**
-	 * Creates an intance of {@link GameObject}.  Sets the {@link #gridRepresentation}.
+	 * Creates an instance of {@link GameObject}.  Sets the {@link #gridRepresentation}.
 	 * @param gridRepresentation
 	 */
 	public GameObject(String gridRepresentation)
@@ -58,14 +58,22 @@ public abstract class GameObject {
 		this.y = y;
 	}
 	
-	public GameObject getOnTopObject()
+	/**
+	 * Accessor for {@link #belowObject} which stores the object {@code this} is standing on top of.
+	 * @return The {@link GameObject} {@code this} is standing on.
+	 */
+	public GameObject getBelowObject()
 	{
-		return onTopObject;
+		return belowObject;
 	}
 	
-	public void setOnTopObject(GameObject gameObj)
+	/**
+	 * Modifier for {@link #belowObject}.
+	 * @param gameObj Value to set {@link #belowObject} to.
+	 */
+	public void setBelowObject(GameObject gameObj)
 	{
-		this.onTopObject = gameObj;
+		this.belowObject = gameObj;
 	}
 	
 	/**
@@ -75,6 +83,10 @@ public abstract class GameObject {
 		return visible || GameEngine.DebugMode;
 	}
 	
+	/**
+	 * Modifier for {@link #visible} field.
+	 * @param mode Value to set {@link #visible} to.
+	 */
 	public void setVisibility(boolean mode)
 	{
 		visible = mode;

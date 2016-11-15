@@ -1,7 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
 /**
- * Put into {@link Grid} to represent and empty but visible position.
+ * Put into {@link Grid} to represent an empty but visible position.
  * @author ajcra
  */
 public class VisibleMark extends GameObject {

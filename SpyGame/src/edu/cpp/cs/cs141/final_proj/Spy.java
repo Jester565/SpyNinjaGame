@@ -2,7 +2,7 @@ package edu.cpp.cs.cs141.final_proj;
 
 /**
  * Represents the {@link Character} that will be controlled by the user.  Possesses a {@link Gun}.
- * @author Hao, ajcra
+ * @author Hao
  *
  */
 public class Spy extends Character{
