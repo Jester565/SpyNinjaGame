@@ -25,7 +25,7 @@ public class GameEngine {
 		//set the player
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 		//set rooms
-		int briefRoomIndex = rng.nextInt();
+		int briefRoomIndex = rng.nextInt(ROOMS_SIZE);
 		int roomIndex = 0;
 		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
 			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
@@ -38,22 +38,22 @@ public class GameEngine {
 		int diceX, diceY;
 		//set invincibilityItem
 		do {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
+			diceX = rng.nextInt(Grid.GRID_SIZE);
+			diceY = rng.nextInt(Grid.GRID_SIZE);
 		} while (!grid.emptyGrid(diceX, diceY));
 		grid.setGameObject(new Invincibility(), diceX, diceY);
 		
 		//set radar item
 		do {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
+			diceX = rng.nextInt(Grid.GRID_SIZE);
+			diceY = rng.nextInt(Grid.GRID_SIZE);
 		} while (!grid.emptyGrid(diceX, diceY));
 		grid.setGameObject(new Radar(), diceX, diceY);
 	
 		//set additionalBullet item
 		do {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
+			diceX = rng.nextInt(Grid.GRID_SIZE);
+			diceY = rng.nextInt(Grid.GRID_SIZE);
 		} while (!grid.emptyGrid(diceX, diceY));
 		grid.setGameObject(new Bullet(), diceX, diceY);
 		
@@ -61,8 +61,8 @@ public class GameEngine {
 		for (int i = 0; i < NINJAS_SIZE; i ++) {
 			Ninja ninja = new Ninja();
 			do {
-				diceX = rng.nextInt(9);
-				diceY = rng.nextInt(9);
+				diceX = rng.nextInt(Grid.GRID_SIZE);
+				diceY = rng.nextInt(Grid.GRID_SIZE);
 			} while(!grid.canSetNinja(diceX, diceY));
 			grid.setGameObject(ninja, diceX, diceY);
 			ninjas.add(ninja);
