@@ -70,7 +70,9 @@ public class UserInterface {
 		while(!keyboard.hasNextInt()) {
 			keyboard.nextLine();
 		}
-		return keyboard.nextInt();
+		int selection = keyboard.nextInt();
+		keyboard.nextLine();
+		return selection;
 	}
 	
 	/**
