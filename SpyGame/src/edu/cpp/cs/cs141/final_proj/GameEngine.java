@@ -116,11 +116,16 @@ public class GameEngine {
 		}
 	}
 	
+	public MoveStatus playerMove(DIRECTION direction)
+	{
+		return grid.move(direction, spy.getX(), spy.getY());
+	}
+	
 	/**
 	 * Enemy Turn
 	 */
 	public void enemyTurn() {
-		
+		grid.setToInvisible();
 	}
 	
 	/**
@@ -129,8 +134,6 @@ public class GameEngine {
 	public void enableDebug() {
 		
 	}
-	
-	
 	
 	/**
 	 * Set six rooms

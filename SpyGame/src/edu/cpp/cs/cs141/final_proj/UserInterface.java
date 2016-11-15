@@ -73,16 +73,24 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
-		System.out.println(game.displayBoard());
-		playerTurnLoop();
-		System.out.println(game.displayBoard());
+		while (true)
+		{
+			System.out.println(game.displayBoard());
+			playerLookLoop();
+			System.out.println(game.displayBoard());
+			playerActionLoop();
+			System.out.println(game.displayBoard());
+			System.out.println("To allow enemys to take turn press enter...");
+			keyboard.nextLine();
+			game.enemyTurn();
+		}
 	}
 	
 	/**
 	 * Ask the user for a direction to look in then change the {@link Game#spy}
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
-	private void playerTurnLoop() {
+	private void playerLookLoop() {
 		System.out.println("W  Look Up\nD  Look Right\nS  Look Down\nA  Look Left");
 		while (true)
 		{
@@ -109,6 +117,40 @@ public class UserInterface {
 			if (lookDirection != null)
 			{
 				game.playerLook(lookDirection);
+				break;
+			}
+		}
+	}
+	
+	private void playerActionLoop()
+	{
+		System.out.println("W  Move Up\nD  Move Right\nS  Move Down\nA  Move Left");
+		while (true)
+		{
+			String selection = keyboard.nextLine();
+			selection = selection.toLowerCase();
+			DIRECTION moveDirection = null;
+			switch (selection)
+			{
+			case "w":
+				moveDirection = DIRECTION.UP;
+				break;
+			case "d":
+				moveDirection = DIRECTION.RIGHT;
+				break;	
+			case "s":
+				moveDirection = DIRECTION.DOWN;
+				break;
+			case "a":
+				moveDirection = DIRECTION.LEFT;
+				break;
+			default:
+				System.out.println("Invalid option... try again");
+			}
+			if (moveDirection != null)
+			{
+				MoveStatus moveStatus = game.playerMove(moveDirection);
+				System.out.println("Move Status: " + moveStatus.msg);
 				break;
 			}
 		}

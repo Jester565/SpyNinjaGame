@@ -22,19 +22,11 @@ public class Grid {
 	}
 
 	public static final int GRID_SIZE = 9;
-	private Random rng = new Random();
 	private GameObject[][] gameObjects = new GameObject[GRID_SIZE][GRID_SIZE];
 	private ArrayList<VisiblePair> visiblePairs;
 
 	public Grid() {
 		visiblePairs = new ArrayList<VisiblePair>();
-	}
-	
-	/**
-	 * reset the building 
-	 */
-	public void reset() {
-		
 	}
 	
 	public boolean setAsVisible(int x, int y)
@@ -88,7 +80,10 @@ public class Grid {
 	 * Set the game objects in the grid
 	 */
 	public void setGameObject(GameObject gameObject, int x, int y) {
-		gameObject.setLocation(x, y);
+		if (gameObject != null)
+		{
+			gameObject.setLocation(x, y);
+		}
 		gameObjects[y][x] = gameObject;
 	}
 	
@@ -98,38 +93,58 @@ public class Grid {
 	public MoveStatus move(DIRECTION direction, int x, int y) {
 		int moveX = x;
 		int moveY = y;
-		if (direction == DIRECTION.UP)
+		switch (direction)
 		{
+		case UP:
 			moveY--;
-		}
-		else if (direction == DIRECTION.RIGHT)
-		{
+			break;
+		case RIGHT:
 			moveX++;
-		}
-		else if (direction == DIRECTION.DOWN)
-		{
+			break;
+		case DOWN:
 			moveY++;
-		}
-		else if (direction == DIRECTION.LEFT)
-		{
+			break;
+		case LEFT:
 			moveX--;
+			break;
+		default:
+			System.err.println("INVALID DIRECTION IN MOVE");
 		}
 		if (inRange(moveX, moveY))
 		{
 			GameObject gameObj = getGameObject(moveX, moveY);
 			if (gameObj == null)
 			{
+				move(x, y, moveX, moveY);
 				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
 			}
 			else
 			{
-				return gameObj.stepOn(direction);
+				MoveStatus status = gameObj.stepOn(direction);
+				if (status.moveResult == MOVE_RESULT.LEGAL || status.moveResult == MOVE_RESULT.POWERUP)
+				{
+					removeVisibleMark(moveX, moveY);
+					move(x, y, moveX, moveY);
+				}
+				return status;
 			}
 		}
 		else
 		{
 			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
 		}
+	}
+	
+	private void move(int x, int y, int moveX, int moveY)
+	{
+		GameObject movingObject = getGameObject(x, y);
+		GameObject moveToObject = getGameObject(moveX, moveY);
+		if (movingObject != null)
+		{
+			setGameObject(movingObject.getOnTopObject(), x, y);
+		}
+		setGameObject(movingObject, moveX, moveY);
+		movingObject.setOnTopObject(moveToObject);
 	}
 	
 	/**
@@ -162,6 +177,20 @@ public class Grid {
 	private boolean inRange(int x, int y)
 	{
 		return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
+	}
+	
+	private boolean removeVisibleMark(int x, int y)
+	{
+		for (int i = 0; i < visiblePairs.size(); i++)
+		{
+			if (visiblePairs.get(i).isMark && visiblePairs.get(i).gameObject.getX() == x && visiblePairs.get(i).gameObject.getY() == y)
+			{
+				visiblePairs.remove(i);
+				removeGameObject(x, y);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

@@ -8,6 +8,11 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public abstract class GameObject {
 	/**
+	 * Stores the object {@link GameObject}.
+	 */
+	private GameObject onTopObject = null;
+	
+	/**
 	 * The column of the grid the {@link GameObject} is stored on.
 	 */
 	protected int x;
@@ -51,6 +56,16 @@ public abstract class GameObject {
 	public void setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public GameObject getOnTopObject()
+	{
+		return onTopObject;
+	}
+	
+	public void setOnTopObject(GameObject gameObj)
+	{
+		this.onTopObject = gameObj;
 	}
 	
 	/**
