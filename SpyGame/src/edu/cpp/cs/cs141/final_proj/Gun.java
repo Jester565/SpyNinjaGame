@@ -1,5 +1,10 @@
 package edu.cpp.cs.cs141.final_proj;
 
+/**
+ * This class represents the long range and one hit kill weapon used by the {@link Spy}.
+ * @author Jessi
+ *
+ */
 public class Gun extends Weapon{
 	
 	/**
@@ -14,7 +19,8 @@ public class Gun extends Weapon{
 	int numRounds;
 	
 	/**
-	 * This method is called to do damage to an enemy.
+	 * This method is called to do damage to an enemy. It creates an instance of {@link Gun}
+	 * and sets damage to {@link #GUN_DAMAGE}.
 	 * @param damage
 	 */
 	public Gun(){
@@ -22,7 +28,8 @@ public class Gun extends Weapon{
 	}
 	
 	/**
-	 * This is called when the player picks up the bullet upgrade.
+	 * This is called when the player picks up the bullet upgrade. It will add 1 to 
+	 * {@link #numRounds}.
 	 * @param numRounds
 	 */
 	void addBullet(int numRoundsAdded){
