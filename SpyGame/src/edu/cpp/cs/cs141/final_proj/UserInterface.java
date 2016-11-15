@@ -4,8 +4,20 @@ import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
+/**
+ * Prints messages and gets input from the user to command the {@link GameEngine#spy}.
+ * @author James
+ *
+ */
 public class UserInterface {
+	/**
+	 * Used to control the game
+	 */
 	private GameEngine game = null;
+	
+	/**
+	 * Gets input from the user
+	 */
 	private Scanner keyboard = null;
 	
 	/**
