@@ -55,16 +55,14 @@ public class UserInterface {
 	 * @return input {@code 1} indicates start new game, {@code 2} indicates quit game
 	 */
 	private int mainMenu() {
-		int option = 2;
-		
 		System.out.println("Select an option:\n"
 				+ "1. Start New Game.\n"
 				+ "2. Quit.");
 		
-		option = keyboard.nextInt();
-		keyboard.nextLine();
-		
-		return option;
+		while(!keyboard.hasNextInt()) {
+			keyboard.nextLine();
+		}
+		return keyboard.nextInt();
 	}
 	
 	/**
