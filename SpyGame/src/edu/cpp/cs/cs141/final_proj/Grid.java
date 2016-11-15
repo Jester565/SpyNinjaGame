@@ -1,14 +1,15 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
-public class Grid {
+public class Grid implements Serializable {
 	/**
 	 * Nested class to associate a {@link GameObject} with a boolean indicating if it is a {@link VisibleMark}.
 	 */
-	private class VisiblePair
+	private class VisiblePair implements Serializable
 	{
 		/**
 		 * Creates instance of visible pair setting the parameter's corresponding attributes.

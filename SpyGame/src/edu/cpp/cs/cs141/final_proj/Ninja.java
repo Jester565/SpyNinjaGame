@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
@@ -7,7 +9,7 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Represents the {@link Character} that will be controlled by the computer.  Possesses a {@link Sword}.
  * @author Hao, ajcra
  */
-public class Ninja extends Character{
+public class Ninja extends Character implements Serializable {
 	/**
 	 * The initial and maximum value of {@link Character#health}.
 	 */

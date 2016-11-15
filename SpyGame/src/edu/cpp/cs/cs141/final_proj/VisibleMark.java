@@ -1,10 +1,12 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 /**
  * Put into {@link Grid} to represent an empty but visible position.
  * @author ajcra
  */
-public class VisibleMark extends GameObject {
+public class VisibleMark extends GameObject implements Serializable {
 	/**
 	 * Creates an instance of {@link VisibleMark} and sets {@link GameObject#visible} to {@code true}.
 	 */

@@ -1,11 +1,13 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 /**
  * This class represents the long range and one hit kill weapon used by the {@link Spy}.
  * @author Jessi
  *
  */
-public class Gun extends Weapon{
+public class Gun extends Weapon implements Serializable {
 	
 	/**
 	 * This integer keeps track of the damage done by the gun. It's kept at 1 for now 

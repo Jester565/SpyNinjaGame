@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
@@ -8,7 +10,7 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * @author Hao
  *
  */
-public class Spy extends Character{
+public class Spy extends Character implements Serializable {
 	
 	/**
 	 * Stores how far the {@link Spy} can look.

@@ -1,9 +1,11 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 /**
  * The short ranged and high damage weapons used by {@link Ninja}s.
  */
-public class Sword extends Weapon{
+public class Sword extends Weapon implements Serializable {
 	
 	/**
 	 * This integer keeps track of the damage done by the sword. It's kept at 1 for now 

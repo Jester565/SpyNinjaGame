@@ -1,12 +1,14 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
  * Represents a room in SpyGame
  */
-public class Room extends GameObject{
+public class Room extends GameObject implements Serializable {
 
 	/**
 	 * Indicates whether or not the {@link Room} has a briefCase in it.

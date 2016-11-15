@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
@@ -9,7 +11,7 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * @author Jason
  *
  */
-public class Invincibility extends GameObject implements Useable{
+public class Invincibility extends GameObject implements Useable, Serializable {
 	/**
 	 * This field represents the number of turns that the player
 	 * is given invincibility.

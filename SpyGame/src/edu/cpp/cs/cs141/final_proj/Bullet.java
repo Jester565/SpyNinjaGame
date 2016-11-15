@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
@@ -9,7 +11,7 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * @author Jason
  *
  */
-public class Bullet extends GameObject implements Useable {
+public class Bullet extends GameObject implements Useable, Serializable {
 	/**
 	 * This field holds the amount of bullets to be given to the player.
 	 * This will never change and will stay at {@code 1}
