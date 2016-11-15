@@ -8,6 +8,10 @@ public class UserInterface {
 	private GameEngine game = null;
 	private Scanner keyboard = null;
 	
+	/**
+	 * Constructor for creating UserInterface objects
+	 * @param game set {@link #game} to (parameter) game used to call methods
+	 */
 	public UserInterface(GameEngine game) {
 		this.game = game;
 		keyboard = new Scanner(System.in);
@@ -39,16 +43,16 @@ public class UserInterface {
 
 	
 	/**
-	 * This method print out the welcome message to the player.
+	 * Prints out the welcome message to the user.
 	 */
 	private void printWelcomeMessage() {
 		System.out.println("Welcome to Spy Game(by Random 6) v1.0!\n");
 	}
 	
 	/**
-	 * This method prompt player to choose start game or quit game.
-	 * And take player's input.
-	 * @return input
+	 * This method prompt user to choose start game or quit game,
+	 * and take player's input.
+	 * @return input {@code 1} indicates start new game, {@code 2} indicates quit game
 	 */
 	private int mainMenu() {
 		int option = 2;
@@ -74,6 +78,10 @@ public class UserInterface {
 		System.out.println(game.displayBoard());
 	}
 	
+	/**
+	 * Ask the user for a direction to look in then change the {@link Game#spy}
+	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
+	 */
 	private void playerTurnLoop() {
 		System.out.println("W  Look Up\nD  Look Right\nS  Look Down\nA  Look Left");
 		while (true)
