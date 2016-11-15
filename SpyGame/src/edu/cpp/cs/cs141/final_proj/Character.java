@@ -1,8 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
 /**
- *an abstract class for Spy and Ninja class, have the attribes and behaviors for 
- *Spy and Ninja
+ * an abstract class for Spy and Ninja class, have the attribes and behaviors for 
+ * Spy and Ninja
  */
 public abstract class Character extends GameObject{
 	/**
