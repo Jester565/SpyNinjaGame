@@ -1,5 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+
 /**
  * Represents a room in SpyGame
  */
@@ -33,5 +36,28 @@ public class Room extends GameObject{
 	public boolean isVisible()
 	{
 		return true;
+	}
+	
+	/**
+	 * Overrides so that the room can only be entered when approaching from the south.
+	 */
+	@Override
+	public MoveStatus stepOn(DIRECTION approachDirection)
+	{
+		if (approachDirection == DIRECTION.DOWN)
+		{
+			if (hasBriefcase())
+			{
+				return new MoveStatus(MOVE_RESULT.WIN, "You found the briefcase!");
+			}
+			else
+			{
+				return new MoveStatus(MOVE_RESULT.ILLEGAL, "The room did not have a briefcase");
+			}
+		}
+		else
+		{
+			return new MoveStatus(MOVE_RESULT.ILLEGAL, "You could not enter the room");
+		}
 	}
 }

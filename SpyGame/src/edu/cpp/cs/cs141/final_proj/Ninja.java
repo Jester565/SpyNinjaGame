@@ -1,5 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+
 /**
  * Represents the {@link Character} that will be controlled by the computer.  Possesses a {@link Sword}.
  * @author Hao, ajcra
@@ -28,5 +31,14 @@ public class Ninja extends Character{
 	 */
 	public void stab(Character enemy) {
 		sword.attack(enemy);
+	}
+	
+	/**
+	 * Overrides so that when an {@link Spy} steps on the {@code this}, it loses.
+	 */
+	@Override
+	public MoveStatus stepOn(DIRECTION approachDirection)
+	{
+		return new MoveStatus(MOVE_RESULT.LOSE, "You walked into a Ninja and got cut in half");
 	}
 }

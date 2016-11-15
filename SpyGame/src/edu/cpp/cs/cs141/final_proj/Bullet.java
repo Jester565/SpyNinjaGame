@@ -1,5 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+
 /**
  * This class represents the Bullet Power-Up
  * Upon usage, the player is given an additional bullet to use.
@@ -26,5 +29,14 @@ public class Bullet extends GameObject implements Useable {
 	 */
 	public void useOn(Spy spy) {
 		spy.getGun().addBullet(BULLETS_GIVEN);
+	}
+	
+	/**
+	 * Overrides so that when an {@link Spy} steps on {@code this}, it knows it is a powerup.
+	 */
+	@Override
+	public MoveStatus stepOn(DIRECTION approachDirection)
+	{
+		return new MoveStatus(MOVE_RESULT.POWERUP, "You picked up a bullet!");
 	}
 }

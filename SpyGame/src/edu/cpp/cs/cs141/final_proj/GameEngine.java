@@ -186,6 +186,16 @@ public class GameEngine {
 	}
 	
 	/**
+	 * The {@link #spy} shoots in the direction specified.
+	 * @param direction The direction to shoot in.
+	 * @return {@code true} is enemy hit, {@code} false otherwise.
+	 */
+	public boolean playerShoot(DIRECTION direction)
+	{
+		return true;
+	}
+	
+	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
@@ -200,14 +210,14 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Save the file.
+	 * Saves the file.
 	 */
 	public void save() {
 		
 	}
 	
 	/**
-	 * Load a previous session of the game.
+	 * Loads a previous session of the game.
 	 */
 	public void load(String file) {
 		

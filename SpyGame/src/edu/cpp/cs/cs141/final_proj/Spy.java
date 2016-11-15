@@ -1,5 +1,8 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+
 /**
  * Represents the {@link Character} that will be controlled by the user.  Possesses a {@link Gun}.
  * @author Hao
@@ -116,5 +119,14 @@ public class Spy extends Character{
 	public boolean isVisible()
 	{
 		return true;
+	}
+	
+	/**
+	 * Overrides so that when an enemy steps on the {@code this}, it loses.
+	 */
+	@Override
+	public MoveStatus stepOn(DIRECTION approachDirection)
+	{
+		return new MoveStatus(MOVE_RESULT.LOSE, "A ninja snuck up on you and cut you in half");
 	}
 }
