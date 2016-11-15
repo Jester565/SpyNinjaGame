@@ -68,7 +68,7 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Game loop
+	 * Game loop to handle player and enemy turns.
 	 */
 	private void gameLoop() {
 		game.reset();
@@ -122,6 +122,10 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Asks the user for the direction to move in then change the position of {@link GameEngine#spy} 
+	 * by calling {@link GameEngine#playerMove(DIRECTION)}.
+	 */
 	private void playerActionLoop()
 	{
 		System.out.println("W  Move Up\nD  Move Right\nS  Move Down\nA  Move Left");
