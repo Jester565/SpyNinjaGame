@@ -15,7 +15,6 @@ public class Gun extends Weapon{
 	
 	/**
 	 * This method is called to do damage to an enemy.
-	 * @param damage
 	 */
 	public Gun(){
 		super(GUN_DAMAGE);
