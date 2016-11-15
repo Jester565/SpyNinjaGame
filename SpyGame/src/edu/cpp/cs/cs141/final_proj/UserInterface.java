@@ -5,9 +5,7 @@ import java.util.Scanner;
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
 /**
- * Prints messages and gets input from the user to command the {@link GameEngine#spy}.
- * @author James
- *
+ * Prints messages and gets input from the user to command the {@link GameEngine#spy}
  */
 public class UserInterface {
 	/**
@@ -51,8 +49,6 @@ public class UserInterface {
 			}
 		}
 	}
-	
-
 	
 	/**
 	 * Prints out the welcome message to the user.
