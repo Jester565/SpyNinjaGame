@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 public class Grid implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8171612926598162473L;
 
 	/**
@@ -182,7 +179,6 @@ public class Grid implements Serializable {
 				MoveStatus status = gameObj.stepOn(direction);
 				if (status.moveResult == MOVE_RESULT.LEGAL || status.moveResult == MOVE_RESULT.POWERUP)
 				{
-					removeVisibleMark(moveX, moveY);
 					move(x, y, moveX, moveY);
 				}
 				return status;
@@ -255,26 +251,6 @@ public class Grid implements Serializable {
 	private boolean inRange(int x, int y)
 	{
 		return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
-	}
-	
-	/**
-	 * Sets the {@link #gameObjects} element at the position to {@code null} if it is a {@link VisibleMark}.
-	 * @param x The column of the element to check.
-	 * @param y The row of the element to check.
-	 * @return {@code true} if the element was a {@link VisibleMark} and was removed successfully.  {@code false} otherwise.
-	 */
-	private boolean removeVisibleMark(int x, int y)
-	{
-		for (int i = 0; i < visiblePairs.size(); i++)
-		{
-			if (visiblePairs.get(i).isMark && visiblePairs.get(i).gameObject.getX() == x && visiblePairs.get(i).gameObject.getY() == y)
-			{
-				visiblePairs.remove(i);
-				removeGameObject(x, y);
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	/**

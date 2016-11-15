@@ -64,6 +64,14 @@ public class GameEngine {
 	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
 	
 	/**
+	 * Resets the visibility of the {@link #grid}.
+	 */
+	public void resetVisibility()
+	{
+		grid.setToInvisible();
+	}
+	
+	/**
 	 * Populates the {@link #grid} with {@link #spy}, {@link #ninjas}, and {@link Useable}s.
 	 */
 	public void reset() {

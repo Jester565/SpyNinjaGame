@@ -86,10 +86,8 @@ public class UserInterface {
 			System.out.println(game.displayBoard());
 			playerLookLoop();
 			System.out.println(game.displayBoard());
+			game.resetVisibility();
 			playerActionLoop();
-			System.out.println(game.displayBoard());
-			System.out.println("To allow enemys to take turn press enter...");
-			keyboard.nextLine();
 			game.enemyTurn();
 		}
 	}
