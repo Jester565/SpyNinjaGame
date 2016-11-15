@@ -6,73 +6,82 @@ import java.util.Random;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 public class Grid {
+	private class VisiblePair
+	{
+		public VisiblePair(boolean isMark, GameObject gameObj)
+		{
+			this.isMark = isMark;
+			this.gameObject = gameObj;
+		}
+		public boolean isMark;
+		public GameObject gameObject;
+	}
+	
 	public enum DIRECTION {
 		UP, DOWN, LEFT, RIGHT
 	}
 
 	public static final int GRID_SIZE = 9;
-	public static final int ROOMS_SIZE = 9;
-	public static final int NINJAS_SIZE = 6;
 	private Random rng = new Random();
 	private GameObject[][] gameObjects = new GameObject[GRID_SIZE][GRID_SIZE];
-	private Spy spy= new Spy();
-	private ArrayList<Ninja> ninjas;
-	private Room[] rooms = new Room[ROOMS_SIZE];
+	private ArrayList<VisiblePair> visiblePairs;
 
 	public Grid() {
-		
+		visiblePairs = new ArrayList<VisiblePair>();
 	}
 	
 	/**
 	 * reset the building 
 	 */
 	public void reset() {
-		//set the player
-		setGameObject(spy, 0, GRID_SIZE - 1);
-		//set rooms
-		int roomIndex = 0;
-		for (int rowIndex = 1; rowIndex < GRID_SIZE; rowIndex += 3) {
-			for (int colIndex = 1; colIndex < GRID_SIZE; colIndex += 3) {
-				rooms[roomIndex] = new Room();
-				setGameObject(rooms[roomIndex], colIndex, rowIndex);
-				roomIndex++;
+		
+	}
+	
+	public boolean setAsVisible(int x, int y)
+	{
+		if (inRange(x, y))
+		{
+			GameObject gameObj = getGameObject(x, y);
+			if (gameObj != null)
+			{
+				gameObj.setVisibility(true);
+				visiblePairs.add(new VisiblePair(false, gameObj));
+			}
+			else
+			{
+				VisibleMark vMark = new VisibleMark();
+				setGameObject(vMark, x, y);
+				visiblePairs.add(new VisiblePair(true, vMark));
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Sets all elements that were set to visible as invisible.  Clears {@link #visiblePairs}.
+	 */
+	public void setToInvisible()
+	{
+		for (VisiblePair vPair : visiblePairs)
+		{
+			if (vPair.isMark)
+			{
+				removeGameObject(vPair.gameObject.getX(), vPair.gameObject.getY());
+			}
+			else
+			{
+				vPair.gameObject.setVisibility(false);
 			}
 		}
-		rooms[rng.nextInt(rooms.length)].setBriefCase();
-		
-		int diceX, diceY;
-		//set invincibilityItem
-		do {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
-		} while (!emptyGrid(diceX, diceY));
-		setGameObject(new Invincibility(), diceX, diceY);
-		
-		//set radar item
-		do {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
-		} while (!emptyGrid(diceX, diceY));
-		setGameObject(new Radar(), diceX, diceY);
+		visiblePairs.clear();
+	}
 	
-		//set additionalBullet item
-		do {
-			diceX = rng.nextInt(9);
-			diceY = rng.nextInt(9);
-		} while (!emptyGrid(diceX, diceY));
-		setGameObject(new Bullet(), diceX, diceY);
-		
-		//set ninjas 
-		ninjas = new ArrayList<Ninja>();
-		for (int i = 0; i < NINJAS_SIZE; i ++) {
-			Ninja ninja = new Ninja();
-			do {
-				diceX = rng.nextInt(9);
-				diceY = rng.nextInt(9);
-			} while(!canSetNinja(diceX, diceY));
-			setGameObject(ninja, diceX, diceY);
-			ninjas.add(ninja);
-		}
+	/**
+	 * Sets the {@link GameObject} at the position to null.
+	 */
+	public void removeGameObject(int x, int y) {
+		gameObjects[y][x] = null;
 	}
 	
 	/**
@@ -81,20 +90,6 @@ public class Grid {
 	public void setGameObject(GameObject gameObject, int x, int y) {
 		gameObject.setLocation(x, y);
 		gameObjects[y][x] = gameObject;
-	}
-	
-	/**
-	 * This method can get spy object
-	 */
-	public Spy getSpy() {
-		return spy;
-	}
-	
-	/**
-	 * Accessor for the ninjas arraylist
-	 */
-	public ArrayList <Ninja> getNinjas() {
-		return ninjas;
 	}
 	
 	/**
@@ -119,7 +114,7 @@ public class Grid {
 		{
 			moveX--;
 		}
-		if (moveX >= 0 && moveX < GRID_SIZE && moveY >= 0 && moveY < GRID_SIZE)
+		if (inRange(moveX, moveY))
 		{
 			GameObject gameObj = getGameObject(moveX, moveY);
 			if (gameObj == null)
@@ -128,21 +123,20 @@ public class Grid {
 			}
 			else
 			{
-				
+				return gameObj.stepOn(direction);
 			}
 		}
 		else
 		{
 			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
 		}
-		return null;
 	}
 	
 	/**
 	 * Check if the grid can set ninja
 	 */
 	public boolean canSetNinja(int x, int y) {
-		if (Math.abs(spy.getX() - x) + Math.abs(spy.getY() - y) <= 2 || gameObjects[y][x] != null) {
+		if (Math.abs(Spy.INITIAL_X - x) + Math.abs(Spy.INITIAL_Y - y) <= 2 || gameObjects[y][x] != null) {
 			return false;
 		}
 		return true;
@@ -163,6 +157,11 @@ public class Grid {
 	 */
 	public boolean emptyGrid(int x, int y) {
 		return getGameObject(x, y) == null ? true : false;
+	}
+	
+	private boolean inRange(int x, int y)
+	{
+		return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
 	}
 	
 	/**

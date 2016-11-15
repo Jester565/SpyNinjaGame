@@ -60,6 +60,11 @@ public abstract class GameObject {
 		return visible || GameEngine.DebugMode;
 	}
 	
+	public void setVisibility(boolean mode)
+	{
+		visible = mode;
+	}
+	
 	/**
 	 * Gets the characters that will be drawn in the {@link Grid}.
 	 * @return The characters representing the {@link GameObject}.

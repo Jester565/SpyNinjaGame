@@ -7,6 +7,9 @@ package edu.cpp.cs.cs141.final_proj;
  */
 public class Spy extends Character{
 	
+	public static final int LOOK_RANGE = 2;
+	public static final int INITIAL_X = 0;
+	public static final int INITIAL_Y = Grid.GRID_SIZE - 1;
 	/**
 	 * The maximum and initial value for {@link Character#health}.
 	 */

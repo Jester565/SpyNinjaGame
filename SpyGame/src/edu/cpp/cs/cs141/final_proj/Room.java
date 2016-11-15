@@ -10,8 +10,9 @@ public class Room extends GameObject{
 	/**
 	 * Creates an instance of {@link Room} and sets the gridRepresentation.
 	 */
-	public Room() {
+	public Room(boolean hasBriefCase) {
 		super("R");
+		this.briefCase = hasBriefCase;
 	}
 	
 	/**
@@ -20,13 +21,6 @@ public class Room extends GameObject{
 	 */
 	public boolean hasBriefcase() {
 		return briefCase;
-	}
-	
-	/**
-	 * Sets the {@link #briefCase} field to {@code true}.
-	 */
-	public void setBriefCase() {
-		briefCase = true;
 	}
 	
 	/**

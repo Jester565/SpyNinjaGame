@@ -2,6 +2,8 @@ package edu.cpp.cs.cs141.final_proj;
 
 import java.util.Scanner;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+
 public class UserInterface {
 	private GameEngine game = null;
 	private Scanner keyboard = null;
@@ -68,5 +70,39 @@ public class UserInterface {
 		game.reset();
 		System.out.println("New game started! ");
 		System.out.println(game.displayBoard());
+		playerTurnLoop();
+		System.out.println(game.displayBoard());
+	}
+	
+	private void playerTurnLoop() {
+		System.out.println("W  Look Up\nD  Look Right\nS  Look Down\nA  Look Left");
+		while (true)
+		{
+			String selection = keyboard.nextLine();
+			selection = selection.toLowerCase();
+			DIRECTION lookDirection = null;
+			switch (selection)
+			{
+			case "w":
+				lookDirection = DIRECTION.UP;
+				break;
+			case "d":
+				lookDirection = DIRECTION.RIGHT;
+				break;	
+			case "s":
+				lookDirection = DIRECTION.DOWN;
+				break;
+			case "a":
+				lookDirection = DIRECTION.LEFT;
+				break;
+			default:
+				System.out.println("Invalid option... try again");
+			}
+			if (lookDirection != null)
+			{
+				game.playerLook(lookDirection);
+				break;
+			}
+		}
 	}
 }

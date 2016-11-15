@@ -11,6 +11,14 @@ public class VisibleMark extends GameObject {
 	public VisibleMark()
 	{
 		super(" ");
-		visible = true;
+	}
+	
+	/**
+	 * Override so that {@link VisibleMark} is always visible.
+	 */
+	@Override
+	public boolean isVisible()
+	{
+		return true;
 	}
 }
