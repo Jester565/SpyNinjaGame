@@ -42,6 +42,14 @@ public class Room extends GameObject implements Serializable {
 	}
 	
 	/**
+	 * Overrides the {@link #setVisible()} method so it does nothing
+	 */
+	public void setVisible()
+	{
+		
+	}
+	
+	/**
 	 * Overrides so that the room can only be entered when approaching from the south.
 	 */
 	@Override
