@@ -1,13 +1,23 @@
 package edu.cpp.cs.cs141.final_proj;
-
+/**
+ * This class represents the Radar Power-Up
+ * Upon usage, the player is given the location of the briefcase.
+ * @author Jason
+ *
+ */
 public class Radar extends GameObject implements Useable{
-
+	
+	/**
+	 * Creates an instance of {@link Radar} and sets the gridRepresentation.
+	 */
 	public Radar() {
-		super("r");
+		super("R");
 	}
 
 	/**
-	 * Display the briefcase in the room.
+	 * This method gives the spy radar
+	 * 
+	 * @param spy - The player character
 	 */
 	public void useOn(Spy spy)
 	{
