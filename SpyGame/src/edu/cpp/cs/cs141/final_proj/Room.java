@@ -79,6 +79,6 @@ public class Room extends GameObject implements Serializable {
 	public void revealBriefCase()
 	{
 		if (briefCase)
-			gridRepresentation = "B";
+			gridRepresentation = "b";
 	}
 }
