@@ -5,21 +5,65 @@ import java.util.Random;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
+/**
+ * Handles high level game logic and user movement.
+ */
 public class GameEngine {
+	/**
+	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
+	 */
+	public static void SetDebugMode(boolean mode)
+	{
+		DebugMode = mode;
+	}
+	
+	/**
+	 * {@code true} will make all elements in the {@link Grid} visible.
+	 */
 	public static boolean DebugMode = false;
 	
+	/**
+	 * The amount of {@link Room}s in the {@link #grid}.
+	 */
 	public static final int ROOMS_SIZE = 9;
+	
+	/**
+	 * The maximum number of {@link Ninja}s in the {@link #ninjas} array and inside of the {@link #grid}.
+	 */
 	public static final int NINJAS_SIZE = 6;
+	
+	/**
+	 * Random number generator used to populate the {@link #grid}.
+	 */
 	private Random rng = new Random();
+	
+	/**
+	 * Stores the environment the game is played in.
+	 */
 	private Grid grid = new Grid();
+	
+	/**
+	 * Indicates whether the game has been won, {@code false} if lost.  Only set properly if {@link #gameFinished} is {@code true}.
+	 */
 	private boolean gameWin = false;
+	
+	/**
+	 * Indicates whether the game has been finished.
+	 */
 	private boolean gameFinished = false;
 	
+	/**
+	 * The {@link Character} controlled by the user.
+	 */
 	private Spy spy= new Spy();
+	
+	/**
+	 * Stores all of the {@link Ninja}s in the {@link #grid}.
+	 */
 	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
 	
 	/**
-	 * reset the building 
+	 * Populates the {@link #grid} with {@link #spy}, {@link #ninjas}, and {@link Useable}s.
 	 */
 	public void reset() {
 		//set the player
@@ -57,7 +101,8 @@ public class GameEngine {
 		} while (!grid.emptyGrid(diceX, diceY));
 		grid.setGameObject(new Bullet(), diceX, diceY);
 		
-		//set ninjas 
+		//set ninjas
+		ninjas.clear();
 		for (int i = 0; i < NINJAS_SIZE; i ++) {
 			Ninja ninja = new Ninja();
 			do {
@@ -70,16 +115,24 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Check if the player win?
+	 * Check if the player has won.
+	 * @return {@code true} if the player has won, {@code false} otherwise.
 	 */
 	public boolean checkWinCondition() {
-		gameWin = false;
-		//if (grid.getSpy().hasBriefCase()) gameWin = true;
 		return gameWin;
 	}
 	
 	/**
-	 * Player Turn
+	 * Checks if the game is finished.
+	 * @return {@code true} if the game is over, {@code false} otherwise.
+	 */
+	public boolean isGameFinished()
+	{
+		return gameFinished;
+	}
+	
+	/**
+	 * The {@link GameObject}s next to the {@link #spy} are set to visible.
 	 */
 	public void playerLook(DIRECTION lookDirection) {
 		switch (lookDirection)
@@ -101,6 +154,12 @@ public class GameEngine {
 		}
 	}
 	
+	/**
+	 * Sets the {@link GameObject}s in the vector specified to visible using {@link Grid#setAsVisible(int, int)}.
+	 * @param dX The change in x from the {@link #spy} to set to visible.
+	 * @param dY The change in y from the {@link #spy} to set to visible.
+	 * @param range The amount of elements from the {@link #spy} to set to visible.
+	 */
 	private void playerLook(int dX, int dY, int range)
 	{
 		int sX = spy.getX();
@@ -116,23 +175,21 @@ public class GameEngine {
 		}
 	}
 	
+	/**
+	 * Moves the {@link #spy} in the direction specified.
+	 * @param direction The direction to move the {@link #spy} in.
+	 * @return The {@link MoveStatus} which indicates if the move successful and a message correlated to the action.
+	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
 		return grid.move(direction, spy.getX(), spy.getY());
 	}
 	
 	/**
-	 * Enemy Turn
+	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
 		grid.setToInvisible();
-	}
-	
-	/**
-	 * Enable the debug mode
-	 */
-	public void enableDebug() {
-		
 	}
 	
 	/**
@@ -143,32 +200,21 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Set new map
-	 */
-	public void setMap() {
-		
-	}
-	
-	/**
-	 * Save the file
+	 * Save the file.
 	 */
 	public void save() {
 		
 	}
 	
 	/**
-	 * Load the exited game
+	 * Load a previous session of the game.
 	 */
-	public void load() {
-		
-	}
-	
-	public void quitGame() {
+	public void load(String file) {
 		
 	}
 	
 	/**
-	 * Display the game board
+	 * Displays the game board.
 	 */
 	public String displayBoard() {
 		return grid.toString();
