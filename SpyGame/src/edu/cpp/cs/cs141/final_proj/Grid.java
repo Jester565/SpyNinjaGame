@@ -13,9 +13,6 @@ public class Grid implements Serializable {
 	 */
 	private class VisiblePair implements Serializable
 	{
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 441034524703231252L;
 
 		/**
@@ -83,6 +80,10 @@ public class Grid implements Serializable {
 			GameObject gameObj = getGameObject(x, y);
 			if (gameObj != null)
 			{
+				if (gameObj instanceof Room)
+				{
+					return false;
+				}
 				gameObj.setVisibility(true);
 				visiblePairs.add(new VisiblePair(false, gameObj));
 			}
