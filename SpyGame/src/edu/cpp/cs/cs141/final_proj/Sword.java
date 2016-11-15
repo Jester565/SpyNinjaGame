@@ -2,8 +2,6 @@ package edu.cpp.cs.cs141.final_proj;
 
 /**
  * The short ranged and high damage weapons used by {@link Ninja}s.
- * @author ajcra
- *
  */
 public class Sword extends Weapon{
 	

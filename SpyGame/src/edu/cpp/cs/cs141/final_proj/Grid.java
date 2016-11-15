@@ -1,7 +1,6 @@
 package edu.cpp.cs.cs141.final_proj;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
