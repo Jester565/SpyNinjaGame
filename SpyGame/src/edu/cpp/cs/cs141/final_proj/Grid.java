@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
+/**
+ * Holds the 2D array containing all of the {@link #gameObjects} and provides
+ * behaviors to manipulate the {@link #gameObjects}
+ */
 public class Grid implements Serializable {
 	private static final long serialVersionUID = -8171612926598162473L;
 	
