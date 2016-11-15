@@ -9,9 +9,10 @@ public class Radar extends GameObject implements Useable{
 	
 	/**
 	 * Creates an instance of {@link Radar} and sets the gridRepresentation.
+	 * Lower-case due to "Room" using "R"
 	 */
 	public Radar() {
-		super("R");
+		super("r");
 	}
 
 	/**
