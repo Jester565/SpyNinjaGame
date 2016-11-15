@@ -8,9 +8,9 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public abstract class GameObject {
 	/**
-	 * Stores the object {@link GameObject}.
+	 * Stores the object {@link GameObject} that {@code this} covers up.
 	 */
-	private GameObject onTopObject = null;
+	private GameObject belowObject = null;
 	
 	/**
 	 * The column of the grid the {@link GameObject} is stored on.
@@ -58,14 +58,14 @@ public abstract class GameObject {
 		this.y = y;
 	}
 	
-	public GameObject getOnTopObject()
+	public GameObject getBelowObject()
 	{
-		return onTopObject;
+		return belowObject;
 	}
 	
-	public void setOnTopObject(GameObject gameObj)
+	public void setBelowObject(GameObject gameObj)
 	{
-		this.onTopObject = gameObj;
+		this.belowObject = gameObj;
 	}
 	
 	/**

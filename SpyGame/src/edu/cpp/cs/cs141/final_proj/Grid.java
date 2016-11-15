@@ -195,10 +195,10 @@ public class Grid {
 		GameObject moveToObject = getGameObject(moveX, moveY);
 		if (movingObject != null)
 		{
-			setGameObject(movingObject.getOnTopObject(), x, y);
+			setGameObject(movingObject.getBelowObject(), x, y);
 		}
 		setGameObject(movingObject, moveX, moveY);
-		movingObject.setOnTopObject(moveToObject);
+		movingObject.setBelowObject(moveToObject);
 	}
 	
 	/**
