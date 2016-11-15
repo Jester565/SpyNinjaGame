@@ -7,35 +7,6 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 public class Grid implements Serializable {
 	private static final long serialVersionUID = -8171612926598162473L;
-
-	/**
-	 * Nested class to associate a {@link GameObject} with a boolean indicating if it is a {@link VisibleMark}.
-	 */
-	private class VisiblePair implements Serializable
-	{
-		private static final long serialVersionUID = 441034524703231252L;
-
-		/**
-		 * Creates instance of visible pair setting the parameter's corresponding attributes.
-		 * @param isMark {@link #isMark} is set to this value.
-		 * @param gameObj {@link #gameObject} is set to this value.
-		 */
-		public VisiblePair(boolean isMark, GameObject gameObj)
-		{
-			this.isMark = isMark;
-			this.gameObject = gameObj;
-		}
-		
-		/**
-		 * {@code true} if {@link GameObject} is a {@link VisibleMark}, {@code false} otherwise.
-		 */
-		public boolean isMark;
-		
-		/**
-		 * Stores a {@link GameObject}.  Cannot be {@code null}.
-		 */
-		public GameObject gameObject;
-	}
 	
 	/**
 	 * Stores the different directions that can be easily interpreted by the {@link #gameObjects}.
@@ -57,13 +28,13 @@ public class Grid implements Serializable {
 	/**
 	 * Stores the {@link GameObject}s set to visible inside of the {@link VisiblePair} elements.
 	 */
-	private ArrayList<VisiblePair> visiblePairs;
+	private ArrayList<GameObject> visibleObjects;
 
 	/**
 	 * Creates instance of {@link Grid} initializing {@link #visiblePairs}.
 	 */
 	public Grid() {
-		visiblePairs = new ArrayList<VisiblePair>();
+		visibleObjects = new ArrayList<GameObject>();
 	}
 	
 	/**
@@ -85,13 +56,13 @@ public class Grid implements Serializable {
 					return false;
 				}
 				gameObj.setVisibility(true);
-				visiblePairs.add(new VisiblePair(false, gameObj));
+				visibleObjects.add(gameObj);
 			}
 			else
 			{
 				VisibleMark vMark = new VisibleMark();
 				setGameObject(vMark, x, y);
-				visiblePairs.add(new VisiblePair(true, vMark));
+				visibleObjects.add(vMark);
 			}
 			return true;
 		}
@@ -103,18 +74,18 @@ public class Grid implements Serializable {
 	 */
 	public void setToInvisible()
 	{
-		for (VisiblePair vPair : visiblePairs)
+		for (GameObject vObj : visibleObjects)
 		{
-			if (vPair.isMark)
+			if (vObj instanceof VisibleMark)
 			{
-				removeGameObject(vPair.gameObject.getX(), vPair.gameObject.getY());
+				removeGameObject(vObj.getX(), vObj.getY());
 			}
 			else
 			{
-				vPair.gameObject.setVisibility(false);
+				vObj.setVisibility(false);
 			}
 		}
-		visiblePairs.clear();
+		visibleObjects.clear();
 	}
 	
 	/**
