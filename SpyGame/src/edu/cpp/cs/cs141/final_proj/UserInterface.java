@@ -46,7 +46,7 @@ public class UserInterface {
 	 * Prints out the welcome message to the user.
 	 */
 	private void printWelcomeMessage() {
-		System.out.println("Welcome to Spy Game(by Random 6) v1.0!\n");
+		System.out.println("Welcome to Spy Game (by Random 6)!\n");
 	}
 	
 	/**
