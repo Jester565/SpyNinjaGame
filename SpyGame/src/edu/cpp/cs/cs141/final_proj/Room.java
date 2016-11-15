@@ -71,4 +71,14 @@ public class Room extends GameObject implements Serializable {
 			return new MoveStatus(MOVE_RESULT.ILLEGAL, "You could not enter the room");
 		}
 	}
+	
+	/**
+	 * Changes the {@link #gridRepresentation} to {@code "D"} if this Room has
+	 * {@link #briefCase} 
+	 */
+	public void revealBriefCase()
+	{
+		if (briefCase)
+			gridRepresentation = "B";
+	}
 }

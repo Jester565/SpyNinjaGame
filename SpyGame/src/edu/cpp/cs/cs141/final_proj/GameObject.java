@@ -30,7 +30,7 @@ public abstract class GameObject {
 	/**
 	 * Stores the characters that will be drawn to the {@link Grid}.  Set by constructor.
 	 */
-	private String gridRepresentation;
+	protected String gridRepresentation;
 	
 	/**
 	 * Creates an instance of {@link GameObject}.  Sets the {@link #gridRepresentation}.
