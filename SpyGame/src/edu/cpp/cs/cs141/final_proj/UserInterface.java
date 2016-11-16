@@ -15,8 +15,19 @@ public class UserInterface {
 	 * the spy's turn
 	 */
 	public enum USER_COMMAND {
-		//WHY ARE MY PEPES SO DAMN DANK
-		move, shoot, debug, dankmemes;
+		move("0"), shoot("1"), debug("2");
+		
+		private String keyCode;
+		private USER_COMMAND(String keyCode) {
+			this.keyCode = keyCode;
+		}
+		
+		/**
+		 * @return {@link #keyCode}
+		 */
+		public String keyCode() {
+			return keyCode;
+		}
 		
 		/**
 		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
@@ -33,7 +44,7 @@ public class UserInterface {
 		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
 		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
 		 * the USER_COMMAND
-		 * e.g. (sry Python syntax):
+		 * e.g.:
 		 * {"m": USER_COMMAND.move}
 		 */
 		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
@@ -45,6 +56,32 @@ public class UserInterface {
 			}
 			return abbreviatedNames;
 		}
+		
+		/**
+		 * @return
+		 */
+		public static HashMap<String, USER_COMMAND> abbreviatedKeyCodes() {
+			HashMap<String, USER_COMMAND> abbreviatedKeyCodes = new HashMap<String, USER_COMMAND>();
+			String abbrevKeyCode;
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				abbrevKeyCode = command.keyCode();
+				abbreviatedKeyCodes.put(abbrevKeyCode, command);
+			}
+			return abbreviatedKeyCodes;
+		}
+		
+		/**
+		 * Overloads other valueOf(String)
+		 * @param keyCode
+		 * @return
+		 */
+//		public USER_COMMAND valueOf(int keyCode) {
+//			for (USER_COMMAND command: USER_COMMAND.values())
+//				if (command.keyCode() == keyCode) {
+//					return command;
+//				}
+//			return null;
+//		}
 	}
 	
 	/**
@@ -120,6 +157,7 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
+		
 		while (true)
 		{
 			// print grid, do player 'look' action, print grid
@@ -179,7 +217,6 @@ public class UserInterface {
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
 	private void playerLook() {
-		game.displayBoard();
 		DIRECTION lookDirection = getUserDirection("look");
 		game.playerLook(lookDirection);
 	}
@@ -191,22 +228,22 @@ public class UserInterface {
 	 */
 	private USER_COMMAND getUserCommand() {
 		String question = "Enter one of the following commands:\n"
-				+ "M  Move\n"
-				+ "S  Shoot\n"
-				+ "D  Debug\n";
+				+ "W:Move Up | A:Move Left | S:Move Down | D:Move Left\n"
+				+ "1:Shoot | 2:Debug";
+				
+				
 		String userInput;
-		game.enemyTurn();
 		do 
 		{
 			System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!USER_COMMAND.names().contains(userInput) && 
-				!USER_COMMAND.abbreviatedNames().containsKey(userInput));
+				!USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput));
 		
 		if (userInput.length() > 1) 
 			return USER_COMMAND.valueOf(userInput);
 		else
-			return USER_COMMAND.abbreviatedNames().get(userInput);
+			return USER_COMMAND.abbreviatedKeyCodes().get(userInput);
 	}
 	
 	/**
