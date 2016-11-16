@@ -42,6 +42,6 @@ public class Radar extends GameObject implements Useable, Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LEGAL, "Radar acquired!");
+		return new MoveStatus(MOVE_RESULT.POWERUP, "Radar aquired!");
 	}
 }
