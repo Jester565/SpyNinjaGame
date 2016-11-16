@@ -28,24 +28,6 @@ public class Grid implements Serializable {
 			return names;
 		}
 		
-//		public static ArrayList<String> abbreviatedNames() {
-//			ArrayList<String> abbreviatedNames = new ArrayList<String>();
-//			for (String name: names()) {
-//				abbreviatedNames.add(name.substring(0, 1));
-//			}
-//			return abbreviatedNames;
-//		}
-		
-//		public static HashMap<String, DIRECTION> abbreviatedNames() {
-//			HashMap<String, DIRECTION> abbreviatedNames = new HashMap<String, DIRECTION>();
-//			String abbrevName;
-//			for (DIRECTION command: DIRECTION.values()) {
-//				abbrevName = command.name().substring(0, 1);
-//				abbreviatedNames.put(abbrevName, command);
-//			}
-//			return abbreviatedNames;
-//		}
-		
 		public static HashMap<String, DIRECTION> abbreviatedNames() {
 			String[] hotkeys = {"w", "d", "s", "a"};
 			int hotkeysIndex = 0;

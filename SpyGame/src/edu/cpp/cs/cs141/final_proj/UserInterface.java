@@ -25,14 +25,6 @@ public class UserInterface {
 			return names;
 		}
 		
-//		public static ArrayList<String> abbreviatedNames() {
-//			ArrayList<String> abbreviatedNames = new ArrayList<String>();
-//			for (String name: names()) {
-//				abbreviatedNames.add(name.substring(0, 1));
-//			}
-//			return abbreviatedNames;
-//		}
-		
 		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
 			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
 			String abbrevName;
@@ -127,7 +119,7 @@ public class UserInterface {
 			// make all gameObjects invisible (except for spy & rooms)
 			game.resetVisibility();
 			
-			// get command & direction from user then do that command
+			// get command & direction from user then do that command in that direction
 			playerTurn();
 			
 			// enemies follow their AI rules then check if spy is adjacent to them
@@ -138,6 +130,8 @@ public class UserInterface {
 	private void playerTurn() {
 		USER_COMMAND command = getUserCommand();
 		System.out.println("Command Entered = " + command.name());
+		
+		// we actually don't to get a direction if command is debug
 		DIRECTION direction = getUserDirection();
 		System.out.println("Direction Entered = " + direction.name());
 		switch(command) 
@@ -189,44 +183,6 @@ public class UserInterface {
 			if (lookDirection != null)
 			{
 				game.playerLook(lookDirection);
-				break;
-			}
-		}
-	}
-	
-	/**
-	 * Asks the user for the direction to move in then change the position of {@link GameEngine#spy} 
-	 * by calling {@link GameEngine#playerMove(DIRECTION)}.
-	 */
-	private void playerActionLoop()
-	{
-		System.out.println("W  Move Up\nD  Move Right\nS  Move Down\nA  Move Left");
-		while (true)
-		{
-			String selection = keyboard.nextLine();
-			selection = selection.toLowerCase();
-			DIRECTION moveDirection = null;
-			switch (selection)
-			{
-			case "w":
-				moveDirection = DIRECTION.UP;
-				break;
-			case "d":
-				moveDirection = DIRECTION.RIGHT;
-				break;	
-			case "s":
-				moveDirection = DIRECTION.DOWN;
-				break;
-			case "a":
-				moveDirection = DIRECTION.LEFT;
-				break;
-			default:
-				System.out.println("Invalid option... try again");
-			}
-			if (moveDirection != null)
-			{
-				MoveStatus moveStatus = game.playerMove(moveDirection);
-				System.out.println("Move Status: " + moveStatus.msg);
 				break;
 			}
 		}
