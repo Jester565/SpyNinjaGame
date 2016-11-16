@@ -193,6 +193,7 @@ public class GameEngine {
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
+		
 		return grid.move(direction, spy.getX(), spy.getY());
 	}
 	
@@ -204,6 +205,13 @@ public class GameEngine {
 	public boolean playerShoot(DIRECTION direction)
 	{
 		return true;
+	}
+	
+	/**
+	 * Updates the spy's attributes when upon using powerups.
+	 */
+	public void updateSpy(){
+		spy.usePowerups();
 	}
 	
 	/**
