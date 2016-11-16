@@ -17,6 +17,9 @@ public class UserInterface {
 	public enum USER_COMMAND {
 		move, shoot, debug;
 		
+		/**
+		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
+		 */
 		public static ArrayList<String> names() {
 			ArrayList<String> names = new ArrayList<String>();
 			for (USER_COMMAND command: USER_COMMAND.values()) {
@@ -25,6 +28,13 @@ public class UserInterface {
 			return names;
 		}
 		
+		/**
+		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
+		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
+		 * the USER_COMMAND
+		 * e.g. (sry Python syntax):
+		 * {"m": USER_COMMAND.move}
+		 */
 		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
 			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
 			String abbrevName;

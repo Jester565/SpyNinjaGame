@@ -20,6 +20,9 @@ public class Grid implements Serializable {
 	public enum DIRECTION {
 		UP, RIGHT, DOWN, LEFT;
 		
+		/**
+		 * @return {@code {"UP", "RIGHT", "DOWN", "LEFT"}} in an ArrayList<String> 
+		 */
 		public static ArrayList<String> names() {
 			ArrayList<String> names = new ArrayList<String>();
 			for (DIRECTION dir: DIRECTION.values()) {
