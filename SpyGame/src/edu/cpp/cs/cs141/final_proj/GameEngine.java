@@ -54,16 +54,6 @@ public class GameEngine {
 	private Grid grid = new Grid();
 	
 	/**
-	 * Indicates whether the game has been won, {@code false} if lost.  Only set properly if {@link #gameFinished} is {@code true}.
-	 */
-	private boolean gameWin = false;
-	
-	/**
-	 * Indicates whether the game has been finished.
-	 */
-	private boolean gameFinished = false;
-	
-	/**
 	 * The {@link Character} controlled by the user.
 	 */
 	private Spy spy= new Spy();
@@ -132,28 +122,12 @@ public class GameEngine {
 			ninjas.add(ninja);
 		}
 	}
-	
 	/**
-	 * Check if the player has won.
-	 * @return {@code true} if the player has won, {@code false} otherwise.
+	 * Checks status of the game
+	 * @return gameStatus to check current status
 	 */
-	public boolean checkWinCondition() {
-		if(gameStatus == GAME_STATE.WON)
-			return true;
-		else
-			return false;
-	}
-	
-	/**
-	 * Checks if the game is finished.
-	 * @return {@code true} if the game is over, {@code false} otherwise.
-	 */
-	public boolean isGameFinished()
-	{
-		if(!(gameStatus == GAME_STATE.UNFINISHED))
-			return true;
-		else
-			return false;
+	public GAME_STATE getGameStatus(){
+		return gameStatus;
 	}
 	
 	/**
@@ -203,7 +177,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Moves the {@link #spy} in the direction specified.
+	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, then the game is finished and the game was won.
 	 * @param direction The direction to move the {@link #spy} in.
 	 * @return The {@link MoveStatus} which indicates if the move successful and a message correlated to the action.
 	 */
@@ -226,16 +200,19 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Updates the spy's attributes when upon using powerups.
-	 */
-	public void updateSpy(){
-		spy.usePowerups();
-	}
-	
-	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
+		//Check for Spy near a ninja, kill if nearby
+		int sX = spy.x;
+		int sY = spy.y;
+		for(int i = 0; i < ninjas.size(); i++){
+			int nX = ninjas.get(i).getX();
+			int nY = ninjas.get(i).getY();
+		}
+		//Move all ninjas in random directions
+		//Check for Spy near a ninja, kill if nearby
+		//return (abs(spy.x = ninja.x) + abs(spy.y - ninja.y) <= 1)
 		grid.setToInvisible();
 	}
 	

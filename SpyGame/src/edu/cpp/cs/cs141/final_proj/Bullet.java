@@ -43,7 +43,6 @@ public class Bullet extends GameObject implements Useable, Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		
-		return new MoveStatus(MOVE_RESULT.LEGAL, "You picked up a bullet!");
+		return new MoveStatus(MOVE_RESULT.POWERUP, "You picked up a bullet!");
 	}
 }

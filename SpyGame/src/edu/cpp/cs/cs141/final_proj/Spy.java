@@ -38,7 +38,7 @@ public class Spy extends Character implements Serializable {
 	private static final int SPY_MAX_HEALTH = 1;
 	
 	/**
-	 * Keeps track of if the {@link Spy} has acquired the {@link Radar} powerup.
+	 * Keeps track of if the {@link Spy} has aquired the {@link Radar} powerup.
 	 */
 	private boolean hasRadar = false;
 	
@@ -61,6 +61,7 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Checks if the BelowObject is null and if it isn't then it calls the function to use the power-up.
 	 */
 	void usePowerups()
@@ -74,6 +75,8 @@ public class Spy extends Character implements Serializable {
 		}
 	}
 	/**
+=======
+>>>>>>> 670e4b60cb6745d2ff72e48bb97dc00881791fae
 	 * Called before every player's turn to decrement {@link #invincibleTurns}.
 	 */
 	public void reduceInvincibility()
