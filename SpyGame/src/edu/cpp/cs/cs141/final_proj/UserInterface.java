@@ -151,8 +151,19 @@ public class UserInterface {
 			System.out.println("Move Status: " + moveStatus.msg);
 			break;
 		case shoot:
+//			Gun gun = new Gun();
+			
 			boolean enemyHit = game.playerShoot(direction);
-			System.out.println("you shot a bullet -- NOT IMPLEMENTED YET");
+			if(enemyHit){
+				System.out.println("you shot the ninja!");
+			}
+			else{ //if((gun.collision)&&(!enemyHit)){
+				System.out.println("you hit something but it wasnt a ninja...");
+			}
+//			else{
+//				System.out.println("You shot a bullet but it missed...");
+//				gun.collision = false;
+//			}
 			break;
 		case debug:
 			GameEngine.SetDebugMode(true);
