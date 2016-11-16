@@ -15,7 +15,8 @@ public class UserInterface {
 	 * the spy's turn
 	 */
 	public enum USER_COMMAND {
-		move, shoot, debug;
+		//WHY ARE MY PEPES SO DAMN DANK
+		move, shoot, debug, dankmemes;
 		
 		/**
 		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
@@ -170,6 +171,7 @@ public class UserInterface {
 		default:
 			System.out.println("what happened in playerTurn() method");
 		}
+		game.updateSpy();
 	}
 	
 	/**
@@ -177,6 +179,7 @@ public class UserInterface {
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
 	private void playerLook() {
+		game.displayBoard();
 		DIRECTION lookDirection = getUserDirection("look");
 		game.playerLook(lookDirection);
 	}
@@ -192,6 +195,7 @@ public class UserInterface {
 				+ "S  Shoot\n"
 				+ "D  Debug\n";
 		String userInput;
+		game.enemyTurn();
 		do 
 		{
 			System.out.print(question);

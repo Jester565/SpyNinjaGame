@@ -200,6 +200,13 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Updates the spy's attributes when upon using powerups.
+	 */
+	public void updateSpy(){
+		spy.usePowerups();
+	}
+	
+	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
