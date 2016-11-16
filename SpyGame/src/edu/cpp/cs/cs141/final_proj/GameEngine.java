@@ -58,10 +58,14 @@ public class GameEngine {
 	 */
 	private Spy spy= new Spy();
 	
+	private Gun gun = new Gun();
+	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
 	 */
 	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
+	
+	private ArrayList<Room> rooms = new ArrayList<Room>();
 	
 	/**
 	 * Resets the visibility of the {@link #grid}.
@@ -85,6 +89,7 @@ public class GameEngine {
 				Room room = new Room(roomIndex == briefRoomIndex);
 				grid.setGameObject(room, colIndex, rowIndex);
 				roomIndex++;
+				rooms.add(room);
 			}
 		}
 		
@@ -196,7 +201,17 @@ public class GameEngine {
 	 */
 	public boolean playerShoot(DIRECTION direction)
 	{
-		return true;
+		
+		gun.shoot(direction, spy, ninjas, rooms);
+		
+		return gun.hit;
+	}
+	
+	/**
+	 * Updates the spy's attributes when upon using powerups.
+	 */
+	public void updateSpy(){
+		spy.usePowerups();
 	}
 	
 	/**

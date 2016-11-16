@@ -251,7 +251,7 @@ public class Grid implements Serializable {
 	 * @param y The row.
 	 * @return {@code true} if inside the bounds, {@code false} otherwise.
 	 */
-	private boolean inRange(int x, int y)
+	public boolean inRange(int x, int y)
 	{
 		return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
 	}
