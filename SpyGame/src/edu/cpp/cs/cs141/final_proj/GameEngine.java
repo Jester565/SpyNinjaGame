@@ -6,7 +6,7 @@ import java.util.Random;
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
 /**
- * Handles high level game logic and user movement. TESTING.
+ * Handles high level game logic and user movement.
  */
 public class GameEngine {
 	/**
