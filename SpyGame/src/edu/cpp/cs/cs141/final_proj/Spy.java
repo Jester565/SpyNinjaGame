@@ -65,16 +65,18 @@ public class Spy extends Character implements Serializable {
 	 */
 	void usePowerups()
 	{
+		reduceInvincibility();
 		if (getBelowObject() != null) {
 			if (getBelowObject() instanceof Useable){
 				((Useable)getBelowObject()).useOn(this);
+				setBelowObject(null);
 			}
 		}
 	}
 	/**
 	 * Called before every player's turn to decrement {@link #invincibleTurns}.
 	 */
-	public void reduceInvisibility()
+	public void reduceInvincibility()
 	{
 		if (invincibleTurns > 0)
 		{
