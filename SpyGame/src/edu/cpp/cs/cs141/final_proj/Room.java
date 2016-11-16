@@ -14,10 +14,16 @@ public class Room extends GameObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2582178436693933013L;
+	
 	/**
 	 * Indicates whether or not the {@link Room} has a briefCase in it.
 	 */
 	private boolean briefCase = false;
+	
+	/**
+	 * This is the gridRepresentation for the Room when {@link #briefCase} is {@code true}
+	 */
+	private String briefCaseGridRepresentation = "b";
 	
 	/**
 	 * Creates an instance of {@link Room} and sets the gridRepresentation.
@@ -25,7 +31,7 @@ public class Room extends GameObject implements Serializable {
 	 */
 	public Room(boolean hasBriefCase) {
 		super("R");
-		this.briefCase = hasBriefCase;
+		briefCase = hasBriefCase;
 	}
 	
 	/**
@@ -76,12 +82,26 @@ public class Room extends GameObject implements Serializable {
 		}
 	}
 	
+	/**
+	 * Changes {@link GameObject#gridRepresentation} to {@link #briefCaseGridRepresentation}
+	 * if {@link #briefCaseGridRepresentation}
+	 */
+	public void revealBriefCase() {
+		if (briefCase)
+			gridRepresentation = briefCaseGridRepresentation;
+	}
+	
+	/**
+	 * Overrides {@link GameObject#getGridRepresentation()} to return
+	 * {@link #gridRepresentation} when not in debug mode or this Room does not have
+	 * the {@link #briefCase}  
+	 */
 	@Override
 	public String getGridRepresentation() 
 	{
 		if (!GameEngine.DebugMode || !briefCase)
 			return gridRepresentation;
 		else
-			return "b";
+			return briefCaseGridRepresentation;
 	}
 }
