@@ -54,6 +54,16 @@ public class GameEngine {
 	private Grid grid = new Grid();
 	
 	/**
+	 * Indicates whether the game has been won, {@code false} if lost.  Only set properly if {@link #gameFinished} is {@code true}.
+	 */
+	private boolean gameWin = false;
+	
+	/**
+	 * Indicates whether the game has been finished.
+	 */
+	private boolean gameFinished = false;
+	
+	/**
 	 * The {@link Character} controlled by the user.
 	 */
 	private Spy spy= new Spy();
@@ -193,21 +203,16 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, then the game is finished and the game was won.
+	 * Moves the {@link #spy} in the direction specified.
 	 * @param direction The direction to move the {@link #spy} in.
 	 * @return The {@link MoveStatus} which indicates if the move successful and a message correlated to the action.
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
-<<<<<<< HEAD
-		
-		return grid.move(direction, spy.getX(), spy.getY());
-=======
 		MoveStatus temp = grid.move(direction, spy.getX(), spy.getY());
 		if(temp.moveResult == MOVE_RESULT.WIN)
 			gameStatus = GAME_STATE.WON;
 		return temp;
->>>>>>> origin/master
 	}
 	
 	/**
@@ -230,7 +235,7 @@ public class GameEngine {
 	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
-	public void enemyTurn() {	
+	public void enemyTurn() {
 		grid.setToInvisible();
 	}
 	
