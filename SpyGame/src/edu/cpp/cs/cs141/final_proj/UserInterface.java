@@ -23,6 +23,14 @@ public class UserInterface {
 			}
 			return names;
 		}
+		
+		public static ArrayList<String> abbreviatedNames() {
+			ArrayList<String> abbreviatedNames = new ArrayList<String>();
+			for (String name: names()) {
+				abbreviatedNames.add(name.substring(0, 1));
+			}
+			return abbreviatedNames;
+		}
 	}
 	
 	/**
@@ -196,8 +204,25 @@ public class UserInterface {
 		String userInput;
 		do 
 		{
+			System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!userCommand.names().contains(userInput));
+		} while(!userCommand.names().contains(userInput) && 
+				!userCommand.abbreviatedNames().contains(userInput));
 		return userCommand.valueOf(userInput);
+	}
+	
+	private DIRECTION getUserDirection() {
+		String question = "W  Move Up\n"
+				+ "D  Move Right\n"
+				+ "S  Move Down\n"
+				+ "A  Move Left\n";
+		String userInput;
+		do
+		{
+			System.out.print(question);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+		} while(!DIRECTION.names().contains(userInput) &&
+				!DIRECTION.abbreviatedNames().contains(userInput));
+		return DIRECTION.valueOf(userInput);
 	}
 }

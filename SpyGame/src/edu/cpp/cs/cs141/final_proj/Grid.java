@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+import edu.cpp.cs.cs141.final_proj.UserInterface.userCommand;
 
 /**
  * Holds the 2D array containing all of the {@link #gameObjects} and provides
@@ -16,7 +17,23 @@ public class Grid implements Serializable {
 	 * Stores the different directions that can be easily interpreted by the {@link #gameObjects}.
 	 */
 	public enum DIRECTION {
-		UP, DOWN, LEFT, RIGHT
+		UP, DOWN, LEFT, RIGHT;
+		
+		public static ArrayList<String> names() {
+			ArrayList<String> names = new ArrayList<String>();
+			for (DIRECTION dir: DIRECTION.values()) {
+				names.add(dir.name());
+			}
+			return names;
+		}
+		
+		public static ArrayList<String> abbreviatedNames() {
+			ArrayList<String> abbreviatedNames = new ArrayList<String>();
+			for (String name: names()) {
+				abbreviatedNames.add(name.substring(0, 1));
+			}
+			return abbreviatedNames;
+		}
 	}
 	
 	/**
