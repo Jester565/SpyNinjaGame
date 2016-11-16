@@ -15,7 +15,19 @@ public class UserInterface {
 	 * the spy's turn
 	 */
 	public enum USER_COMMAND {
-		move, shoot, debug;
+		move("0"), shoot("1"), debug("2");
+		
+		private String keyCode;
+		private USER_COMMAND(String keyCode) {
+			this.keyCode = keyCode;
+		}
+		
+		/**
+		 * @return {@link #keyCode}
+		 */
+		public String keyCode() {
+			return keyCode;
+		}
 		
 		/**
 		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
@@ -32,7 +44,7 @@ public class UserInterface {
 		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
 		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
 		 * the USER_COMMAND
-		 * e.g. (sry Python syntax):
+		 * e.g.:
 		 * {"m": USER_COMMAND.move}
 		 */
 		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
@@ -44,6 +56,32 @@ public class UserInterface {
 			}
 			return abbreviatedNames;
 		}
+		
+		/**
+		 * @return
+		 */
+		public static HashMap<String, USER_COMMAND> abbreviatedKeyCodes() {
+			HashMap<String, USER_COMMAND> abbreviatedKeyCodes = new HashMap<String, USER_COMMAND>();
+			String abbrevKeyCode;
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				abbrevKeyCode = command.keyCode();
+				abbreviatedKeyCodes.put(abbrevKeyCode, command);
+			}
+			return abbreviatedKeyCodes;
+		}
+		
+		/**
+		 * Overloads other valueOf(String)
+		 * @param keyCode
+		 * @return
+		 */
+//		public USER_COMMAND valueOf(int keyCode) {
+//			for (USER_COMMAND command: USER_COMMAND.values())
+//				if (command.keyCode() == keyCode) {
+//					return command;
+//				}
+//			return null;
+//		}
 	}
 	
 	/**
@@ -119,11 +157,12 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
+		
 		while (true)
 		{
 			// print grid, do player 'look' action, print grid
 			System.out.println(game.displayBoard());
-			playerLookLoop();
+			playerLook();
 			System.out.println(game.displayBoard());
 			
 			// make all gameObjects invisible (except for spy & rooms)
@@ -137,76 +176,71 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Get a command and do that command
+	 * check {@link #USER_COMMAND} for the options
+	 */
 	private void playerTurn() {
-		USER_COMMAND command = getUserCommand();
+		boolean moveMode = true;
+		USER_COMMAND command;
+		while (true)
+		{
+			if (moveMode)
+			{
+				System.out.println("W to move up 1 to shoot");
+			}
+			else
+			{
+				System.out.println("W to shoot up 1 to move");
+			}
+			command = getUserCommand();
+			if (command != USER_COMMAND.debug && command != USER_COMMAND.shoot)
+			{
+				break;
+			}
+			else if (USER_COMMAND.shoot == command)
+			{
+				moveMode = !moveMode;
+			}
+		}
+		//USER_COMMAND command = getUserCommand();
 		System.out.println("Command Entered = " + command.name());
+		DIRECTION direction = null;
 		
-		// we actually don't to get a direction if command is debug
-		DIRECTION direction = getUserDirection();
-		System.out.println("Direction Entered = " + direction.name());
-		switch(command) 
+		switch(command)
 		{
 		case move:
+			direction = getUserDirection(command.name());
+			System.out.println("Direction Entered = " + direction.name());
+			
 			MoveStatus moveStatus = game.playerMove(direction);
 			System.out.println("Move Status: " + moveStatus.msg);
 			break;
 		case shoot:
-//			Gun gun = new Gun();
+			direction = getUserDirection(command.name());
+			System.out.println("Direction Entered = " + direction.name());
 			
 			boolean enemyHit = game.playerShoot(direction);
-			if(enemyHit){
-				System.out.println("you shot the ninja!");
-			}
-			else{ //if((gun.collision)&&(!enemyHit)){
-				System.out.println("you hit something but it wasnt a ninja...");
-			}
-//			else{
-//				System.out.println("You shot a bullet but it missed...");
-//				gun.collision = false;
-//			}
+			System.out.println("you shot a bullet -- NOT IMPLEMENTED YET");
 			break;
 		case debug:
-			GameEngine.SetDebugMode(true);
+			GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+			System.out.println(game.displayBoard());
+			playerTurn();
 			break;
 		default:
 			System.out.println("what happened in playerTurn() method");
 		}
+		game.updateSpy();
 	}
 	
 	/**
 	 * Ask the user for a direction to look in then change the {@link GameEngine#spy}
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
-	private void playerLookLoop() {
-		System.out.println("W  Look Up\nD  Look Right\nS  Look Down\nA  Look Left");
-		while (true)
-		{
-			String selection = keyboard.nextLine();
-			selection = selection.toLowerCase();
-			DIRECTION lookDirection = null;
-			switch (selection)
-			{
-			case "w":
-				lookDirection = DIRECTION.UP;
-				break;
-			case "d":
-				lookDirection = DIRECTION.RIGHT;
-				break;	
-			case "s":
-				lookDirection = DIRECTION.DOWN;
-				break;
-			case "a":
-				lookDirection = DIRECTION.LEFT;
-				break;
-			default:
-				System.out.println("Invalid option... try again");
-			}
-			if (lookDirection != null)
-			{
-				game.playerLook(lookDirection);
-				break;
-			}
-		}
+	private void playerLook() {
+		DIRECTION lookDirection = getUserDirection("look");
+		game.playerLook(lookDirection);
 	}
 	
 	/**
@@ -215,30 +249,36 @@ public class UserInterface {
 	 * @return {@link #userCommand} of the command the user chose 
 	 */
 	private USER_COMMAND getUserCommand() {
+		/*
 		String question = "Enter one of the following commands:\n"
-				+ "Move\n"
-				+ "Shoot\n"
-				+ "Debug\n";
+				+ "W:Move Up | A:Move Left | S:Move Down | D:Move Left\n"
+				+ "1:Shoot | 2:Debug";
+				*/
+				
+				
 		String userInput;
 		do 
 		{
-			System.out.print(question);
+			//System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!USER_COMMAND.names().contains(userInput) && 
-				!USER_COMMAND.abbreviatedNames().containsKey(userInput));
+				!USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput));
 		
 		if (userInput.length() > 1) 
 			return USER_COMMAND.valueOf(userInput);
 		else
-			return USER_COMMAND.abbreviatedNames().get(userInput);
+			return USER_COMMAND.abbreviatedKeyCodes().get(userInput);
 	}
 	
 	/**
 	 * Continually ask user to enter a direction (abbreviated to the letter or full name)
+	 * @param action a String that's a verb that describes why the direction is needed
 	 * @return the {@link Grid#DIRECTION} entered by the user
 	 */
-	private DIRECTION getUserDirection() {
-		String question = "W  Up\n"
+	private DIRECTION getUserDirection(String action) {
+		String question = "Enter direction to "
+				+ action + "\n"
+				+ "W  Up\n"
 				+ "D  Right\n"
 				+ "S  Down\n"
 				+ "A  Left\n";
