@@ -49,4 +49,10 @@ public class Ninja extends Character implements Serializable {
 	{
 		return new MoveStatus(MOVE_RESULT.LOSE, "You walked into a Ninja and got cut in half");
 	}
+	
+	@Override
+	public boolean isPenetrable()
+	{
+		return false;
+	}
 }

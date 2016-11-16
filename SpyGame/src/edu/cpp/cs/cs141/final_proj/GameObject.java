@@ -87,6 +87,14 @@ public abstract class GameObject {
 	}
 	
 	/**
+	 * Whether or not the {@link GameObject} can be shot through.
+	 */
+	public boolean isPenetrable()
+	{
+		return true;
+	}
+	
+	/**
 	 * Modifier for {@link #visible} field.
 	 * @param mode Value to set {@link #visible} to.
 	 */

@@ -18,9 +18,14 @@ public class Sword extends Weapon implements Serializable {
 	static final int SWORD_DAMAGE = 1;
 	
 	/**
+	 * The range of the sword.
+	 */
+	static final int SWORD_RANGE = 1;
+	
+	/**
 	 * Creates an instance of {@link Sword} and sets the damage to {@link #SWORD_DAMAGE}.
 	 */
 	public Sword(){
-		super(SWORD_DAMAGE);
+		super(SWORD_DAMAGE, SWORD_RANGE);
 	}
 }

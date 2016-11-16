@@ -88,8 +88,8 @@ public class Spy extends Character implements Serializable {
 	 * Shoot the target {@link Character} with the {@link #gun}.
 	 * @param target {@link Character} to deal damage to.
 	 */
-	public void shoot(Character target) {
-		gun.attack(target);
+	public boolean shoot(DIRECTION shootDirection, Grid grid) {
+		return gun.attack(shootDirection, grid, x, y);
 	}
 	
 	/**
@@ -142,6 +142,12 @@ public class Spy extends Character implements Serializable {
 	public boolean isVisible()
 	{
 		return true;
+	}
+	
+	@Override
+	public boolean isPenetrable()
+	{
+		return false;
 	}
 	
 	/**

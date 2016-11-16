@@ -19,31 +19,6 @@ public class Grid implements Serializable {
 	 */
 	public enum DIRECTION {
 		UP, RIGHT, DOWN, LEFT;
-		
-		/**
-		 * @return {@code {"UP", "RIGHT", "DOWN", "LEFT"}} in an ArrayList<String> 
-		 */
-		public static ArrayList<String> names() {
-			ArrayList<String> names = new ArrayList<String>();
-			for (DIRECTION dir: DIRECTION.values()) {
-				names.add(dir.name());
-			}
-			return names;
-		}
-		
-		public static HashMap<String, DIRECTION> abbreviatedNames() {
-			String[] hotkeys = {"w", "d", "s", "a"};
-			int hotkeysIndex = 0;
-			HashMap<String, DIRECTION> abbreviatedNames = new HashMap<String, DIRECTION>();
-			String abbrevName;
-			for (DIRECTION command: DIRECTION.values()) {
-				abbrevName = command.name().substring(0, 1);
-				abbreviatedNames.put(abbrevName, command);
-				abbreviatedNames.put(hotkeys[hotkeysIndex], command);
-				hotkeysIndex++;
-			}
-			return abbreviatedNames;
-		}
 	}
 	
 	/**
@@ -256,25 +231,21 @@ public class Grid implements Serializable {
 		return (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE);
 	}
 	
-	/**
-	 * Draws the {@link #gameObjects} to String.
-	 */
-	public String toString() {
+	public String rowToString(int rowI)
+	{
 		String result = "";
-		for (GameObject[] row : gameObjects) {
-			for (GameObject m : row) {
-				String gridFill = "*";
-				if (GameEngine.DebugMode)
-				{
-					gridFill = " ";
-				}
-				else
-				{
-					gridFill = "*";
-				}
-				result += m == null ? "[" + gridFill + "]" : "[" + m.getGridRepresentation() + "]";
+		for (GameObject m : gameObjects[rowI])
+		{
+			String gridFill = "*";
+			if (GameEngine.DebugMode)
+			{
+				gridFill = " ";
 			}
-			result += "\n";
+			else
+			{
+				gridFill = "*";
+			}
+			result += m == null ? "[" + gridFill + "]" : "[" + m.getGridRepresentation() + "]";
 		}
 		return result;
 	}

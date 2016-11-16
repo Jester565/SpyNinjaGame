@@ -11,80 +11,6 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
  */
 public class UserInterface {
 	/**
-	 * Commands the user can make the {@link GameEngine#spy} do during
-	 * the spy's turn
-	 */
-	public enum USER_COMMAND {
-		move("0"), shoot("1"), debug("2");
-		
-		private String keyCode;
-		private USER_COMMAND(String keyCode) {
-			this.keyCode = keyCode;
-		}
-		
-		/**
-		 * @return {@link #keyCode}
-		 */
-		public String keyCode() {
-			return keyCode;
-		}
-		
-		/**
-		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
-		 */
-		public static ArrayList<String> names() {
-			ArrayList<String> names = new ArrayList<String>();
-			for (USER_COMMAND command: USER_COMMAND.values()) {
-				names.add(command.name());
-			}
-			return names;
-		}
-		
-		/**
-		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
-		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
-		 * the USER_COMMAND
-		 * e.g.:
-		 * {"m": USER_COMMAND.move}
-		 */
-		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
-			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
-			String abbrevName;
-			for (USER_COMMAND command: USER_COMMAND.values()) {
-				abbrevName = command.name().substring(0, 1);
-				abbreviatedNames.put(abbrevName, command);
-			}
-			return abbreviatedNames;
-		}
-		
-		/**
-		 * @return
-		 */
-		public static HashMap<String, USER_COMMAND> abbreviatedKeyCodes() {
-			HashMap<String, USER_COMMAND> abbreviatedKeyCodes = new HashMap<String, USER_COMMAND>();
-			String abbrevKeyCode;
-			for (USER_COMMAND command: USER_COMMAND.values()) {
-				abbrevKeyCode = command.keyCode();
-				abbreviatedKeyCodes.put(abbrevKeyCode, command);
-			}
-			return abbreviatedKeyCodes;
-		}
-		
-		/**
-		 * Overloads other valueOf(String)
-		 * @param keyCode
-		 * @return
-		 */
-//		public USER_COMMAND valueOf(int keyCode) {
-//			for (USER_COMMAND command: USER_COMMAND.values())
-//				if (command.keyCode() == keyCode) {
-//					return command;
-//				}
-//			return null;
-//		}
-	}
-	
-	/**
 	 * Used to control the game
 	 */
 	private GameEngine game = null;
@@ -161,18 +87,36 @@ public class UserInterface {
 		while (true)
 		{
 			// print grid, do player 'look' action, print grid
-			System.out.println(game.displayBoard());
 			playerLook();
-			System.out.println(game.displayBoard());
-			
-			// make all gameObjects invisible (except for spy & rooms)
-			game.resetVisibility();
 			
 			// get command & direction from user then do that command in that direction
 			playerTurn();
+			if (checkGameStatus())
+			{
+				break;
+			}
 			
 			// enemies follow their AI rules then check if spy is adjacent to them
 			game.enemyTurn();
+			if (checkGameStatus())
+			{
+				break;
+			}
+		}
+	}
+	
+	private boolean checkGameStatus()
+	{
+		switch (game.getGameStatus())
+		{
+		case WON:
+			System.out.println("You won!");
+			return true;
+		case LOST:
+			System.out.println("You lose...");
+			return true;
+		default:
+			return false;
 		}
 	}
 	
@@ -182,54 +126,52 @@ public class UserInterface {
 	 */
 	private void playerTurn() {
 		boolean moveMode = true;
-		USER_COMMAND command;
-		while (true)
+		DIRECTION playerDirection = null;
+		while (playerDirection == null)
 		{
+			System.out.println(game.displayBoard());
 			if (moveMode)
 			{
-				System.out.println("W to move up 1 to shoot");
+				System.out.println("F  shoot mode");
+				printActionDirection("move");
 			}
 			else
 			{
-				System.out.println("W to shoot up 1 to move");
+				System.out.println("F  move mode");
+				printActionDirection("shoot");
 			}
-			command = getUserCommand();
-			if (command != USER_COMMAND.debug && command != USER_COMMAND.shoot)
+			String input = keyboard.nextLine();
+			input = input.toLowerCase();
+			playerDirection = interpretUserCommand(input);
+			if (playerDirection == null)
 			{
-				break;
-			}
-			else if (USER_COMMAND.shoot == command)
-			{
-				moveMode = !moveMode;
+				if (input.equals("f")) 
+				{
+					moveMode = !moveMode;
+					System.out.println("Switched to " + (moveMode ? "move" : "shoot") + " mode");
+				}
+				else
+				{
+					System.out.println("Invalid input... try again");	
+				}
 			}
 		}
-		//USER_COMMAND command = getUserCommand();
-		System.out.println("Command Entered = " + command.name());
-		DIRECTION direction = null;
-		
-		switch(command)
+		game.resetVisibility();
+		if (moveMode)
 		{
-		case move:
-			direction = getUserDirection(command.name());
-			System.out.println("Direction Entered = " + direction.name());
-			
-			MoveStatus moveStatus = game.playerMove(direction);
-			System.out.println("Move Status: " + moveStatus.msg);
-			break;
-		case shoot:
-			direction = getUserDirection(command.name());
-			System.out.println("Direction Entered = " + direction.name());
-			
-			boolean enemyHit = game.playerShoot(direction);
-			System.out.println("you shot a bullet -- NOT IMPLEMENTED YET");
-			break;
-		case debug:
-			GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-			System.out.println(game.displayBoard());
-			playerTurn();
-			break;
-		default:
-			System.out.println("what happened in playerTurn() method");
+			MoveStatus moveStatus = game.playerMove(playerDirection);
+			System.out.println(moveStatus.msg);
+		}
+		else
+		{
+			if (game.playerShoot(playerDirection))
+			{
+				System.out.println("A ninja was shot");
+			}
+			else
+			{
+				System.out.println("Shot did not hit an enemy");
+			}
 		}
 		game.updateSpy();
 	}
@@ -239,35 +181,23 @@ public class UserInterface {
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
 	private void playerLook() {
-		DIRECTION lookDirection = getUserDirection("look");
-		game.playerLook(lookDirection);
+		DIRECTION lookDirection = null;
+		while (lookDirection == null && !GameEngine.DebugMode)
+		{
+			System.out.println(game.displayBoard());
+			printActionDirection("look");
+			String input = keyboard.nextLine();
+			lookDirection = interpretUserCommand(input);
+		}
+		if (!GameEngine.DebugMode)
+		{
+			game.playerLook(lookDirection);
+		}
 	}
 	
-	/**
-	 * Continually ask user to give a command for the {@link GameEngine#spy}
-	 * until a valid command is entered
-	 * @return {@link #userCommand} of the command the user chose 
-	 */
-	private USER_COMMAND getUserCommand() {
-		/*
-		String question = "Enter one of the following commands:\n"
-				+ "W:Move Up | A:Move Left | S:Move Down | D:Move Left\n"
-				+ "1:Shoot | 2:Debug";
-				*/
-				
-				
-		String userInput;
-		do 
-		{
-			//System.out.print(question);
-			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!USER_COMMAND.names().contains(userInput) && 
-				!USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput));
-		
-		if (userInput.length() > 1) 
-			return USER_COMMAND.valueOf(userInput);
-		else
-			return USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+	void printActionDirection(String action)
+	{
+		System.out.println("W  " + action + " up\nD  " + action + " right\nS  " + action + " down\nA  " + action + " left\nG  " + (GameEngine.DebugMode ? "disable " : "enable") + " debugging");
 	}
 	
 	/**
@@ -275,24 +205,23 @@ public class UserInterface {
 	 * @param action a String that's a verb that describes why the direction is needed
 	 * @return the {@link Grid#DIRECTION} entered by the user
 	 */
-	private DIRECTION getUserDirection(String action) {
-		String question = "Enter direction to "
-				+ action + "\n"
-				+ "W  Up\n"
-				+ "D  Right\n"
-				+ "S  Down\n"
-				+ "A  Left\n";
-		String userInput;
-		do
+	private DIRECTION interpretUserCommand(String directionInput) {
+		switch(directionInput)
 		{
-			System.out.print(question);
-			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!DIRECTION.names().contains(userInput) &&
-				!DIRECTION.abbreviatedNames().containsKey(userInput));
-		
-		if (userInput.length() > 1) 
-			return DIRECTION.valueOf(userInput);
-		else
-			return DIRECTION.abbreviatedNames().get(userInput);
+		case "w":
+			return DIRECTION.UP;
+		case "a":
+			return DIRECTION.LEFT;
+		case "s":
+			return DIRECTION.DOWN;
+		case "d":
+			return DIRECTION.RIGHT;
+		case "g":
+			GameEngine.SetDebugMode(!GameEngine.DebugMode);
+			System.out.println("DEBUGGING " + (GameEngine.DebugMode ? "ENABLED" : "DISABLED"));
+			return null;
+		default:
+			return null;
+		}
 	}
 }

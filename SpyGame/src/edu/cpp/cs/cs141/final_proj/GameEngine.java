@@ -10,6 +10,7 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Handles high level game logic and user movement.
  */
 public class GameEngine {
+	private int attemptsRemaining;
 	/**
 	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
 	 * @param mode The value to set {@link #DebugMode} to.
@@ -21,7 +22,7 @@ public class GameEngine {
 	/**
 	 *Describes the status of the game: unfinished, won, or lost.
 	 */
-	private enum GAME_STATE {
+	public enum GAME_STATE {
 		UNFINISHED, WON, LOST;
 	}
 	/**
@@ -57,8 +58,6 @@ public class GameEngine {
 	 * The {@link Character} controlled by the user.
 	 */
 	private Spy spy= new Spy();
-	
-	private Gun gun = new Gun();
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
@@ -199,12 +198,14 @@ public class GameEngine {
 	 * @param direction The direction to shoot in.
 	 * @return {@code true} is enemy hit, {@code} false otherwise.
 	 */
-	public boolean playerShoot(DIRECTION direction)
+	public boolean playerShoot(DIRECTION shootDirection)
 	{
-		
-		gun.shoot(direction, spy, ninjas, rooms);
-		
-		return gun.hit;
+		if (spy.shoot(shootDirection, grid))
+		{
+			removeDeadNinjas();
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -218,24 +219,22 @@ public class GameEngine {
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
-		//Check for Spy near a ninja, kill if nearby
-		int sX = spy.x;
-		int sY = spy.y;
-		for(int i = 0; i < ninjas.size(); i++){
-			int nX = ninjas.get(i).getX();
-			int nY = ninjas.get(i).getY();
-		}
-		//Move all ninjas in random directions
-		//Check for Spy near a ninja, kill if nearby
-		//return (abs(spy.x = ninja.x) + abs(spy.y - ninja.y) <= 1)
-		grid.setToInvisible();
+		
 	}
 	
 	/**
-	 * Set six rooms
+	 * If a {@link Ninja} is no longer alive it is removed from {@link #grid} and {@link #ninjas}.
 	 */
-	public void setRooms() {
-		
+	private void removeDeadNinjas()
+	{
+		for (int i = 0; i < ninjas.size(); i++)
+		{
+			if (!ninjas.get(i).isAlive())
+			{
+				grid.removeGameObject(ninjas.get(i).x, ninjas.get(i).y);
+				ninjas.remove(i);
+			}
+		}
 	}
 	
 	/**
@@ -256,11 +255,49 @@ public class GameEngine {
 		
 	}
 	
+	public String generateBoardInformation()
+	{
+		String boardInformation = "";
+		boardInformation += "Attempts Remaining: " + attemptsRemaining + "\n";
+		boardInformation += "Ammo Count: " + spy.getGun().getNumRounds() + "\n";
+		boardInformation += "Radar: " + (spy.hasRadar() ? "Active" : "Inactive") + "\n";
+		boardInformation += "Invincibility: " + (spy.isInvincible() ? "Active" : "Inactive") + "\n";
+		return boardInformation;
+	}
+	
 	/**
 	 * Shows the {@link Grid} in the String returned.
 	 * @return The String holding the drawing of the {@link Grid}.
 	 */
 	public String displayBoard() {
-		return grid.toString();
+		String boardInfo = generateBoardInformation();
+		String[] splitBoardInfo = boardInfo.split("\n");
+		int startBoardInfoAtI = (int)(Grid.GRID_SIZE / 2.0f - splitBoardInfo.length / 2.0f);
+		if (startBoardInfoAtI < 0)
+		{
+			startBoardInfoAtI = 0;
+		}
+		String result = "";
+		for (int i = 0; i < Grid.GRID_SIZE; i++)
+		{
+			result += grid.rowToString(i);
+			if (i >= startBoardInfoAtI && i < startBoardInfoAtI + splitBoardInfo.length)
+			{
+				result += "\t" + splitBoardInfo[i - startBoardInfoAtI];
+			}
+			result += "\n";
+		}
+		/*
+		if (startBoardInfoAtI + splitBoardInfo.length > Grid.GRID_SIZE)
+		{
+			
+		}
+		*/
+		for (int i = startBoardInfoAtI + Grid.GRID_SIZE; i < splitBoardInfo.length; i++)
+		{
+			result += splitBoardInfo[i];
+			result += "\n";
+		}
+		return result;
 	}
 }

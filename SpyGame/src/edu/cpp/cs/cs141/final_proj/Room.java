@@ -85,4 +85,10 @@ public class Room extends GameObject implements Serializable {
 		if (briefCase)
 			gridRepresentation = "b";
 	}
+	
+	@Override
+	public boolean isPenetrable()
+	{
+		return false;
+	}
 }
