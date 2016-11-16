@@ -53,6 +53,11 @@ public class Spy extends Character implements Serializable {
 	private int invincibleTurns = 0;
 	
 	/**
+	 * The lives of the player
+	 */
+	private int live = 3;
+	
+	/**
 	 * Creates an instance of {@link Spy} with a {@link Gun}.
 	 */
 	public Spy() {
@@ -85,6 +90,16 @@ public class Spy extends Character implements Serializable {
 		{
 			invincibleTurns--;
 		}
+	}
+	
+	/**
+	 * Check if the player is run of the live
+	 */
+	public boolean hasLive() {
+		if (live <= 0 ) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
