@@ -1,6 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -13,21 +14,31 @@ public class UserInterface {
 	 * Commands the user can make the {@link GameEngine#spy} do during
 	 * the spy's turn
 	 */
-	private enum userCommand {
+	public enum USER_COMMAND {
 		move, shoot, debug;
 		
 		public static ArrayList<String> names() {
 			ArrayList<String> names = new ArrayList<String>();
-			for (userCommand command: userCommand.values()) {
+			for (USER_COMMAND command: USER_COMMAND.values()) {
 				names.add(command.name());
 			}
 			return names;
 		}
 		
-		public static ArrayList<String> abbreviatedNames() {
-			ArrayList<String> abbreviatedNames = new ArrayList<String>();
-			for (String name: names()) {
-				abbreviatedNames.add(name.substring(0, 1));
+//		public static ArrayList<String> abbreviatedNames() {
+//			ArrayList<String> abbreviatedNames = new ArrayList<String>();
+//			for (String name: names()) {
+//				abbreviatedNames.add(name.substring(0, 1));
+//			}
+//			return abbreviatedNames;
+//		}
+		
+		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
+			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
+			String abbrevName;
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				abbrevName = command.name().substring(0, 1);
+				abbreviatedNames.put(abbrevName, command);
 			}
 			return abbreviatedNames;
 		}
@@ -108,12 +119,40 @@ public class UserInterface {
 		System.out.println("New game started! ");
 		while (true)
 		{
+			// print grid, do player 'look' action, print grid
 			System.out.println(game.displayBoard());
 			playerLookLoop();
 			System.out.println(game.displayBoard());
+			
+			// make all gameObjects invisible (except for spy & rooms)
 			game.resetVisibility();
-			playerActionLoop();
+			
+			// get command & direction from user then do that command
+			playerTurn();
+			
+			// enemies follow their AI rules then check if spy is adjacent to them
 			game.enemyTurn();
+		}
+	}
+	
+	private void playerTurn() {
+		USER_COMMAND command = getUserCommand();
+		DIRECTION direction = getUserDirection();
+		switch(command) 
+		{
+		case move:
+			MoveStatus moveStatus = game.playerMove(direction);
+			System.out.println("Move Status: " + moveStatus.msg);
+			break;
+		case shoot:
+			boolean enemyHit = game.playerShoot(direction);
+			System.out.println("you shot a bullet -- NOT IMPLEMENTED");
+			break;
+		case debug:
+			GameEngine.SetDebugMode(true);
+			break;
+		default:
+			System.out.println("what happened in playerTurn() method");
 		}
 	}
 	
@@ -196,7 +235,7 @@ public class UserInterface {
 	 * until a valid command is entered
 	 * @return {@link #userCommand} of the command the user chose 
 	 */
-	private userCommand getUserCommand() {
+	private USER_COMMAND getUserCommand() {
 		String question = "Enter one of the following commands:\n"
 				+ "Move\n"
 				+ "Shoot\n"
@@ -206,11 +245,15 @@ public class UserInterface {
 		{
 			System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!userCommand.names().contains(userInput) && 
-				!userCommand.abbreviatedNames().contains(userInput));
-		return userCommand.valueOf(userInput);
+		} while(!USER_COMMAND.names().contains(userInput) && 
+				!USER_COMMAND.abbreviatedNames().containsKey(userInput));
+		return USER_COMMAND.valueOf(userInput);
 	}
 	
+	/**
+	 * Continually ask user to enter a direction (abbreviated to the letter or full name)
+	 * @return the {@link Grid#DIRECTION} entered by the user
+	 */
 	private DIRECTION getUserDirection() {
 		String question = "W  Move Up\n"
 				+ "D  Move Right\n"
@@ -222,7 +265,7 @@ public class UserInterface {
 			System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!DIRECTION.names().contains(userInput) &&
-				!DIRECTION.abbreviatedNames().contains(userInput));
+				!DIRECTION.abbreviatedNames().containsKey(userInput));
 		return DIRECTION.valueOf(userInput);
 	}
 }

@@ -2,8 +2,10 @@ package edu.cpp.cs.cs141.final_proj;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+import edu.cpp.cs.cs141.final_proj.UserInterface.USER_COMMAND;
 import edu.cpp.cs.cs141.final_proj.UserInterface.userCommand;
 
 /**
@@ -27,10 +29,20 @@ public class Grid implements Serializable {
 			return names;
 		}
 		
-		public static ArrayList<String> abbreviatedNames() {
-			ArrayList<String> abbreviatedNames = new ArrayList<String>();
-			for (String name: names()) {
-				abbreviatedNames.add(name.substring(0, 1));
+//		public static ArrayList<String> abbreviatedNames() {
+//			ArrayList<String> abbreviatedNames = new ArrayList<String>();
+//			for (String name: names()) {
+//				abbreviatedNames.add(name.substring(0, 1));
+//			}
+//			return abbreviatedNames;
+//		}
+		
+		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
+			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
+			String abbrevName;
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				abbrevName = command.name().substring(0, 1);
+				abbreviatedNames.put(abbrevName, command);
 			}
 			return abbreviatedNames;
 		}
