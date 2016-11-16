@@ -1,5 +1,6 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -8,6 +9,22 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
  */
 public class UserInterface {
+	/**
+	 * Commands the user can make the {@link GameEngine#spy} do during
+	 * the spy's turn
+	 */
+	private enum userCommand {
+		move, shoot, debug;
+		
+		public static ArrayList<String> names() {
+			ArrayList<String> names = new ArrayList<String>();
+			for (userCommand command: userCommand.values()) {
+				names.add(command.name());
+			}
+			return names;
+		}
+	}
+	
 	/**
 	 * Used to control the game
 	 */
@@ -164,5 +181,23 @@ public class UserInterface {
 				break;
 			}
 		}
+	}
+	
+	/**
+	 * Continually ask user to give a command for the {@link GameEngine#spy}
+	 * until a valid command is entered
+	 * @return {@link #userCommand} of the command the user chose 
+	 */
+	private userCommand getUserCommand() {
+		String question = "Enter one of the following commands:\n"
+				+ "Move\n"
+				+ "Shoot\n"
+				+ "Debug\n";
+		String userInput;
+		do 
+		{
+			userInput = keyboard.nextLine().toLowerCase().trim();
+		} while(!userCommand.names().contains(userInput));
+		return userCommand.valueOf(userInput);
 	}
 }
