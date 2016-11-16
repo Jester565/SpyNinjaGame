@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -8,6 +10,42 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
  */
 public class UserInterface {
+	/**
+	 * Commands the user can make the {@link GameEngine#spy} do during
+	 * the spy's turn
+	 */
+	public enum USER_COMMAND {
+		move, shoot, debug;
+		
+		/**
+		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
+		 */
+		public static ArrayList<String> names() {
+			ArrayList<String> names = new ArrayList<String>();
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				names.add(command.name());
+			}
+			return names;
+		}
+		
+		/**
+		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
+		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
+		 * the USER_COMMAND
+		 * e.g. (sry Python syntax):
+		 * {"m": USER_COMMAND.move}
+		 */
+		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
+			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
+			String abbrevName;
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				abbrevName = command.name().substring(0, 1);
+				abbreviatedNames.put(abbrevName, command);
+			}
+			return abbreviatedNames;
+		}
+	}
+	
 	/**
 	 * Used to control the game
 	 */
@@ -83,12 +121,44 @@ public class UserInterface {
 		System.out.println("New game started! ");
 		while (true)
 		{
+			// print grid, do player 'look' action, print grid
 			System.out.println(game.displayBoard());
 			playerLookLoop();
 			System.out.println(game.displayBoard());
+			
+			// make all gameObjects invisible (except for spy & rooms)
 			game.resetVisibility();
-			playerActionLoop();
+			
+			// get command & direction from user then do that command in that direction
+			playerTurn();
+			
+			// enemies follow their AI rules then check if spy is adjacent to them
 			game.enemyTurn();
+		}
+	}
+	
+	private void playerTurn() {
+		USER_COMMAND command = getUserCommand();
+		System.out.println("Command Entered = " + command.name());
+		
+		// we actually don't to get a direction if command is debug
+		DIRECTION direction = getUserDirection();
+		System.out.println("Direction Entered = " + direction.name());
+		switch(command) 
+		{
+		case move:
+			MoveStatus moveStatus = game.playerMove(direction);
+			System.out.println("Move Status: " + moveStatus.msg);
+			break;
+		case shoot:
+			boolean enemyHit = game.playerShoot(direction);
+			System.out.println("you shot a bullet -- NOT IMPLEMENTED YET");
+			break;
+		case debug:
+			GameEngine.SetDebugMode(true);
+			break;
+		default:
+			System.out.println("what happened in playerTurn() method");
 		}
 	}
 	
@@ -129,40 +199,49 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Asks the user for the direction to move in then change the position of {@link GameEngine#spy} 
-	 * by calling {@link GameEngine#playerMove(DIRECTION)}.
+	 * Continually ask user to give a command for the {@link GameEngine#spy}
+	 * until a valid command is entered
+	 * @return {@link #userCommand} of the command the user chose 
 	 */
-	private void playerActionLoop()
-	{
-		System.out.println("W  Move Up\nD  Move Right\nS  Move Down\nA  Move Left");
-		while (true)
+	private USER_COMMAND getUserCommand() {
+		String question = "Enter one of the following commands:\n"
+				+ "Move\n"
+				+ "Shoot\n"
+				+ "Debug\n";
+		String userInput;
+		do 
 		{
-			String selection = keyboard.nextLine();
-			selection = selection.toLowerCase();
-			DIRECTION moveDirection = null;
-			switch (selection)
-			{
-			case "w":
-				moveDirection = DIRECTION.UP;
-				break;
-			case "d":
-				moveDirection = DIRECTION.RIGHT;
-				break;	
-			case "s":
-				moveDirection = DIRECTION.DOWN;
-				break;
-			case "a":
-				moveDirection = DIRECTION.LEFT;
-				break;
-			default:
-				System.out.println("Invalid option... try again");
-			}
-			if (moveDirection != null)
-			{
-				MoveStatus moveStatus = game.playerMove(moveDirection);
-				System.out.println("Move Status: " + moveStatus.msg);
-				break;
-			}
-		}
+			System.out.print(question);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+		} while(!USER_COMMAND.names().contains(userInput) && 
+				!USER_COMMAND.abbreviatedNames().containsKey(userInput));
+		
+		if (userInput.length() > 1) 
+			return USER_COMMAND.valueOf(userInput);
+		else
+			return USER_COMMAND.abbreviatedNames().get(userInput);
+	}
+	
+	/**
+	 * Continually ask user to enter a direction (abbreviated to the letter or full name)
+	 * @return the {@link Grid#DIRECTION} entered by the user
+	 */
+	private DIRECTION getUserDirection() {
+		String question = "W  Up\n"
+				+ "D  Right\n"
+				+ "S  Down\n"
+				+ "A  Left\n";
+		String userInput;
+		do
+		{
+			System.out.print(question);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+		} while(!DIRECTION.names().contains(userInput) &&
+				!DIRECTION.abbreviatedNames().containsKey(userInput));
+		
+		if (userInput.length() > 1) 
+			return DIRECTION.valueOf(userInput);
+		else
+			return DIRECTION.abbreviatedNames().get(userInput);
 	}
 }

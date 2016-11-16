@@ -178,6 +178,7 @@ public class GameEngine {
 		{
 			sX += dX;
 			sY += dY;
+			// if dX and dY can not be set as visible (i.e.: Room or out of bounds), return;
 			if (!grid.setAsVisible(sX, sY))
 			{
 				return;
