@@ -17,18 +17,13 @@ public class UserInterface {
 	public enum USER_COMMAND {
 		shoot("1"), debug("2");
 		
-		
 		private String keyCode = null;
 		private USER_COMMAND(String code) {
 			keyCode = code;
 		}
 		
-		public String keyCode() {
-			return keyCode;
-		}
-		
 		/**
-		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
+		 * @return {@code {"shoot", "debug"}} in an ArrayList<String> 
 		 */
 		public static ArrayList<String> names() {
 			ArrayList<String> names = new ArrayList<String>();
@@ -42,8 +37,6 @@ public class UserInterface {
 		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
 		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
 		 * the USER_COMMAND
-		 * e.g. (sry Python syntax):
-		 * {"m": USER_COMMAND.move}
 		 */
 		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
 			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
@@ -180,22 +173,16 @@ public class UserInterface {
 			}
 		}
 		
-//		USER_COMMAND command = getUserCommand();
-//		System.out.println("Command Entered = " + command.name());
-		
-		// we actually don't to get a direction if command is debug
-//		DIRECTION direction = getUserDirection();
-//		System.out.println("Direction Entered = " + direction.name());
-		
 		// User entered a direction to move in
 		if (moveDir != null) {
 			MoveStatus moveStatus = game.playerMove(moveDir);
 			System.out.println("Move Status: " + moveStatus.msg);
 		}
+		// User entered a command
 		else if (command != null) {
 			switch(command) {
 			case shoot:
-				DIRECTION shootDir = getUserDirection();
+				DIRECTION shootDir = getUserDirection(command.name());
 				boolean enemyHit = game.playerShoot(shootDir);
 				if(enemyHit){
 					System.out.println("you shot the ninja!");
@@ -224,35 +211,9 @@ public class UserInterface {
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
 	private void playerLookLoop() {
-		System.out.println("W  Look Up\nD  Look Right\nS  Look Down\nA  Look Left");
-		while (true)
-		{
-			String selection = keyboard.nextLine();
-			selection = selection.toLowerCase();
-			DIRECTION lookDirection = null;
-			switch (selection)
-			{
-			case "w":
-				lookDirection = DIRECTION.UP;
-				break;
-			case "d":
-				lookDirection = DIRECTION.RIGHT;
-				break;	
-			case "s":
-				lookDirection = DIRECTION.DOWN;
-				break;
-			case "a":
-				lookDirection = DIRECTION.LEFT;
-				break;
-			default:
-				System.out.println("Invalid option... try again");
-			}
-			if (lookDirection != null)
-			{
-				game.playerLook(lookDirection);
-				break;
-			}
-		}
+		String action = "look";
+		DIRECTION lookDirection = getUserDirection(action);
+		game.playerLook(lookDirection);
 	}
 	
 	/**
@@ -283,8 +244,9 @@ public class UserInterface {
 	 * Continually ask user to enter a direction (abbreviated to the letter or full name)
 	 * @return the {@link Grid#DIRECTION} entered by the user
 	 */
-	private DIRECTION getUserDirection() {
-		String question = "W  Up\n"
+	private DIRECTION getUserDirection(String action) {
+		String question = "Enter direction to " + action + "\n"
+				+ "W  Up\n"
 				+ "D  Right\n"
 				+ "S  Down\n"
 				+ "A  Left\n";
