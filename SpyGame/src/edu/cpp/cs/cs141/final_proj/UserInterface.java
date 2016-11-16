@@ -98,6 +98,8 @@ public class UserInterface {
 			
 			// enemies follow their AI rules then check if spy is adjacent to them
 			game.enemyTurn();
+			//Reduces spy invincibility
+			game.updateSpyInvincibility();
 			if (checkGameStatus())
 			{
 				break;
@@ -173,7 +175,6 @@ public class UserInterface {
 				System.out.println("Shot did not hit an enemy");
 			}
 		}
-		game.updateSpy();
 	}
 	
 	/**

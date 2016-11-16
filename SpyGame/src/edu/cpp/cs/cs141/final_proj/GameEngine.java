@@ -180,6 +180,11 @@ public class GameEngine {
 		}
 	}
 	
+	public void updateSpyInvincibility()
+	{
+		spy.reduceInvincibility();
+	}
+	
 	/**
 	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, then the game is finished and the game was won.
 	 * @param direction The direction to move the {@link #spy} in.
@@ -187,10 +192,16 @@ public class GameEngine {
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
-		MoveStatus temp = grid.move(direction, spy.getX(), spy.getY());
-		if(temp.moveResult == MOVE_RESULT.WIN)
+		MoveStatus moveStatus = grid.move(direction, spy.getX(), spy.getY());
+		if (moveStatus.moveResult == MOVE_RESULT.POWERUP)
+		{
+			spy.usePowerup();
+		}
+		else if(moveStatus.moveResult == MOVE_RESULT.WIN)
+		{
 			gameStatus = GAME_STATE.WON;
-		return temp;
+		}
+		return moveStatus;
 	}
 	
 	/**
@@ -209,16 +220,10 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Updates the spy's attributes when upon using powerups.
-	 */
-	public void updateSpy(){
-		spy.usePowerups();
-	}
-	
-	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
+		
 		
 	}
 	
