@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
  * Handles high level game logic and user movement.
@@ -17,7 +18,16 @@ public class GameEngine {
 	{
 		DebugMode = mode;
 	}
-	
+	/**
+	 *Describes the status of the game: unfinished, won, or lost.
+	 */
+	private enum GAME_STATE {
+		UNFINISHED, WON, LOST;
+	}
+	/**
+	 * Describes the current status of the game.
+	 */
+	private GAME_STATE gameStatus = GAME_STATE.UNFINISHED;
 	/**
 	 * {@code true} will make all elements in the {@link Grid} visible.
 	 */
@@ -42,16 +52,6 @@ public class GameEngine {
 	 * Stores the environment the game is played in.
 	 */
 	private Grid grid = new Grid();
-	
-	/**
-	 * Indicates whether the game has been won, {@code false} if lost.  Only set properly if {@link #gameFinished} is {@code true}.
-	 */
-	private boolean gameWin = false;
-	
-	/**
-	 * Indicates whether the game has been finished.
-	 */
-	private boolean gameFinished = false;
 	
 	/**
 	 * The {@link Character} controlled by the user.
@@ -128,7 +128,10 @@ public class GameEngine {
 	 * @return {@code true} if the player has won, {@code false} otherwise.
 	 */
 	public boolean checkWinCondition() {
-		return gameWin;
+		if(gameStatus == GAME_STATE.WON)
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -137,7 +140,10 @@ public class GameEngine {
 	 */
 	public boolean isGameFinished()
 	{
-		return gameFinished;
+		if(!(gameStatus == GAME_STATE.UNFINISHED))
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -187,13 +193,16 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Moves the {@link #spy} in the direction specified.
+	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, then the game is finished and the game was won.
 	 * @param direction The direction to move the {@link #spy} in.
 	 * @return The {@link MoveStatus} which indicates if the move successful and a message correlated to the action.
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
-		return grid.move(direction, spy.getX(), spy.getY());
+		MoveStatus temp = grid.move(direction, spy.getX(), spy.getY());
+		if(temp.moveResult == MOVE_RESULT.WIN)
+			gameStatus = GAME_STATE.WON;
+		return temp;
 	}
 	
 	/**
@@ -209,7 +218,7 @@ public class GameEngine {
 	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
-	public void enemyTurn() {
+	public void enemyTurn() {	
 		grid.setToInvisible();
 	}
 	

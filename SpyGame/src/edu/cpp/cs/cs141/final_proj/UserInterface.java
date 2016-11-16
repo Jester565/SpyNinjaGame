@@ -119,7 +119,7 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
-		while (true)
+		while (!game.isGameFinished())
 		{
 			// print grid, do player 'look' action, print grid
 			System.out.println(game.displayBoard());
