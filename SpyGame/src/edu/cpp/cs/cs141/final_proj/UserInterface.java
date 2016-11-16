@@ -15,7 +15,17 @@ public class UserInterface {
 	 * the spy's turn
 	 */
 	public enum USER_COMMAND {
-		move, shoot, debug;
+		shoot("1"), debug("2");
+		
+		
+		private String keyCode = null;
+		private USER_COMMAND(String code) {
+			keyCode = code;
+		}
+		
+		public String keyCode() {
+			return keyCode;
+		}
 		
 		/**
 		 * @return {@code {"move", "shoot", "debug"}} in an ArrayList<String> 
@@ -44,6 +54,18 @@ public class UserInterface {
 			}
 			return abbreviatedNames;
 		}
+		
+		public static HashMap<String, USER_COMMAND> abbreviatedKeyCodes() {
+			HashMap<String, USER_COMMAND> abbreviatedKeyCodes = new HashMap<String, USER_COMMAND>();
+			String abbrevName;
+			for (USER_COMMAND command: USER_COMMAND.values()) {
+				abbrevName = command.keyCode;
+				abbreviatedKeyCodes.put(abbrevName, command);
+			}
+			return abbreviatedKeyCodes;
+		}
+		
+		
 	}
 	
 	/**
@@ -138,38 +160,62 @@ public class UserInterface {
 	}
 	
 	private void playerTurn() {
-		USER_COMMAND command = getUserCommand();
-		System.out.println("Command Entered = " + command.name());
+		String question = "W: Move Up | A: Move Left | S: Move Down | D: Move Right\n"
+				+ "1: Shoot | 2: Debug";
+		String userInput;
+		
+		DIRECTION moveDir = null;
+		USER_COMMAND command = null;
+		// Get DIRECTION to move in or USER_COMMAND
+		while (true) {
+			System.out.println(question);
+			userInput = keyboard.nextLine();
+			if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
+				moveDir = DIRECTION.abbreviatedNames().get(userInput);
+				break;
+			}
+			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
+				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+				break;
+			}
+		}
+		
+//		USER_COMMAND command = getUserCommand();
+//		System.out.println("Command Entered = " + command.name());
 		
 		// we actually don't to get a direction if command is debug
-		DIRECTION direction = getUserDirection();
-		System.out.println("Direction Entered = " + direction.name());
-		switch(command) 
-		{
-		case move:
-			MoveStatus moveStatus = game.playerMove(direction);
+//		DIRECTION direction = getUserDirection();
+//		System.out.println("Direction Entered = " + direction.name());
+		
+		// User entered a direction to move in
+		if (moveDir != null) {
+			MoveStatus moveStatus = game.playerMove(moveDir);
 			System.out.println("Move Status: " + moveStatus.msg);
-			break;
-		case shoot:
-//			Gun gun = new Gun();
-			
-			boolean enemyHit = game.playerShoot(direction);
-			if(enemyHit){
-				System.out.println("you shot the ninja!");
+		}
+		else if (command != null) {
+			switch(command) {
+			case shoot:
+				DIRECTION shootDir = getUserDirection();
+				boolean enemyHit = game.playerShoot(shootDir);
+				if(enemyHit){
+					System.out.println("you shot the ninja!");
+				}
+				else{ //if((gun.collision)&&(!enemyHit)){
+					System.out.println("you hit something but it wasnt a ninja...");
+				}
+//				else{
+//					System.out.println("You shot a bullet but it missed...");
+//					gun.collision = false;
+//				}
+				break;
+			case debug:
+				GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+				System.out.println(game.displayBoard());
+				playerTurn();
+				break;
+			default:
+				System.out.println("what happened in playerTurn() method");
 			}
-			else{ //if((gun.collision)&&(!enemyHit)){
-				System.out.println("you hit something but it wasnt a ninja...");
-			}
-//			else{
-//				System.out.println("You shot a bullet but it missed...");
-//				gun.collision = false;
-//			}
-			break;
-		case debug:
-			GameEngine.SetDebugMode(true);
-			break;
-		default:
-			System.out.println("what happened in playerTurn() method");
 		}
 	}
 	
