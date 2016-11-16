@@ -119,11 +119,11 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
-		while (true)
+		while (!game.isGameFinished())
 		{
 			// print grid, do player 'look' action, print grid
 			System.out.println(game.displayBoard());
-			playerLookLoop();
+			playerLook();
 			System.out.println(game.displayBoard());
 			
 			// make all gameObjects invisible (except for spy & rooms)
@@ -137,25 +137,35 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Get a command and do that command
+	 * check {@link #USER_COMMAND} for the options
+	 */
 	private void playerTurn() {
 		USER_COMMAND command = getUserCommand();
 		System.out.println("Command Entered = " + command.name());
+		DIRECTION direction = null;
 		
-		// we actually don't to get a direction if command is debug
-		DIRECTION direction = getUserDirection();
-		System.out.println("Direction Entered = " + direction.name());
-		switch(command) 
+		switch(command)
 		{
 		case move:
+			direction = getUserDirection(command.name());
+			System.out.println("Direction Entered = " + direction.name());
+			
 			MoveStatus moveStatus = game.playerMove(direction);
 			System.out.println("Move Status: " + moveStatus.msg);
 			break;
 		case shoot:
+			direction = getUserDirection(command.name());
+			System.out.println("Direction Entered = " + direction.name());
+			
 			boolean enemyHit = game.playerShoot(direction);
 			System.out.println("you shot a bullet -- NOT IMPLEMENTED YET");
 			break;
 		case debug:
-			GameEngine.SetDebugMode(true);
+			GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+			System.out.println(game.displayBoard());
+			playerTurn();
 			break;
 		default:
 			System.out.println("what happened in playerTurn() method");
@@ -166,36 +176,9 @@ public class UserInterface {
 	 * Ask the user for a direction to look in then change the {@link GameEngine#spy}
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
-	private void playerLookLoop() {
-		System.out.println("W  Look Up\nD  Look Right\nS  Look Down\nA  Look Left");
-		while (true)
-		{
-			String selection = keyboard.nextLine();
-			selection = selection.toLowerCase();
-			DIRECTION lookDirection = null;
-			switch (selection)
-			{
-			case "w":
-				lookDirection = DIRECTION.UP;
-				break;
-			case "d":
-				lookDirection = DIRECTION.RIGHT;
-				break;	
-			case "s":
-				lookDirection = DIRECTION.DOWN;
-				break;
-			case "a":
-				lookDirection = DIRECTION.LEFT;
-				break;
-			default:
-				System.out.println("Invalid option... try again");
-			}
-			if (lookDirection != null)
-			{
-				game.playerLook(lookDirection);
-				break;
-			}
-		}
+	private void playerLook() {
+		DIRECTION lookDirection = getUserDirection("look");
+		game.playerLook(lookDirection);
 	}
 	
 	/**
@@ -205,9 +188,9 @@ public class UserInterface {
 	 */
 	private USER_COMMAND getUserCommand() {
 		String question = "Enter one of the following commands:\n"
-				+ "Move\n"
-				+ "Shoot\n"
-				+ "Debug\n";
+				+ "M  Move\n"
+				+ "S  Shoot\n"
+				+ "D  Debug\n";
 		String userInput;
 		do 
 		{
@@ -224,10 +207,13 @@ public class UserInterface {
 	
 	/**
 	 * Continually ask user to enter a direction (abbreviated to the letter or full name)
+	 * @param action a String that's a verb that describes why the direction is needed
 	 * @return the {@link Grid#DIRECTION} entered by the user
 	 */
-	private DIRECTION getUserDirection() {
-		String question = "W  Up\n"
+	private DIRECTION getUserDirection(String action) {
+		String question = "Enter direction to "
+				+ action + "\n"
+				+ "W  Up\n"
 				+ "D  Right\n"
 				+ "S  Down\n"
 				+ "A  Left\n";
