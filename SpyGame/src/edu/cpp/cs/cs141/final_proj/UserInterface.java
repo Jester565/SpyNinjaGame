@@ -137,7 +137,9 @@ public class UserInterface {
 	
 	private void playerTurn() {
 		USER_COMMAND command = getUserCommand();
+		System.out.println("Command Entered = " + command.name());
 		DIRECTION direction = getUserDirection();
+		System.out.println("Direction Entered = " + direction.name());
 		switch(command) 
 		{
 		case move:
@@ -146,7 +148,7 @@ public class UserInterface {
 			break;
 		case shoot:
 			boolean enemyHit = game.playerShoot(direction);
-			System.out.println("you shot a bullet -- NOT IMPLEMENTED");
+			System.out.println("you shot a bullet -- NOT IMPLEMENTED YET");
 			break;
 		case debug:
 			GameEngine.SetDebugMode(true);
@@ -247,7 +249,11 @@ public class UserInterface {
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!USER_COMMAND.names().contains(userInput) && 
 				!USER_COMMAND.abbreviatedNames().containsKey(userInput));
-		return USER_COMMAND.valueOf(userInput);
+		
+		if (userInput.length() > 1) 
+			return USER_COMMAND.valueOf(userInput);
+		else
+			return USER_COMMAND.abbreviatedNames().get(userInput);
 	}
 	
 	/**
@@ -255,10 +261,10 @@ public class UserInterface {
 	 * @return the {@link Grid#DIRECTION} entered by the user
 	 */
 	private DIRECTION getUserDirection() {
-		String question = "W  Move Up\n"
-				+ "D  Move Right\n"
-				+ "S  Move Down\n"
-				+ "A  Move Left\n";
+		String question = "W  Up\n"
+				+ "D  Right\n"
+				+ "S  Down\n"
+				+ "A  Left\n";
 		String userInput;
 		do
 		{
@@ -266,6 +272,10 @@ public class UserInterface {
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!DIRECTION.names().contains(userInput) &&
 				!DIRECTION.abbreviatedNames().containsKey(userInput));
-		return DIRECTION.valueOf(userInput);
+		
+		if (userInput.length() > 1) 
+			return DIRECTION.valueOf(userInput);
+		else
+			return DIRECTION.abbreviatedNames().get(userInput);
 	}
 }
