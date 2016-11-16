@@ -27,6 +27,7 @@ public class UserInterface {
 			}
 			return names;
 		}
+	}
 		
 		/**
 		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
