@@ -76,13 +76,12 @@ public class Room extends GameObject implements Serializable {
 		}
 	}
 	
-	/**
-	 * Changes the {@link #gridRepresentation} to {@code "D"} if this Room has
-	 * {@link #briefCase} 
-	 */
-	public void revealBriefCase()
+	@Override
+	public String getGridRepresentation() 
 	{
-		if (briefCase)
-			gridRepresentation = "b";
+		if (!GameEngine.DebugMode || !briefCase)
+			return gridRepresentation;
+		else
+			return "b";
 	}
 }
