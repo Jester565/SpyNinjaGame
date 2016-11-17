@@ -55,7 +55,7 @@ public class Spy extends Character implements Serializable {
 	/**
 	 * The lives of the player
 	 */
-	private int live = 3;
+	private int lives = 3;
 	
 	/**
 	 * Creates an instance of {@link Spy} with a {@link Gun}.
@@ -66,7 +66,6 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Checks if the BelowObject is null and if it isn't then it calls the function to use the power-up.
 	 */
 	void usePowerups()
@@ -79,9 +78,8 @@ public class Spy extends Character implements Serializable {
 			}
 		}
 	}
+	
 	/**
-=======
->>>>>>> 670e4b60cb6745d2ff72e48bb97dc00881791fae
 	 * Called before every player's turn to decrement {@link #invincibleTurns}.
 	 */
 	public void reduceInvincibility()
@@ -95,11 +93,18 @@ public class Spy extends Character implements Serializable {
 	/**
 	 * Check if the player is run of the live
 	 */
-	public boolean hasLive() {
-		if (live <= 0 ) {
+	public boolean hasLives() {
+		if (lives <= 0 ) {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * @return the number of lives the spy has
+	 */
+	public int getLives() {
+		return lives;
 	}
 	
 	/**
@@ -154,9 +159,16 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
+	 * @return {@link #invincibleTurns}
+	 */
+	public int getInvincibleTurns() {
+		return invincibleTurns;
+	}
+	
+	/**
 	 * Overrides {@link GameObject#isVisible()} so that the {@link Spy} is always visible.
 	 */
-	//@Override
+	@Override
 	public boolean isVisible()
 	{
 		return true;

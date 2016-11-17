@@ -260,22 +260,17 @@ public class Grid implements Serializable {
 	 * Draws the {@link #gameObjects} to String.
 	 */
 	public String toString() {
-		String result = "";
+		String gridString = "";
+		String gridFill = "*";
+		if (GameEngine.DebugMode)
+			gridFill = " ";
+		
 		for (GameObject[] row : gameObjects) {
-			for (GameObject m : row) {
-				String gridFill = "*";
-				if (GameEngine.DebugMode)
-				{
-					gridFill = " ";
-				}
-				else
-				{
-					gridFill = "*";
-				}
-				result += m == null ? "[" + gridFill + "]" : "[" + m.getGridRepresentation() + "]";
+			for (GameObject obj : row) {
+				gridString += obj == null ? "[" + gridFill + "]" : "[" + obj.getGridRepresentation() + "]";
 			}
-			result += "\n";
+			gridString += "\n";
 		}
-		return result;
+		return gridString;
 	}
 }

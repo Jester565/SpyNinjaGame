@@ -48,6 +48,10 @@ public class Gun extends Weapon implements Serializable {
 		this.numRounds += numRoundsAdded;
 	}
 	
+	public int getNumberOfRounds() {
+		return numRounds;
+	}
+	
 	public void shoot(DIRECTION shootDirection, Spy spy, ArrayList<Ninja> ninjas, ArrayList<Room> rooms) {
 		switch (shootDirection)
 		{

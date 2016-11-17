@@ -261,6 +261,23 @@ public class GameEngine {
 	 * @return The String holding the drawing of the {@link Grid}.
 	 */
 	public String displayBoard() {
-		return grid.toString();
+		String whiteSpacePadding = String.format("%5s", "");
+		ArrayList<String> spyInfoMessages = new ArrayList<String>();
+		spyInfoMessages.add("Lives: " + spy.getLives() + "\n");
+		spyInfoMessages.add("Ammo: " + spy.getGun().getNumberOfRounds() + "\n");
+		spyInfoMessages.add("Invincible Turns: " + spy.getInvincibleTurns() + "\n");
+		spyInfoMessages.add("Radar Enabled: " + spy.hasRadar() + "\n");
+		
+		String board = "";
+		String gridString = grid.toString();
+		int msgIndex = 0;
+		
+		for (String line: gridString.split("\n")) {
+			board += line 
+					+ (msgIndex < spyInfoMessages.size() ? 
+							whiteSpacePadding + spyInfoMessages.get(msgIndex): "\n");
+			msgIndex++;
+		}
+		return board;
 	}
 }
