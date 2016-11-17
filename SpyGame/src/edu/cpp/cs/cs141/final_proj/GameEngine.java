@@ -81,17 +81,9 @@ public class GameEngine {
 		gameStatus = GAME_STATE.UNFINISHED;
 		//set the player
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
+		
 		//set rooms
-		int briefRoomIndex = rng.nextInt(ROOMS_SIZE);
-		int roomIndex = 0;
-		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
-			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
-				Room room = new Room(roomIndex == briefRoomIndex);
-				grid.setGameObject(room, colIndex, rowIndex);
-				roomIndex++;
-				rooms.add(room);
-			}
-		}
+		setRooms();
 		
 		int diceX, diceY;
 		//set invincibilityItem
@@ -127,6 +119,23 @@ public class GameEngine {
 			ninjas.add(ninja);
 		}
 	}
+	
+	/**
+	 * Set six rooms
+	 */
+	public void setRooms() {
+		int briefRoomIndex = rng.nextInt(ROOMS_SIZE);
+		int roomIndex = 0;
+		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
+			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
+				Room room = new Room(roomIndex == briefRoomIndex);
+				grid.setGameObject(room, colIndex, rowIndex);
+				roomIndex++;
+				rooms.add(room);
+			}
+		}
+	}
+	
 	/**
 	 * Checks status of the game
 	 * @return gameStatus to check current status
@@ -229,13 +238,6 @@ public class GameEngine {
 		//Check for Spy near a ninja, kill if nearby
 		//return (abs(spy.x = ninja.x) + abs(spy.y - ninja.y) <= 1)
 		grid.setToInvisible();
-	}
-	
-	/**
-	 * Set six rooms
-	 */
-	public void setRooms() {
-		
 	}
 	
 	/**
