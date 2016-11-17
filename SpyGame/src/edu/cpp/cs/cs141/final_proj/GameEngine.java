@@ -58,8 +58,6 @@ public class GameEngine {
 	 */
 	private Spy spy= new Spy();
 	
-	private Gun gun = new Gun();
-	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
 	 */
@@ -204,9 +202,9 @@ public class GameEngine {
 	public boolean playerShoot(DIRECTION direction)
 	{
 		
-		gun.shoot(direction, spy, ninjas, rooms);
+		spy.getGun().shoot(direction, spy, ninjas, rooms);
 		
-		return gun.hit;
+		return spy.getGun().hit;
 	}
 	
 	/**
