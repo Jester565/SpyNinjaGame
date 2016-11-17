@@ -34,7 +34,6 @@ public abstract class Character extends GameObject{
 	 * @return {@code true} if {@link #health} is less than 0, {@code false} otherwise
 	 */
 	public boolean isAlive() {
-		
 		if (health <= 0)
 			return false;
 		else
