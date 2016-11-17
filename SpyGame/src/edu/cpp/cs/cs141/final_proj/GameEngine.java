@@ -21,7 +21,7 @@ public class GameEngine {
 	/**
 	 *Describes the status of the game: unfinished, won, or lost.
 	 */
-	private enum GAME_STATE {
+	public enum GAME_STATE {
 		UNFINISHED, WON, LOST;
 	}
 	/**
@@ -79,6 +79,8 @@ public class GameEngine {
 	 * Populates the {@link #grid} with {@link #spy}, {@link #ninjas}, and {@link Useable}s.
 	 */
 	public void reset() {
+		//set gameStatus as unfinished
+		gameStatus = GAME_STATE.UNFINISHED;
 		//set the player
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 		//set rooms
