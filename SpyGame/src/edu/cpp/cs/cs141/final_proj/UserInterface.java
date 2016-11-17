@@ -223,7 +223,6 @@ public class UserInterface {
 	 */
 	private USER_COMMAND getUserCommand() {
 		String question = "Enter one of the following commands:\n"
-				+ "Move\n"
 				+ "Shoot\n"
 				+ "Debug\n";
 		String userInput;
@@ -231,17 +230,13 @@ public class UserInterface {
 		{
 			System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!USER_COMMAND.names().contains(userInput) && 
-				!USER_COMMAND.abbreviatedNames().containsKey(userInput));
-		
-		if (userInput.length() > 1) 
-			return USER_COMMAND.valueOf(userInput);
-		else
-			return USER_COMMAND.abbreviatedNames().get(userInput);
+		} while(!USER_COMMAND.abbreviatedNames().containsKey(userInput));
+		return USER_COMMAND.abbreviatedNames().get(userInput);
 	}
 	
 	/**
-	 * Continually ask user to enter a direction (abbreviated to the letter or full name)
+	 * Continually ask user to enter a direction, and return the 
+	 * {@link Grid#DIRECTION} value  
 	 * @return the {@link Grid#DIRECTION} entered by the user
 	 */
 	private DIRECTION getUserDirection(String action) {
@@ -255,12 +250,7 @@ public class UserInterface {
 		{
 			System.out.print(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!DIRECTION.names().contains(userInput) &&
-				!DIRECTION.abbreviatedNames().containsKey(userInput));
-		
-		if (userInput.length() > 1) 
-			return DIRECTION.valueOf(userInput);
-		else
-			return DIRECTION.abbreviatedNames().get(userInput);
+		} while(!DIRECTION.abbreviatedNames().containsKey(userInput));
+		return DIRECTION.abbreviatedNames().get(userInput);
 	}
 }
