@@ -72,12 +72,18 @@ public class UserInterface {
 	private Scanner keyboard = null;
 	
 	/**
+	 * String of the options and hotkey for a direction
+	 */
+	private String directionOptions = "";
+	
+	/**
 	 * Constructor for creating UserInterface objects
 	 * @param game set {@link #game} to (parameter) game used to call methods
 	 */
 	public UserInterface(GameEngine game) {
 		this.game = game;
 		keyboard = new Scanner(System.in);
+		directionOptions = "W: Up | A: Left | S: Down | D: Right";
 	}
 	
 	/**
@@ -153,7 +159,8 @@ public class UserInterface {
 	}
 	
 	private void playerTurn() {
-		String question = "W: Move Up | A: Move Left | S: Move Down | D: Move Right\n"
+		String question = "Enter direction to move or another command\n"
+				+ directionOptions + "\n"
 				+ "1: Shoot | 2: Debug";
 		String userInput;
 		
@@ -235,20 +242,18 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Continually ask user to enter a direction, and return the 
-	 * {@link Grid#DIRECTION} value  
-	 * @return the {@link Grid#DIRECTION} entered by the user
+	 * Continually ask user to enter a direction, and then use the String
+	 * the user entered as a key to get the value from the map returned by
+	 * {@link Grid#DIRECTION#abbreviatedNames}
+	 * @return the {@link Grid#DIRECTION} corresponding to String entered by the user
 	 */
 	private DIRECTION getUserDirection(String action) {
 		String question = "Enter direction to " + action + "\n"
-				+ "W  Up\n"
-				+ "D  Right\n"
-				+ "S  Down\n"
-				+ "A  Left\n";
+				+ directionOptions;
 		String userInput;
 		do
 		{
-			System.out.print(question);
+			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!DIRECTION.abbreviatedNames().containsKey(userInput));
 		return DIRECTION.abbreviatedNames().get(userInput);
