@@ -58,6 +58,11 @@ public class Spy extends Character implements Serializable {
 	private int lives = 3;
 	
 	/**
+	 * The turn of the invincibility
+	 */
+	public static final int INVINCIBLE_TURNS = 5;
+	
+	/**
 	 * Creates an instance of {@link Spy} with a {@link Gun}.
 	 */
 	public Spy() {
@@ -118,8 +123,8 @@ public class Spy extends Character implements Serializable {
 	 * Sets {@link #invincibleTurns} to the parameter turns.
 	 * @param turns Amount of turns to grant invincibility for.
 	 */
-	public void setInvincibility(int turns) {
-		invincibleTurns = turns;
+	public void setInvincibility() {
+		invincibleTurns = INVINCIBLE_TURNS;
 	}
 
 	/**
