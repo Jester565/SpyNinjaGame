@@ -1,23 +1,2 @@
-# SpyNinjaGame
-
-CS 141
-
-### Team Members:
-
-* Alex
-* Hao
-* Jason
-* Jessica
-* Fransisco
-* James Taracevicz
-
-### Description:
-
-Play as a Spy in a rouge-like 2-D top-down grid-based game avoiding Ninjas, collecting Items,
-and locating the top secret document from one of the Rooms.
-
-### Solution and Lessons Learned:
-
-* a
-* b
-* c
+# DevAhead
+DO NOT MERGE THIS BRANCH!  This branch is inteded to provide an example of a finished game <b>using our architecture</b>. If you have any questions about the code, contact Alex.
