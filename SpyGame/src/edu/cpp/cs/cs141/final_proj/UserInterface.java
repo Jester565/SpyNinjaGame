@@ -97,13 +97,15 @@ public class UserInterface {
 			}
 			game.useSpyPowerup();
 			// enemies follow their AI rules then check if spy is adjacent to them
-			game.enemyTurn();
-			//Reduces spy invincibility
-			game.updateSpyPowerups();
+			game.enemyAttack();
+			//Check if game was lost
 			if (checkGameStatus())
 			{
 				break;
 			}
+			game.enemyMove();
+			//Reduces spy invincibility
+			game.updateSpyPowerups();
 		}
 	}
 	
@@ -115,6 +117,8 @@ public class UserInterface {
 			System.out.println("You won!");
 			return true;
 		case LOST:
+			System.out.println(game.displayBoard());
+			game.resetVisibility();
 			System.out.println("You lose...");
 			return true;
 		default:

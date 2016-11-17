@@ -233,17 +233,33 @@ public class GameEngine {
 	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
-	public void enemyTurn() {
+	public void enemyAttack() {
+		//Stores the Ninja that killed the player.
+		Ninja killer = null;
 		for (int i = 0; i < ninjas.size(); i++)
 		{
 			if (ninjas.get(i).hitSpy(spy, grid))
 			{
 				if (!spy.isAlive())
 				{
+					if (killer == null)
+					{
+						killer = ninjas.get(i);
+					}
 					gameStatus = GAME_STATE.LOST;
-					return;
 				}
 			}
+		}
+		if (killer != null)
+		{
+			grid.setAsVisible(killer.getX(), killer.getY());
+		}
+	}
+	
+	public void enemyMove()
+	{
+		for (int i = 0; i < ninjas.size(); i++)
+		{
 			ArrayList <DIRECTION> directionArray = DIRECTION.GenerateDirectionArray();
 			while (directionArray.size() > 0)
 			{
@@ -251,14 +267,6 @@ public class GameEngine {
 				MoveStatus moveStatus = grid.move(directionArray.get(directionI), ninjas.get(i).getX(), ninjas.get(i).getY());
 				if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL && moveStatus.moveResult != MOVE_RESULT.WIN)
 				{
-					if (ninjas.get(i).hitSpy(spy, grid))
-					{
-						if (!spy.isAlive())
-						{
-							gameStatus = GAME_STATE.LOST;
-							return;
-						}
-					}
 					break;
 				}
 				else

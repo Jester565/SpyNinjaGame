@@ -10,14 +10,16 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public class Room extends GameObject implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2582178436693933013L;
 	/**
 	 * Indicates whether or not the {@link Room} has a briefCase in it.
 	 */
 	private boolean briefCase = false;
+	
+	/**
+	 * The String shown on the Grid for a revealed room.
+	 */
+	private static final String BRIEF_CASE_REPRESENTATION = "b";
 	
 	/**
 	 * Creates an instance of {@link Room} and sets the gridRepresentation.
@@ -83,12 +85,20 @@ public class Room extends GameObject implements Serializable {
 	public void revealBriefCase()
 	{
 		if (briefCase)
-			gridRepresentation = "b";
+			gridRepresentation = BRIEF_CASE_REPRESENTATION;
 	}
 	
 	@Override
 	public boolean isPenetrable()
 	{
 		return false;
+	}
+	
+	@Override
+	public String getGridRepresentation() {
+		if (!GameEngine.DebugMode || !briefCase)
+			return gridRepresentation;
+		else
+			return BRIEF_CASE_REPRESENTATION;
 	}
 }
