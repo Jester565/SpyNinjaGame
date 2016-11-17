@@ -180,7 +180,7 @@ public class Grid implements Serializable {
 	 * @param moveX The column to move the element to.
 	 * @param moveY The row to move the element to.
 	 */
-	private void move(int x, int y, int moveX, int moveY)
+	public void move(int x, int y, int moveX, int moveY)
 	{
 		GameObject movingObject = getGameObject(x, y);
 		GameObject moveToObject = getGameObject(moveX, moveY);
@@ -199,7 +199,7 @@ public class Grid implements Serializable {
 	 * @return {@code true} if the {@link Ninja} can be put at the coordinates, {@code false} otherwise.
 	 */
 	public boolean canSetNinja(int x, int y) {
-		if (Math.abs(Spy.INITIAL_X - x) + Math.abs(Spy.INITIAL_Y - y) <= 2 || gameObjects[y][x] != null) {
+		if ((Math.abs(Spy.INITIAL_X - x) <= 2 && Math.abs(Spy.INITIAL_Y - y) <= 2) || gameObjects[y][x] != null) {
 			return false;
 		}
 		return true;

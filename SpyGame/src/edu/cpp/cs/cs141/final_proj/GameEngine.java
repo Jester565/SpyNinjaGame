@@ -10,7 +10,13 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Handles high level game logic and user movement.
  */
 public class GameEngine {
-	private int attemptsRemaining;
+	/**
+	 *Describes the status of the game: unfinished, won, or lost.
+	 */
+	public enum GAME_STATE {
+		UNFINISHED, WON, LOST, KILLED;
+	}
+	
 	/**
 	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
 	 * @param mode The value to set {@link #DebugMode} to.
@@ -19,20 +25,21 @@ public class GameEngine {
 	{
 		DebugMode = mode;
 	}
-	/**
-	 *Describes the status of the game: unfinished, won, or lost.
-	 */
-	public enum GAME_STATE {
-		UNFINISHED, WON, LOST;
-	}
-	/**
-	 * Describes the current status of the game.
-	 */
-	private GAME_STATE gameStatus = GAME_STATE.UNFINISHED;
+	
 	/**
 	 * {@code true} will make all elements in the {@link Grid} visible.
 	 */
 	public static boolean DebugMode = false;
+	
+	/**
+	 * The number of times the player can die before losing.
+	 */
+	private int attemptsRemaining;
+	
+	/**
+	 * Describes the current status of the game.
+	 */
+	private GAME_STATE gameStatus;
 	
 	/**
 	 * The amount of {@link Room}s in the {@link #grid}.
@@ -52,22 +59,22 @@ public class GameEngine {
 	/**
 	 * Stores the environment the game is played in.
 	 */
-	private Grid grid = new Grid();
+	private Grid grid;
 	
 	/**
 	 * The {@link Character} controlled by the user.
 	 */
-	private Spy spy= new Spy();
+	private Spy spy;
 	
 	/**
 	 * The {@link Room} the briefcase is in.
 	 */
-	private Room briefcaseRoom = null;
+	private Room briefcaseRoom;
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
 	 */
-	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
+	private ArrayList<Ninja> ninjas;
 	
 	/**
 	 * Resets the visibility of the {@link #grid}.
@@ -77,10 +84,37 @@ public class GameEngine {
 		grid.setToInvisible();
 	}
 	
+	public void setSpyToInitialState()
+	{
+		spy.revive();
+		grid.removeGameObject(spy.getX(), spy.getY());
+		grid.setGameObject(spy.getBelowObject(), spy.getX(), spy.getY());
+		for (int i = 0; i < ninjas.size(); i++)
+		{
+			if (Math.abs(ninjas.get(i).getX() - Spy.INITIAL_X) <= 2 && Math.abs(ninjas.get(i).getY() - Spy.INITIAL_Y) <= 2)
+			{
+				int diceX;
+				int diceY;
+				do {
+					diceX = rng.nextInt(Grid.GRID_SIZE);
+					diceY = rng.nextInt(Grid.GRID_SIZE);
+				} while(!grid.canSetNinja(diceX, diceY));
+				grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
+			}
+		}
+		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
+		gameStatus = GAME_STATE.UNFINISHED;
+	}
+	
 	/**
 	 * Populates the {@link #grid} with {@link #spy}, {@link #ninjas}, and {@link Useable}s.
 	 */
 	public void reset() {
+		attemptsRemaining = 3;
+		gameStatus = GAME_STATE.UNFINISHED;
+		grid = new Grid();
+		spy = new Spy();
+		ninjas = new ArrayList<Ninja>();
 		//set the player
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 		//set rooms
@@ -246,7 +280,15 @@ public class GameEngine {
 					{
 						killer = ninjas.get(i);
 					}
-					gameStatus = GAME_STATE.LOST;
+					attemptsRemaining--;
+					if (attemptsRemaining <= 0)
+					{
+						gameStatus = GAME_STATE.LOST;
+					}
+					else
+					{
+						gameStatus = GAME_STATE.KILLED;
+					}
 				}
 			}
 		}
@@ -296,18 +338,16 @@ public class GameEngine {
 	 * Saves the file to the fileName specified by the parameter.
 	 * @param fileDir The directory to save in.
 	 */
-	public void save(String fileDir) {
-		
-		
-		
+	public boolean save(String fileDir) {
+		return true;
 	}
 	
 	/**
 	 * Loads a previous session of the game from the directory specified.
 	 * @param fileDir The file to load from.
 	 */
-	public void load(String fileDir) {
-		
+	public boolean load(String fileDir) {
+		return true;
 	}
 	
 	public String generateGameInformation()
@@ -342,12 +382,6 @@ public class GameEngine {
 			}
 			result += "\n";
 		}
-		/*
-		if (startBoardInfoAtI + splitBoardInfo.length > Grid.GRID_SIZE)
-		{
-			
-		}
-		*/
 		for (int i = startBoardInfoAtI + Grid.GRID_SIZE; i < splitBoardInfo.length; i++)
 		{
 			result += splitBoardInfo[i];

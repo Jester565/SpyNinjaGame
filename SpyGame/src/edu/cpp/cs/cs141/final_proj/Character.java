@@ -26,7 +26,19 @@ public abstract class Character extends GameObject{
 	 * @param dmg The amount of damage to be dealt.
 	 */
 	public void takeDamage(int dmg) {
-		health -= dmg;
+		if (dmg > 0)
+		{
+			health -= dmg;
+		}
+		else
+		{
+			System.err.println("takeDamage attempted to restore player health make sure the parameter is non negative.");
+		}
+	}
+	
+	public void setHealth(int health)
+	{
+		this.health = health;
 	}
 	
 	/**

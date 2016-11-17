@@ -43,6 +43,12 @@ public class UserInterface {
 				gameLoop();
 				break;
 			case 2:
+				if (handleLoad())
+				{
+					gameLoop();
+				}
+				break;
+			case 3:
 				quit = true;
 				break;
 			default:
@@ -67,7 +73,8 @@ public class UserInterface {
 	private int mainMenu() {
 		System.out.println("Select an option:\n"
 				+ "1. Start New Game.\n"
-				+ "2. Quit.");
+				+ "2. Load A Game.\n"
+				+ "3. Quit");
 		
 		while(!keyboard.hasNextInt()) {
 			keyboard.nextLine();
@@ -101,6 +108,7 @@ public class UserInterface {
 			//Check if game was lost
 			if (checkGameStatus())
 			{
+				game.enemyMove();
 				break;
 			}
 			game.enemyMove();
@@ -121,6 +129,13 @@ public class UserInterface {
 			game.resetVisibility();
 			System.out.println("You lose...");
 			return true;
+		case KILLED:
+			System.out.println(game.displayBoard());
+			game.resetVisibility();
+			System.out.println("You were killed... Press enter to continue");
+			keyboard.nextLine();
+			game.setSpyToInitialState();
+			return false;
 		default:
 			return false;
 		}
@@ -155,10 +170,6 @@ public class UserInterface {
 				{
 					moveMode = !moveMode;
 					System.out.println("Switched to " + (moveMode ? "move" : "shoot") + " mode");
-				}
-				else
-				{
-					System.out.println("Invalid input... try again");	
 				}
 			}
 		}
@@ -202,7 +213,7 @@ public class UserInterface {
 	
 	void printActionDirection(String action)
 	{
-		System.out.println("W  " + action + " up\nD  " + action + " right\nS  " + action + " down\nA  " + action + " left\nG  " + (GameEngine.DebugMode ? "disable " : "enable") + " debugging");
+		System.out.println("W  " + action + " up\nD  " + action + " right\nS  " + action + " down\nA  " + action + " left\nG  " + (GameEngine.DebugMode ? "disable " : "enable") + " debugging\nH  For more options");
 	}
 	
 	/**
@@ -225,8 +236,78 @@ public class UserInterface {
 			GameEngine.SetDebugMode(!GameEngine.DebugMode);
 			System.out.println("DEBUGGING " + (GameEngine.DebugMode ? "ENABLED" : "DISABLED"));
 			return null;
+		case "h":
+			handleOtherOptions();
+			return null;
 		default:
 			return null;
+		}
+	}
+	
+	private void handleOtherOptions()
+	{
+		while (true)
+		{
+			System.out.println("Q  save & quit\nS  save\nX  quit without saving\nC  back to game");
+			String input = keyboard.nextLine();
+			input = input.toLowerCase();
+			switch (input)
+			{
+			case "q":
+			{
+				System.out.print("Enter the name of the file you want to save to: ");
+				String fileDir = keyboard.nextLine();
+				if (game.save(fileDir))
+				{
+					System.out.println("Game saved to " + fileDir);
+					System.exit(0);
+				}
+				else
+				{
+					System.out.println("Unable to save game");
+				}
+				break;
+			}
+			case "s":
+			{
+				System.out.print("Enter the name of the file you want to save to: ");
+				String fileDir = keyboard.nextLine();
+				if (game.save(fileDir))
+				{
+					System.out.println("Game saved to " + fileDir);
+				}
+				else
+				{
+					System.out.println("Unable to save game");
+				}
+				break;
+			}
+			case "x":
+			{
+				System.exit(0);
+				break;
+			}
+			case "c":
+				return;
+			default:
+				System.out.println("Invalid option... try again");
+			}
+		}
+	}
+	
+	private boolean handleLoad()
+	{
+		System.out.print("Enter the name of the file you want to load from: ");
+		String fileDir = keyboard.nextLine();
+		if (game.load(fileDir))
+		{
+			System.out.println("Load was succesfull");
+			return true;
+		}
+		else
+		{
+			System.out.println("Could not load from " + fileDir);
+			return false;
 		}
 	}
 }
