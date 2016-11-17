@@ -1,12 +1,16 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
  * Represents an object that can be stored and drawn by the {@link Grid}.
  */
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
+	private static final long serialVersionUID = 3914481357318915116L;
+
 	/**
 	 * Stores the object {@link GameObject} that {@code this} covers up.
 	 */

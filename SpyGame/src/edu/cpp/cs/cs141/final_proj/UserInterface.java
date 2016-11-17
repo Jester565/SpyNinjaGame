@@ -1,7 +1,5 @@
 package edu.cpp.cs.cs141.final_proj;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -10,6 +8,8 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
  */
 public class UserInterface {
+	private boolean toMainMenu = false;
+	
 	/**
 	 * Used to control the game
 	 */
@@ -36,21 +36,25 @@ public class UserInterface {
 		printWelcomeMessage();
 		boolean quit = false;
 		while(!quit) {
+			toMainMenu = false;
 			int option = mainMenu();
 			
 			switch(option) {
 			case 1:
+				System.out.println("New game started");
+				game.reset();
 				gameLoop();
 				break;
 			case 2:
 				if (handleLoad())
 				{
+					System.out.println("Game loaded");
 					gameLoop();
 				}
 				break;
 			case 3:
-				quit = true;
-				break;
+				System.out.println("Quitting...");
+				return;
 			default:
 				System.out.println("Invalid option. Try again...");
 				break;
@@ -88,16 +92,21 @@ public class UserInterface {
 	 * Game loop to handle player and enemy turns.
 	 */
 	private void gameLoop() {
-		game.reset();
-		System.out.println("New game started! ");
-		
 		while (true)
 		{
 			// print grid, do player 'look' action, print grid
 			playerLook();
-			
+			if (toMainMenu)
+			{
+				return;
+			}
 			// get command & direction from user then do that command in that direction
 			playerTurn();
+			if (toMainMenu)
+			{
+				return;
+			}
+			
 			if (checkGameStatus())
 			{
 				break;
@@ -171,6 +180,10 @@ public class UserInterface {
 					moveMode = !moveMode;
 					System.out.println("Switched to " + (moveMode ? "move" : "shoot") + " mode");
 				}
+				if (toMainMenu)
+				{
+					return;
+				}
 			}
 		}
 		game.resetVisibility();
@@ -204,6 +217,10 @@ public class UserInterface {
 			printActionDirection("look");
 			String input = keyboard.nextLine();
 			lookDirection = interpretUserCommand(input);
+			if (toMainMenu)
+			{
+				return;
+			}
 		}
 		if (!GameEngine.DebugMode)
 		{
@@ -248,26 +265,11 @@ public class UserInterface {
 	{
 		while (true)
 		{
-			System.out.println("Q  save & quit\nS  save\nX  quit without saving\nC  back to game");
+			System.out.println("S  save\nX  terminate program\nM  quit to main menu\nC  back to game");
 			String input = keyboard.nextLine();
 			input = input.toLowerCase();
 			switch (input)
 			{
-			case "q":
-			{
-				System.out.print("Enter the name of the file you want to save to: ");
-				String fileDir = keyboard.nextLine();
-				if (game.save(fileDir))
-				{
-					System.out.println("Game saved to " + fileDir);
-					System.exit(0);
-				}
-				else
-				{
-					System.out.println("Unable to save game");
-				}
-				break;
-			}
 			case "s":
 			{
 				System.out.print("Enter the name of the file you want to save to: ");
@@ -284,8 +286,15 @@ public class UserInterface {
 			}
 			case "x":
 			{
+				System.out.println("Exiting...");
 				System.exit(0);
 				break;
+			}
+			case "m":
+			{
+				System.out.println("Quitting to main menu...");
+				toMainMenu = true;
+				return;
 			}
 			case "c":
 				return;
@@ -301,7 +310,7 @@ public class UserInterface {
 		String fileDir = keyboard.nextLine();
 		if (game.load(fileDir))
 		{
-			System.out.println("Load was succesfull");
+			System.out.println("Load was succesful");
 			return true;
 		}
 		else

@@ -1,5 +1,12 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -339,7 +346,28 @@ public class GameEngine {
 	 * @param fileDir The directory to save in.
 	 */
 	public boolean save(String fileDir) {
-		return true;
+		File file = new File(fileDir);
+		FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream(file);
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeBoolean(DebugMode);
+			objectOut.writeObject(gameStatus);
+			objectOut.writeInt(attemptsRemaining);
+			objectOut.writeObject(spy);
+			objectOut.writeObject(ninjas);
+			objectOut.writeObject(briefcaseRoom);
+			objectOut.writeObject(grid);
+			objectOut.close();
+			fileOut.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	/**
@@ -347,7 +375,31 @@ public class GameEngine {
 	 * @param fileDir The file to load from.
 	 */
 	public boolean load(String fileDir) {
-		return true;
+		File file = new File(fileDir);
+		FileInputStream fileIn;
+		try {
+			fileIn = new FileInputStream(file);
+			ObjectInputStream objectOut = new ObjectInputStream(fileIn);
+			DebugMode = objectOut.readBoolean();
+			gameStatus = (GAME_STATE)objectOut.readObject();
+			attemptsRemaining = objectOut.readInt();
+			spy = (Spy)objectOut.readObject();
+			ninjas = (ArrayList <Ninja>)objectOut.readObject();
+			briefcaseRoom = (Room)objectOut.readObject();
+			grid = (Grid)objectOut.readObject();
+			objectOut.close();
+			fileIn.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public String generateGameInformation()

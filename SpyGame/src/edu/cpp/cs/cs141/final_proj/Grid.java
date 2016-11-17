@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -160,7 +162,7 @@ public class Grid implements Serializable {
 			else
 			{
 				MoveStatus status = gameObj.stepOn(direction);
-				if (status.moveResult == MOVE_RESULT.LEGAL || status.moveResult == MOVE_RESULT.POWERUP)
+				if (status.moveResult == MOVE_RESULT.LEGAL)
 				{
 					move(x, y, moveX, moveY);
 				}
@@ -253,5 +255,11 @@ public class Grid implements Serializable {
 			result += m == null ? "[" + gridFill + "]" : "[" + m.getGridRepresentation() + "]";
 		}
 		return result;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException 
+	{
+	   ois.defaultReadObject();
+	   setToInvisible();
 	}
 }
