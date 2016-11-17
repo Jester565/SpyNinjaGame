@@ -60,11 +60,14 @@ public class GameEngine {
 	private Spy spy= new Spy();
 	
 	/**
+	 * The {@link Room} the briefcase is in.
+	 */
+	private Room briefcaseRoom = null;
+	
+	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
 	 */
 	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
-	
-	private ArrayList<Room> rooms = new ArrayList<Room>();
 	
 	/**
 	 * Resets the visibility of the {@link #grid}.
@@ -86,9 +89,12 @@ public class GameEngine {
 		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
 			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
 				Room room = new Room(roomIndex == briefRoomIndex);
+				if (roomIndex == briefRoomIndex)
+				{
+					briefcaseRoom = room;
+				}
 				grid.setGameObject(room, colIndex, rowIndex);
 				roomIndex++;
-				rooms.add(room);
 			}
 		}
 		
@@ -180,9 +186,18 @@ public class GameEngine {
 		}
 	}
 	
-	public void updateSpyInvincibility()
+	public void updateSpyPowerups()
 	{
 		spy.reduceInvincibility();
+		if (spy.hasRadar())
+		{
+			briefcaseRoom.revealBriefCase();
+		}
+	}
+	
+	public void useSpyPowerup()
+	{
+		spy.usePowerup();
 	}
 	
 	/**
@@ -193,11 +208,7 @@ public class GameEngine {
 	public MoveStatus playerMove(DIRECTION direction)
 	{
 		MoveStatus moveStatus = grid.move(direction, spy.getX(), spy.getY());
-		if (moveStatus.moveResult == MOVE_RESULT.POWERUP)
-		{
-			spy.usePowerup();
-		}
-		else if(moveStatus.moveResult == MOVE_RESULT.WIN)
+		if(moveStatus.moveResult == MOVE_RESULT.WIN)
 		{
 			gameStatus = GAME_STATE.WON;
 		}
@@ -223,8 +234,39 @@ public class GameEngine {
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
 	 */
 	public void enemyTurn() {
-		
-		
+		for (int i = 0; i < ninjas.size(); i++)
+		{
+			if (ninjas.get(i).hitSpy(spy, grid))
+			{
+				if (!spy.isAlive())
+				{
+					gameStatus = GAME_STATE.LOST;
+					return;
+				}
+			}
+			ArrayList <DIRECTION> directionArray = DIRECTION.GenerateDirectionArray();
+			while (directionArray.size() > 0)
+			{
+				int directionI = rng.nextInt(directionArray.size());
+				MoveStatus moveStatus = grid.move(directionArray.get(directionI), ninjas.get(i).getX(), ninjas.get(i).getY());
+				if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL && moveStatus.moveResult != MOVE_RESULT.WIN)
+				{
+					if (ninjas.get(i).hitSpy(spy, grid))
+					{
+						if (!spy.isAlive())
+						{
+							gameStatus = GAME_STATE.LOST;
+							return;
+						}
+					}
+					break;
+				}
+				else
+				{
+					directionArray.remove(directionI);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -260,7 +302,7 @@ public class GameEngine {
 		
 	}
 	
-	public String generateBoardInformation()
+	public String generateGameInformation()
 	{
 		String boardInformation = "";
 		boardInformation += "Attempts Remaining: " + attemptsRemaining + "\n";
@@ -275,7 +317,7 @@ public class GameEngine {
 	 * @return The String holding the drawing of the {@link Grid}.
 	 */
 	public String displayBoard() {
-		String boardInfo = generateBoardInformation();
+		String boardInfo = generateGameInformation();
 		String[] splitBoardInfo = boardInfo.split("\n");
 		int startBoardInfoAtI = (int)(Grid.GRID_SIZE / 2.0f - splitBoardInfo.length / 2.0f);
 		if (startBoardInfoAtI < 0)

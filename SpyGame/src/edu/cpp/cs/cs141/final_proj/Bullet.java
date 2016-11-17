@@ -33,8 +33,16 @@ public class Bullet extends GameObject implements Useable, Serializable {
 	 * This method gives the spy a bullet
 	 * @param spy - The player character
 	 */
-	public void useOn(Spy spy) {
-		spy.getGun().addBullet(BULLETS_GIVEN);
+	public boolean useOn(Spy spy) {
+		if (spy.getGun().getNumRounds() < Gun.MAX_AMMO)
+		{
+			spy.getGun().addBullet(BULLETS_GIVEN);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	/**
@@ -43,6 +51,6 @@ public class Bullet extends GameObject implements Useable, Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.POWERUP, "You picked up a bullet!");
+		return new MoveStatus(MOVE_RESULT.POWERUP, "You picked up a bullet... does your gun have room for it though?");
 	}
 }

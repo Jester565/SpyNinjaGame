@@ -95,11 +95,11 @@ public class UserInterface {
 			{
 				break;
 			}
-			
+			game.useSpyPowerup();
 			// enemies follow their AI rules then check if spy is adjacent to them
 			game.enemyTurn();
 			//Reduces spy invincibility
-			game.updateSpyInvincibility();
+			game.updateSpyPowerups();
 			if (checkGameStatus())
 			{
 				break;

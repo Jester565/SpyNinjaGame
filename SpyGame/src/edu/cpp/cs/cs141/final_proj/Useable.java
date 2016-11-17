@@ -7,6 +7,7 @@ public interface Useable {
 	/**
 	 * Causes an effect on the {@link Spy} passed in as a parameter.
 	 * @param player The {@link Spy} to effect.
+	 * @return {@code true} if the use was successfull, {@code false} otherwise.
 	 */
-	abstract void useOn(Spy player);
+	abstract boolean useOn(Spy player);
 }

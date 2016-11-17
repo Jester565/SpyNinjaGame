@@ -32,13 +32,42 @@ public class Ninja extends Character implements Serializable {
 		super("N", NINJA_MAX_HEALTH);
 		sword = new Sword();
 	}
+	
+	public boolean hitSpy(Spy spy, Grid grid)
+	{
+		if (Math.abs(spy.getX() - x) + Math.abs(spy.getY() - y) <= 1)
+		{
+			if (spy.getX() < x)
+			{
+				return stab(DIRECTION.LEFT, grid);
+			}
+			else if (spy.getX() > x)
+			{
+				return stab(DIRECTION.RIGHT, grid);
+			}
+			else if (spy.getY() > y)
+			{
+				return stab(DIRECTION.DOWN, grid);
+			}
+			else if (spy.getY() < y)
+			{
+				return stab(DIRECTION.UP, grid);
+			}
+			else
+			{
+				System.err.println("Attempted stab for a spy who was inside of Ninja");
+			}
+		}
+		return false;
+	}
 
 	/**
-	 * Stab spy and spy will lose health.
+	 * Stab in the direction specified.  Other Ninjas could potentially be killed so make sure the AI knows where it is stabbing.
 	 * @param enemy {@link Character} to deal damage to.
 	 */
-	public void stab(Character enemy) {
-		sword.attack(enemy);
+	private boolean stab(DIRECTION direction, Grid grid)
+	{
+		return sword.attack(direction, grid, x, y);
 	}
 	
 	/**
@@ -47,7 +76,7 @@ public class Ninja extends Character implements Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LOSE, "You walked into a Ninja and got cut in half");
+		return new MoveStatus(MOVE_RESULT.ILLEGAL, "Ninjas have personal space too...");
 	}
 	
 	@Override

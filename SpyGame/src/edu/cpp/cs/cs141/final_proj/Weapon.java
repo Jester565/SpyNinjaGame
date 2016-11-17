@@ -26,15 +26,6 @@ public abstract class Weapon {
 		this.range = range;
 	}
 	
-	/**
-	 * This method is also used in both sword and gun class and it is called
-	 * when something dies.
-	 * @param character The {@link Character} to deal damage to.
-	 */
-	void attack(Character character){
-		character.takeDamage(damage);
-	}
-	
 	public boolean attack(DIRECTION shootDirection, Grid grid, int x, int y) {
 		switch (shootDirection)
 		{

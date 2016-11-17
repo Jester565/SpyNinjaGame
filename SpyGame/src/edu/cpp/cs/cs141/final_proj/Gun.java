@@ -17,7 +17,7 @@ public class Gun extends Weapon implements Serializable {
 	/**
 	 * Maximum and initial amount of ammo.
 	 */
-	private static final int MAX_AMMO = 1;
+	public static final int MAX_AMMO = 1;
 	/**
 	 * This integer keeps track of the damage done by the gun. It's kept at 1 for now 
 	 * since the enemies are 1 hit kill.
@@ -58,7 +58,14 @@ public class Gun extends Weapon implements Serializable {
 	 * @param numRoundsAdded Number of rounds to add to the gun.
 	 */
 	public void addBullet(int numRoundsAdded){
-		this.numRounds += numRoundsAdded;
+		if (numRounds + numRoundsAdded > MAX_AMMO)
+		{
+			this.numRounds += numRoundsAdded;
+		}
+		else
+		{
+			numRounds = MAX_AMMO;
+		}
 	}
 	
 	protected boolean attack(int x, int y, int dX, int dY, Grid grid)

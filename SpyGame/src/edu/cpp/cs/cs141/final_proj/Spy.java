@@ -65,7 +65,13 @@ public class Spy extends Character implements Serializable {
 	 */
 	void usePowerup()
 	{
-		((Useable)getBelowObject()).useOn(this);
+		if (getBelowObject() != null && getBelowObject() instanceof Useable)
+		{
+			if (((Useable)getBelowObject()).useOn(this))
+			{
+				setBelowObject(null);
+			}
+		}
 	}
 	
 	/**
@@ -113,6 +119,18 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
+	 * Health is reduced if not invinsible.
+	 */
+	@Override
+	public void takeDamage(int dmg)
+	{
+		if (!isInvincible())
+		{
+			super.takeDamage(dmg);
+		}
+	}
+	
+	/**
 	 * Accessor for the {@link #hasRadar} field.
 	 * @return {@code true} if has radar power up, {@code false} otherwise.
 	 */
@@ -146,11 +164,11 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
-	 * Overrides so that when an enemy steps on the {@code this}, it loses.
+	 * Prevents {@link Ninja}s from stepping onto the spy when it is invincible.
 	 */
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LOSE, "A ninja snuck up on you and cut you in half");
+		return new MoveStatus(MOVE_RESULT.ILLEGAL, "A ninja tried to walk onto you but you pushed him away.");
 	}
 }

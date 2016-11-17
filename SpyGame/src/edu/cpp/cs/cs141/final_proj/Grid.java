@@ -2,6 +2,7 @@ package edu.cpp.cs.cs141.final_proj;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
@@ -19,6 +20,10 @@ public class Grid implements Serializable {
 	 */
 	public enum DIRECTION {
 		UP, RIGHT, DOWN, LEFT;
+		public static ArrayList <DIRECTION> GenerateDirectionArray()
+		{
+			return new ArrayList <DIRECTION>(Arrays.asList(UP, RIGHT, DOWN, LEFT));
+		}
 	}
 	
 	/**
