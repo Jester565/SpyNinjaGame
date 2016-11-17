@@ -82,8 +82,7 @@ public class Spy extends Character implements Serializable {
 	/**
 	 * Called before every player's turn to decrement {@link #invincibleTurns}.
 	 */
-	public void reduceInvincibility()
-	{
+	public void reduceInvincibility() {
 		if (invincibleTurns > 0)
 		{
 			invincibleTurns--;
