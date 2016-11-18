@@ -116,7 +116,7 @@ public class Spy extends Character implements Serializable {
 	 * @param target {@link Character} to deal damage to.
 	 */
 	public void shoot(Character target) {
-		gun.hit(target);
+		gun.attack(target);
 	}
 	
 	/**

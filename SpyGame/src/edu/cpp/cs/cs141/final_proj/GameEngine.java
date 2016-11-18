@@ -63,6 +63,8 @@ public class GameEngine {
 	 */
 	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
 	
+	private ArrayList<Room> rooms = new ArrayList<Room>();
+	
 	/**
 	 * Resets the visibility of the {@link #grid}.
 	 */
@@ -129,6 +131,7 @@ public class GameEngine {
 				Room room = new Room(roomIndex == briefRoomIndex);
 				grid.setGameObject(room, colIndex, rowIndex);
 				roomIndex++;
+				rooms.add(room);
 			}
 		}
 	}
@@ -225,9 +228,9 @@ public class GameEngine {
 	public boolean playerShoot(DIRECTION direction)
 	{
 		
-		//return gun.attack(direction, spy, grid);
-		return false;
+		spy.getGun().shoot(direction, spy, ninjas, rooms);
 		
+		return spy.getGun().hit;
 	}
 	
 	/**
@@ -299,7 +302,7 @@ public class GameEngine {
 		String whiteSpacePadding = String.format("%5s", "");
 		ArrayList<String> spyInfoMessages = new ArrayList<String>();
 		spyInfoMessages.add("Lives: " + spy.getLives() + "\n");
-		spyInfoMessages.add("Ammo: " + spy.getGun().getNumRounds() + "\n");
+		spyInfoMessages.add("Ammo: " + spy.getGun().getNumberOfRounds() + "\n");
 		spyInfoMessages.add("Invincible Turns: " + spy.getInvincibleTurns() + "\n");
 		spyInfoMessages.add("Radar: " + (spy.hasRadar() ? "Enabled": "Disabled") + "\n");
 		

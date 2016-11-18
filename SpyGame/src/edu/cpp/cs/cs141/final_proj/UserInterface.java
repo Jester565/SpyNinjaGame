@@ -40,8 +40,6 @@ public class UserInterface {
 		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
 		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
 		 * the USER_COMMAND
-		 * e.g.:
-		 * {"m": USER_COMMAND.move}
 		 */
 		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
 			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
@@ -145,12 +143,11 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
-		
 		while (true)
 		{
 			// print grid, do player 'look' action, print grid
 			System.out.println(game.displayBoard());
-			playerLook();
+			playerLookLoop();
 			System.out.println(game.displayBoard());
 			
 			// make all gameObjects invisible (except for spy & rooms)
@@ -164,10 +161,6 @@ public class UserInterface {
 		}
 	}
 	
-	/**
-	 * Get a command and do that command
-	 * check {@link #USER_COMMAND} for the options
-	 */
 	private void playerTurn() {
 		String question;
 		boolean moveable = game.playerMoveable();
@@ -210,27 +203,40 @@ public class UserInterface {
 
 			moveStatus = game.playerMove(moveDir);
 			System.out.println("Move Status: " + moveStatus.msg);
-			break;
-		case shoot:
 			
 			// RECURSION: ILLEGAL move attempted, print grid & call this method
 			if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
 				System.out.println(game.displayBoard());
 				playerTurn();
 			}
-			else{
-				System.out.println("you shot and missed...");
-			}
-			break;
-		case debug:
-			GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-			System.out.println(game.displayBoard());
-			playerTurn();
-			break;
-		default:
-			System.out.println("what happened in playerTurn() method");
 		}
-		game.updateSpy();
+		
+		// User entered a command
+		else if (command != null) {
+			switch(command) {
+			case shoot:
+				DIRECTION shootDir = getUserDirection(command.name());
+				boolean enemyHit = game.playerShoot(shootDir);
+				if(enemyHit){
+					System.out.println("you shot the ninja!");
+				}
+				else{ //if((gun.collision)&&(!enemyHit)){
+					System.out.println("you hit something but it wasnt a ninja...");
+				}
+//				else{
+//					System.out.println("You shot a bullet but it missed...");
+//					gun.collision = false;
+//				}
+				break;
+			case debug:
+				GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+				System.out.println(game.displayBoard());
+				playerTurn();
+				break;
+			default:
+				System.out.println("what happened in playerTurn() method");
+			}
+		}
 	}
 	
 	/**
