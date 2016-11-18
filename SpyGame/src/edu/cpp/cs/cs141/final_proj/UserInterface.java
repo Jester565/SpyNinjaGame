@@ -11,6 +11,8 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
  */
 public class UserInterface {
+	
+	private static final String STAND_STILL_COMMAND = "S";
 	/**
 	 * Commands the user can make the {@link GameEngine#spy} do during
 	 * the spy's turn
@@ -160,9 +162,18 @@ public class UserInterface {
 	}
 	
 	private void playerTurn() {
-		String question = "Enter direction to move or another command\n"
-				+ directionOptions + "\n"
-				+ "1: Shoot | 2: Debug";
+		String question;
+		boolean moveable = game.playerMoveable();
+		if (moveable)
+		{
+			question = "Enter direction to move or another command\n"
+					+ directionOptions + "\n";
+		}
+		else
+		{
+			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
+		}
+		question += "1: Shoot | 2: Debug";
 		String userInput;
 		
 		DIRECTION moveDir = null;
@@ -171,13 +182,18 @@ public class UserInterface {
 		while (true) {
 			System.out.println(question);
 			userInput = keyboard.nextLine();
-			if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
+			if (moveable && DIRECTION.abbreviatedNames().containsKey(userInput)) {
 				moveDir = DIRECTION.abbreviatedNames().get(userInput);
 				break;
 			}
 			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
 				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
 				break;
+			}
+			else if (moveable && userInput == STAND_STILL_COMMAND)
+			{
+				System.out.println("Stood still");
+				return;
 			}
 		}
 		

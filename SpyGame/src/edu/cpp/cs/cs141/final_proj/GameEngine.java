@@ -191,6 +191,23 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Checks if the player is allowed to move in any direction. Note that this includes MOVE_RESULT.NOMOVE because they can still use their turn.
+	 * @return {@code true} if player can move, {@code false} otherwise.
+	 */
+	public boolean playerMoveable()
+	{
+		DIRECTION[] directions = DIRECTION.values();	//Gets all types of the DIRECTION enumerator as an array {UP, LEFT, DOWN, RIGHT}
+		for (DIRECTION direction : directions)
+		{
+			if (grid.checkMoveStatus(direction, spy.getX(), spy.getY()).moveResult != MOVE_RESULT.ILLEGAL)	//If MOVE_RESULT is not illegal then the player can use the turn
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, then the game is finished and the game was won.
 	 * @param direction The direction to move the {@link #spy} in.
 	 * @return The {@link MoveStatus} which indicates if the move successful and a message correlated to the action.
