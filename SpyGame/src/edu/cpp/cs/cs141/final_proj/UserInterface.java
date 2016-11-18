@@ -190,7 +190,8 @@ public class UserInterface {
 				if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL)
 					return;
 				else
-					moveDir = getUserDirection(command.name());
+					System.out.println(game.displayBoard());
+					moveDir = getUserDirection("move");
 			}
 		}
 		
