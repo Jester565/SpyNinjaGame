@@ -188,7 +188,7 @@ public class UserInterface {
 			moveStatus = game.playerMove(moveDir);
 			System.out.println("Move Status: " + moveStatus.msg);
 			
-			// ILLEGAL move attempted, print grid & call this method again
+			// RECURSION: ILLEGAL move attempted, print grid & call this method
 			if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
 				System.out.println(game.displayBoard());
 				playerTurn();
