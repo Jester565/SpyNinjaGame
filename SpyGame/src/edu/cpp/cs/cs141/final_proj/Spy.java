@@ -184,6 +184,6 @@ public class Spy extends Character implements Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LOSE, "A ninja snuck up on you and cut you in half");
+		return new MoveStatus(MOVE_RESULT.ILLEGAL, "No message needed");
 	}
 }

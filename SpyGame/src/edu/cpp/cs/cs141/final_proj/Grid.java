@@ -179,7 +179,7 @@ public class Grid implements Serializable {
 			else
 			{
 				MoveStatus status = gameObj.stepOn(direction);
-				if (status.moveResult == MOVE_RESULT.LEGAL || status.moveResult == MOVE_RESULT.POWERUP)
+				if (status.moveResult == MOVE_RESULT.LEGAL)
 				{
 					move(x, y, moveX, moveY);
 				}

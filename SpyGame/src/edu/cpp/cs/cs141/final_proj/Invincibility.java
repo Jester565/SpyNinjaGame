@@ -45,6 +45,6 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.POWERUP, "You aquired invisiblility!");
+		return new MoveStatus(MOVE_RESULT.LEGAL, "You aquired invisiblility!");
 	}
 }
