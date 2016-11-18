@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
@@ -182,9 +183,17 @@ public class UserInterface {
 		
 		// User entered a direction to move in
 		if (moveDir != null) {
-			MoveStatus moveStatus = game.playerMove(moveDir);
-			System.out.println("Move Status: " + moveStatus.msg);
+			MoveStatus moveStatus = null;
+			while (true) {
+				moveStatus = game.playerMove(moveDir);
+				System.out.println("Move Status: " + moveStatus.msg);
+				if (moveStatus.moveResult != MOVE_RESULT.UNMOVED)
+					return;
+				else
+					moveDir = getUserDirection(command.name());
+			}
 		}
+		
 		// User entered a command
 		else if (command != null) {
 			switch(command) {
