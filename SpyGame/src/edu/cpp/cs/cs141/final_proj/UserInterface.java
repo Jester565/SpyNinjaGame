@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
@@ -182,9 +183,18 @@ public class UserInterface {
 		
 		// User entered a direction to move in
 		if (moveDir != null) {
-			MoveStatus moveStatus = game.playerMove(moveDir);
+			MoveStatus moveStatus = null;
+
+			moveStatus = game.playerMove(moveDir);
 			System.out.println("Move Status: " + moveStatus.msg);
+			
+			// ILLEGAL move attempted, print grid & call this method again
+			if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
+				System.out.println(game.displayBoard());
+				playerTurn();
+			}
 		}
+		
 		// User entered a command
 		else if (command != null) {
 			switch(command) {

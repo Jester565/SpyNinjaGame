@@ -47,6 +47,6 @@ public class Ninja extends Character implements Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LOSE, "You walked into a Ninja and got cut in half");
+		return new MoveStatus(MOVE_RESULT.ILLEGAL, "You can't walk onto the ninja's tile");
 	}
 }
