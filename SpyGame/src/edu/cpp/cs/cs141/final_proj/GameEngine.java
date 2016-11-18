@@ -193,10 +193,12 @@ public class GameEngine {
 	 */
 	public boolean playerMoveable()
 	{
-		DIRECTION[] directions = DIRECTION.values();	//Gets all types of the DIRECTION enumerator as an array {UP, LEFT, DOWN, RIGHT}
+		//Gets all types of the DIRECTION enumerator as an array {UP, LEFT, DOWN, RIGHT}
+		DIRECTION[] directions = DIRECTION.values();
 		for (DIRECTION direction : directions)
-		{
-			if (grid.checkMoveStatus(direction, spy.getX(), spy.getY()).moveResult != MOVE_RESULT.ILLEGAL)	//If MOVE_RESULT is not illegal then the player can use the turn
+		{	
+			//If MOVE_RESULT is not illegal then the player can use the turn
+			if (grid.checkMoveStatus(direction, spy.getX(), spy.getY()).moveResult != MOVE_RESULT.ILLEGAL)	
 			{
 				return true;
 			}

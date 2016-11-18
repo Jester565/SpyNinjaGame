@@ -80,6 +80,11 @@ public class UserInterface {
 	private String directionOptions = "";
 	
 	/**
+	 * String of grid 
+	 */
+	private String gridString = "";
+	
+	/**
 	 * Constructor for creating UserInterface objects
 	 * @param game set {@link #game} to (parameter) game used to call methods
 	 */
@@ -145,10 +150,13 @@ public class UserInterface {
 		System.out.println("New game started! ");
 		while (true)
 		{
-			// print grid, do player 'look' action, print grid
+			// print grid, do player 'look' action
 			System.out.println(game.displayBoard());
 			playerLookLoop();
-			System.out.println(game.displayBoard());
+			
+			// 
+			gridString = game.displayBoard();
+			System.out.println(gridString);
 			
 			// make all gameObjects invisible (except for spy & rooms)
 			game.resetVisibility();
@@ -197,7 +205,7 @@ public class UserInterface {
 			}
 		}
 		
-		// User entered a direction to move in
+		// Spy move
 		if (moveDir != null) {
 			MoveStatus moveStatus = null;
 
@@ -206,12 +214,13 @@ public class UserInterface {
 			
 			// RECURSION: ILLEGAL move attempted, print grid & call this method
 			if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
-				System.out.println(game.displayBoard());
+				System.out.println(gridString);
 				playerTurn();
+				return;
 			}
 		}
 		
-		// User entered a command
+		// Spy command (shoot, debug)
 		else if (command != null) {
 			switch(command) {
 			case shoot:
@@ -230,7 +239,8 @@ public class UserInterface {
 				break;
 			case debug:
 				GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-				System.out.println(game.displayBoard());
+				gridString = game.displayBoard();
+				System.out.println(gridString);
 				playerTurn();
 				break;
 			default:

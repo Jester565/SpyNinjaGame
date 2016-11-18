@@ -68,7 +68,8 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * If there is a {@link GameObject} at the coordinates, it is set to visible.  If there is no object, a {@link VisibleMark} is put in the coordinates.
+	 * If there is a {@link GameObject} at the coordinates, it is set to visible.  If there is no object, 
+	 * a {@link VisibleMark} is put in the coordinates.
 	 * Any element set to these coordinates is also appended to {@link #visiblePairs}.
 	 * @param x The column of the element to set to visible.
 	 * @param y The row of the element to set to visible.
