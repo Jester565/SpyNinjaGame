@@ -148,11 +148,11 @@ public class UserInterface {
 			playerLookLoop();
 			System.out.println(game.displayBoard());
 			
-			// make all gameObjects invisible (except for spy & rooms)
-			game.resetVisibility();
-			
 			// get command & direction from user then do that command in that direction
 			playerTurn();
+			
+			// make all gameObjects invisible (except for spy & rooms)
+			game.resetVisibility();
 			
 			// enemies follow their AI rules then check if spy is adjacent to them
 			game.enemyTurn();
