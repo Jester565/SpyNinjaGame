@@ -184,14 +184,14 @@ public class UserInterface {
 		// User entered a direction to move in
 		if (moveDir != null) {
 			MoveStatus moveStatus = null;
-			while (true) {
-				moveStatus = game.playerMove(moveDir);
-				System.out.println("Move Status: " + moveStatus.msg);
-				if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL)
-					return;
-				else
-					System.out.println(game.displayBoard());
-					moveDir = getUserDirection("move");
+
+			moveStatus = game.playerMove(moveDir);
+			System.out.println("Move Status: " + moveStatus.msg);
+			
+			// ILLEGAL move attempted, print grid & call this method again
+			if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
+				System.out.println(game.displayBoard());
+				playerTurn();
 			}
 		}
 		
