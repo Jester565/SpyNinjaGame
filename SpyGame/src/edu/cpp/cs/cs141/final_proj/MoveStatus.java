@@ -9,7 +9,7 @@ public class MoveStatus {
 	 * Describes the result of the attempted movement.
 	 */
 	public enum MOVE_RESULT {
-		ILLEGAL, LEGAL, WIN
+		ILLEGAL, LEGAL, UNMOVED, WIN
 	}
 	
 	/**

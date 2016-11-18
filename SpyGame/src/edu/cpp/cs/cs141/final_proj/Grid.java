@@ -131,7 +131,7 @@ public class Grid implements Serializable {
 	 * @param y The column of the element to move.
 	 * @return The status of the move represented as a {@link MoveStatus}.
 	 */
-	public MoveStatus move(DIRECTION direction, int x, int y) {
+	public MoveStatus checkMoveStatus(DIRECTION direction, int x, int y) {
 		int moveX = x;
 		int moveY = y;
 		switch (direction)
@@ -149,30 +149,48 @@ public class Grid implements Serializable {
 			moveX--;
 			break;
 		default:
-			System.err.println("INVALID DIRECTION IN MOVE");
+			System.err.println("Invalid direction in move");
 		}
 		if (inRange(moveX, moveY))
 		{
 			GameObject gameObj = getGameObject(moveX, moveY);
 			if (gameObj == null)
 			{
-				move(x, y, moveX, moveY);
 				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
 			}
 			else
 			{
-				MoveStatus status = gameObj.stepOn(direction);
-				if (status.moveResult == MOVE_RESULT.LEGAL)
-				{
-					move(x, y, moveX, moveY);
-				}
-				return status;
+				return gameObj.stepOn(direction);
 			}
 		}
 		else
 		{
 			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
 		}
+	}
+	
+	public void move(DIRECTION moveDirection, int x, int y)
+	{
+		int moveX = x;
+		int moveY = y;
+		switch (moveDirection)
+		{
+		case UP:
+			moveY--;
+			break;
+		case RIGHT:
+			moveX++;
+			break;
+		case DOWN:
+			moveY++;
+			break;
+		case LEFT:
+			moveX--;
+			break;
+		default:
+			System.err.println("Invalid direction in move");
+		}
+		move(x, y, moveX, moveY);
 	}
 	
 	/**

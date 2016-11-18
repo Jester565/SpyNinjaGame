@@ -69,7 +69,7 @@ public class Room extends GameObject implements Serializable {
 			}
 			else
 			{
-				return new MoveStatus(MOVE_RESULT.ILLEGAL, "The room did not have a briefcase");
+				return new MoveStatus(MOVE_RESULT.UNMOVED, "The room did not have a briefcase");
 			}
 		}
 		else

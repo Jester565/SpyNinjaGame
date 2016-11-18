@@ -3,6 +3,7 @@ package edu.cpp.cs.cs141.final_proj;
 import java.util.Scanner;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
  * Prints messages and gets input from the user to command the {@link GameEngine#spy}
@@ -157,7 +158,7 @@ public class UserInterface {
 	private void playerTurn() {
 		boolean moveMode = true;
 		DIRECTION playerDirection = null;
-		while (playerDirection == null)
+		while (true)
 		{
 			System.out.println(game.displayBoard());
 			if (moveMode)
@@ -185,22 +186,33 @@ public class UserInterface {
 					return;
 				}
 			}
-		}
-		game.resetVisibility();
-		if (moveMode)
-		{
-			MoveStatus moveStatus = game.playerMove(playerDirection);
-			System.out.println(moveStatus.msg);
-		}
-		else
-		{
-			if (game.playerShoot(playerDirection))
-			{
-				System.out.println("A ninja was shot");
-			}
 			else
 			{
-				System.out.println("Shot did not hit an enemy");
+				if (moveMode)
+				{
+					MoveStatus moveStatus = game.playerMove(playerDirection);
+					if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL)
+					{
+						System.out.println(moveStatus.msg + "  try again...");
+					}
+					else
+					{
+						System.out.println(moveStatus.msg);
+						return;
+					}
+				}
+				else
+				{
+					if (game.playerShoot(playerDirection))
+					{
+						System.out.println("A ninja was shot");
+					}
+					else
+					{
+						System.out.println("Shot did not hit an enemy");
+					}
+					return;
+				}
 			}
 		}
 	}

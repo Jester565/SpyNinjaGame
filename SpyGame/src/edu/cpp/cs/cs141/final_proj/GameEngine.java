@@ -83,9 +83,6 @@ public class GameEngine {
 	 */
 	private ArrayList<Ninja> ninjas;
 	
-	/**
-	 * Resets the visibility of the {@link #grid}.
-	 */
 	public void resetVisibility()
 	{
 		grid.setToInvisible();
@@ -248,10 +245,18 @@ public class GameEngine {
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
-		MoveStatus moveStatus = grid.move(direction, spy.getX(), spy.getY());
-		if(moveStatus.moveResult == MOVE_RESULT.WIN)
+		MoveStatus moveStatus = grid.checkMoveStatus(direction, spy.getX(), spy.getY());
+		if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL)
 		{
-			gameStatus = GAME_STATE.WON;
+			grid.setToInvisible();
+			if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
+			{
+				grid.move(direction, spy.getX(), spy.getY());
+			}
+			else if (moveStatus.moveResult == MOVE_RESULT.WIN)
+			{
+				gameStatus = GAME_STATE.WON;
+			}
 		}
 		return moveStatus;
 	}
@@ -313,9 +318,10 @@ public class GameEngine {
 			while (directionArray.size() > 0)
 			{
 				int directionI = rng.nextInt(directionArray.size());
-				MoveStatus moveStatus = grid.move(directionArray.get(directionI), ninjas.get(i).getX(), ninjas.get(i).getY());
-				if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL && moveStatus.moveResult != MOVE_RESULT.WIN)
+				MoveStatus moveStatus = grid.checkMoveStatus(directionArray.get(directionI), ninjas.get(i).getX(), ninjas.get(i).getY());
+				if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
 				{
+					grid.move(directionArray.get(directionI), ninjas.get(i).getX(), ninjas.get(i).getY());
 					break;
 				}
 				else
