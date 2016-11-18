@@ -142,13 +142,14 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Moves the element at the coordinates in the direction specified.
-	 * @param direction The direction to move the element in.
-	 * @param x The column of the element to move.
-	 * @param y The column of the element to move.
-	 * @return The status of the move represented as a {@link MoveStatus}.
+	 * Helper method - gives the array (coordinate) of something located at (parameters) x and y
+	 * in the direction of (parameter) direction
+	 * @param direction direction heading to
+	 * @param x current horizontal position
+	 * @param y current vertical position
+	 * @return array of integers representing the coordinate after moving in the (parameter) direction
 	 */
-	public MoveStatus move(DIRECTION direction, int x, int y) {
+	private int[] getCoordinate(DIRECTION direction, int x, int y) {
 		int moveX = x;
 		int moveY = y;
 		switch (direction)
@@ -166,30 +167,44 @@ public class Grid implements Serializable {
 			moveX--;
 			break;
 		default:
-			System.err.println("INVALID DIRECTION IN MOVE");
+			System.err.println("Invalid direction given");
 		}
-		if (inRange(moveX, moveY))
-		{
+		int[] coord = {moveX, moveY};
+		return coord;
+	}
+	
+	/**
+	 * @return {@link MoveStatus} given when attempting to move a {@link GameObject}
+	 * in a {@link #DIRECTION}
+	 */
+	public MoveStatus checkMoveStatus(DIRECTION direction, int x, int y) {
+		int[] coord = getCoordinate(direction, x, y);
+		int moveX = coord[0]; 
+		int moveY = coord[1];
+		if (inRange(moveX, moveY)) {
 			GameObject gameObj = getGameObject(moveX, moveY);
-			if (gameObj == null)
-			{
-				move(x, y, moveX, moveY);
+			if (gameObj == null) {
 				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
 			}
-			else
-			{
-				MoveStatus status = gameObj.stepOn(direction);
-				if (status.moveResult == MOVE_RESULT.LEGAL)
-				{
-					move(x, y, moveX, moveY);
-				}
-				return status;
+			else {
+				return gameObj.stepOn(direction);
 			}
 		}
-		else
-		{
-			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
-		}
+		return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
+	}
+	
+	/**
+	 * Moves the element at the coordinates in the direction specified.
+	 * @param direction The direction to move the element in.
+	 * @param x The column of the element to move.
+	 * @param y The column of the element to move.
+	 * @return The status of the move represented as a {@link MoveStatus}.
+	 */
+	public void move(DIRECTION direction, int x, int y) {
+		int[] coord = getCoordinate(direction, x, y);
+		int moveX = coord[0]; 
+		int moveY = coord[1];
+		move(x, y, moveX, moveY);
 	}
 	
 	/**
@@ -271,50 +286,5 @@ public class Grid implements Serializable {
 			gridString += "\n";
 		}
 		return gridString;
-	}
-	/**
-	 * Checks the validity of an object, specifically a {@link #Ninja}, moving to the direction of a different
-	 	position.
-	 * @param direction The direction the object is attempting to move to
-	 * @param x The x column
-	 * @param y The y column
-	 * @return {@code MoveStatus} whether legal or illegal
-	 */
-	public MoveStatus checkMoveStatus(DIRECTION direction, int x, int y) {
-		int moveX = x;
-		int moveY = y;
-		switch (direction)
-		{
-		case UP:
-			moveY--;
-			break;
-		case RIGHT:
-			moveX++;
-			break;
-		case DOWN:
-			moveY++;
-			break;
-		case LEFT:
-			moveX--;
-			break;
-		default:
-			System.err.println("Invalid direction in move");
-		}
-		if (inRange(moveX, moveY))
-		{
-			GameObject gameObj = getGameObject(moveX, moveY);
-			if (gameObj == null)
-			{
-				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
-			}
-			else
-			{
-				return gameObj.stepOn(direction);
-			}
-		}
-		else
-		{
-			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
-		}
 	}
 }

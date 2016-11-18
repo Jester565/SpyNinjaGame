@@ -205,16 +205,27 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, then the game is finished and the game was won.
+	 * Moves the {@link #spy} in the direction specified. If the player found the briefcase, 
+	 * then the game is finished and the game was won.
 	 * @param direction The direction to move the {@link #spy} in.
-	 * @return The {@link MoveStatus} which indicates if the move successful and a message correlated to the action.
+	 * @return The {@link MoveStatus} which indicates if the move successful and a message 
+	 * correlated to the action.
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
-		MoveStatus temp = grid.move(direction, spy.getX(), spy.getY());
-		if(temp.moveResult == MOVE_RESULT.WIN)
+		int spyX = spy.getX(); 
+		int spyY = spy.getY();
+		MoveStatus moveStatus = grid.checkMoveStatus(direction, spyX, spyY);
+		
+		if (moveStatus.moveResult == MOVE_RESULT.LEGAL) { 
+			grid.move(direction, spyX, spyY);
+			grid.setToInvisible();
+		}
+			
+		if (moveStatus.moveResult == MOVE_RESULT.WIN)
 			gameStatus = GAME_STATE.WON;
-		return temp;
+		
+		return moveStatus;
 	}
 	
 	/**
