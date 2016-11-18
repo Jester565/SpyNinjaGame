@@ -38,7 +38,7 @@ public class Ninja extends Character implements Serializable {
 	 * @param enemy {@link Character} to deal damage to.
 	 */
 	public void stab(Character enemy) {
-		sword.attack(enemy);
+		sword.hit(enemy);
 	}
 	
 	/**

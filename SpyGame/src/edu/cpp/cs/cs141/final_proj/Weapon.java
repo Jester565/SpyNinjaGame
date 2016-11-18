@@ -1,5 +1,9 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.util.ArrayList;
+
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+
 /**
  * Represents a Weapon that can attack {@link Character}s.
  */
@@ -10,21 +14,89 @@ public abstract class Weapon {
 	int damage;
 	
 	/**
+	 * this integer stores the amount of grid spaces a {@link Character}'s weapon can travel.
+	 */
+	int range;
+	
+	/**
 	 * This method is used in both the gun and sword class and it does damage 
 	 * to a player or enemy.
 	 * @param damage The amount of damage that will dealt in {@link #attack(Character)}.
 	 */
-	public Weapon(int damage){
+	public Weapon(int damage, int range){
 		this.damage = damage;
+		this.range = range;
 	}
 	
 	/**
 	 * This method is also used in both sword and gun class and it is called
-	 * when something dies.
+	 * when something gets hit with a gun or sword.
 	 * @param character The {@link Character} to deal damage to.
 	 */
-	void attack(Character character){
+	public void hit(Character character){
 		character.takeDamage(damage);
 	}
-
+	
+	/**
+	 * This is the attack method that will be called by {@link GameEngine}. It calls on the 
+	 * other attack method, passing in different int's depending on the direction the player
+	 * shot in.
+	 * @param shootDirection
+	 * @param character
+	 * @param grid
+	 * @return
+	 */
+	public boolean attack(DIRECTION shootDirection, Character character, Grid grid) {
+		switch (shootDirection)
+		{
+		case UP:
+			return attack(0, -1, character, grid);
+		case RIGHT:
+			return attack(1, 0, character, grid);
+		case DOWN:
+			return attack(0, 1, character, grid);
+		case LEFT:
+			return attack(-1, 0, character, grid);
+		default:
+			System.err.println("Invalid shoot option");
+			return false;
+		}
+	}
+	
+	/**
+	 * This method is called by the previous attack method. It checks if the weapon hit another
+	 * {@link Character} or if it ran into a {@link Room}.
+	 * @param dX
+	 * @param dY
+	 * @param character
+	 * @param grid
+	 * @return
+	 */
+	protected boolean attack(int dX, int dY, Character character, Grid grid){
+		boolean characterHit = false;
+		int bX = character.getX();
+		int bY = character.getY();
+		for(int i=0; i<range; i++){
+			bX += dX;
+			bY += dY;
+			if(!(grid.inRange(bX, bY))){
+				break;
+			}
+			GameObject object = grid.getGameObject(bX, bY);
+			 	if (object != null)
+			 	{
+			 		if (object instanceof Character)
+			 		{
+			 			((Character)object).takeDamage(damage);
+			 			characterHit = true;
+			 		}
+			 		if (object instanceof Room)
+			 		{
+			 			break;
+			 		}
+			 	}
+		}
+		 return characterHit;
+	}
+		
 }

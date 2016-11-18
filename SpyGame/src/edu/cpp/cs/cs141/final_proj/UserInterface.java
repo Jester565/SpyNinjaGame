@@ -237,6 +237,7 @@ public class UserInterface {
 				System.out.println("what happened in playerTurn() method");
 			}
 		}
+		game.updateSpy();
 	}
 	
 	/**
