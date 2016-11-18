@@ -30,7 +30,6 @@ public class Grid implements Serializable {
 			}
 			return names;
 		}
-		
 		public static HashMap<String, DIRECTION> abbreviatedNames() {
 			String[] hotkeys = {"w", "d", "s", "a"};
 			int hotkeysIndex = 0;
@@ -272,5 +271,50 @@ public class Grid implements Serializable {
 			gridString += "\n";
 		}
 		return gridString;
+	}
+	/**
+	 * Checks the validity of an object, specifically a {@link #Ninja}, moving to the direction of a different
+	 	position.
+	 * @param direction The direction the object is attempting to move to
+	 * @param x The x column
+	 * @param y The y column
+	 * @return {@code MoveStatus} whether legal or illegal
+	 */
+	public MoveStatus checkMoveStatus(DIRECTION direction, int x, int y) {
+		int moveX = x;
+		int moveY = y;
+		switch (direction)
+		{
+		case UP:
+			moveY--;
+			break;
+		case RIGHT:
+			moveX++;
+			break;
+		case DOWN:
+			moveY++;
+			break;
+		case LEFT:
+			moveX--;
+			break;
+		default:
+			System.err.println("Invalid direction in move");
+		}
+		if (inRange(moveX, moveY))
+		{
+			GameObject gameObj = getGameObject(moveX, moveY);
+			if (gameObj == null)
+			{
+				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
+			}
+			else
+			{
+				return gameObj.stepOn(direction);
+			}
+		}
+		else
+		{
+			return new MoveStatus(MOVE_RESULT.ILLEGAL, "Out of bounds");
+		}
 	}
 }

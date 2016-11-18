@@ -224,20 +224,39 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Handles the enemie's AI and movement.  Called after the user has taken their turn.  Resets visibility of {@link #grid}.
+	 * Handles the enemie's AI and movement.  Called after the user has taken their turn. A ninja will
+		check all 4 possible directions (randomly) until a valid move can be made.
 	 */
 	public void enemyTurn() {
-		//Check for Spy near a ninja, kill if nearby
-		int sX = spy.x;
-		int sY = spy.y;
-		for(int i = 0; i < ninjas.size(); i++){
-			int nX = ninjas.get(i).getX();
-			int nY = ninjas.get(i).getY();
+		for (int i = 0; i < ninjas.size(); i++)
+		{
+			ArrayList <DIRECTION> directionArray = new ArrayList<DIRECTION>();
+			directionArray.add(DIRECTION.DOWN);
+			directionArray.add(DIRECTION.UP);
+			directionArray.add(DIRECTION.LEFT);
+			directionArray.add(DIRECTION.RIGHT);
+			int randomNum, ninX, ninY;
+			DIRECTION currentDir;
+			MoveStatus moveStatus;
+			while (directionArray.size() > 0)
+			{
+				randomNum = rng.nextInt(directionArray.size());
+				ninX = ninjas.get(i).getX();
+				ninY = ninjas.get(i).getY();
+				currentDir = directionArray.get(randomNum);
+				moveStatus = grid.checkMoveStatus(currentDir, ninX, ninY);
+				if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
+				{
+					grid.move(currentDir, ninX, ninY);
+					break;
+				}
+				else
+				{
+					directionArray.remove(randomNum);
+				}
+			}
+			directionArray.clear();
 		}
-		//Move all ninjas in random directions
-		//Check for Spy near a ninja, kill if nearby
-		//return (abs(spy.x = ninja.x) + abs(spy.y - ninja.y) <= 1)
-		grid.setToInvisible();
 	}
 	
 	/**
