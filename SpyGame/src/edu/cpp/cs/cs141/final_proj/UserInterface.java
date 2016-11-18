@@ -187,7 +187,7 @@ public class UserInterface {
 			while (true) {
 				moveStatus = game.playerMove(moveDir);
 				System.out.println("Move Status: " + moveStatus.msg);
-				if (moveStatus.moveResult != MOVE_RESULT.UNMOVED)
+				if (moveStatus.moveResult != MOVE_RESULT.ILLEGAL)
 					return;
 				else
 					moveDir = getUserDirection(command.name());
