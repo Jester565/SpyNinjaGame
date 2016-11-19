@@ -300,37 +300,37 @@ public class UserInterface {
 			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 			
+			// DIRECTION to look in given
 			if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
 				lookDirection = DIRECTION.abbreviatedNames().get(userInput);
 				game.playerLook(lookDirection);
-				return;
+				break;
 			}
-				
+			
+			// USER_COMMAND given
 			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
 				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+			
+				switch(command) {		
+				case debug: 
+					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+					gridString = game.displayBoard();
+					System.out.println(gridString);
+					playerLookLoop();
+					break;
+					
+				case options:
+					pauseMenu();
+					System.out.println(gridString);
+					playerLookLoop();
+					break;
+					
+				default:
+					break;
+				}
 				break;
 			}
 		}
-		
-		// do USER_COMMAND given
-		switch(command) {		
-		case debug: 
-			GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-			gridString = game.displayBoard();
-			System.out.println(gridString);
-			playerLookLoop();
-			break;
-			
-		case options:
-			pauseMenu();
-			System.out.println(gridString);
-			playerLookLoop();
-			break;
-			
-		default:
-			break;
-		}
-		
 	}
 	
 	/**
