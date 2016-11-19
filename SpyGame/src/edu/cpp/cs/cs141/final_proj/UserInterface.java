@@ -30,32 +30,6 @@ public class UserInterface {
 			keyCode = code;
 		}
 		
-		/**
-		 * @return {@code {"shoot", "debug", "options"}} in an ArrayList<String> 
-		 */
-		public static ArrayList<String> names() {
-			ArrayList<String> names = new ArrayList<String>();
-			for (USER_COMMAND command: USER_COMMAND.values()) {
-				names.add(command.name());
-			}
-			return names;
-		}
-		
-		/**
-		 * @return {@code HashMap<String, USER_COMMAND>} where the key is the first letter 
-		 * of a value of USER_COMMAND and the value is the value is the corresponding value for
-		 * the USER_COMMAND
-		 */
-		public static HashMap<String, USER_COMMAND> abbreviatedNames() {
-			HashMap<String, USER_COMMAND> abbreviatedNames = new HashMap<String, USER_COMMAND>();
-			String abbrevName;
-			for (USER_COMMAND command: USER_COMMAND.values()) {
-				abbrevName = command.name().substring(0, 1);
-				abbreviatedNames.put(abbrevName, command);
-			}
-			return abbreviatedNames;
-		}
-		
 		public static HashMap<String, USER_COMMAND> keyCodes() {
 			HashMap<String, USER_COMMAND> abbreviatedKeyCodes = new HashMap<String, USER_COMMAND>();
 			String abbrevName;
@@ -180,7 +154,7 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
-		while (true)
+		while (game.getGameStatus().equals(GameEngine.GAME_STATE.UNFINISHED))
 		{
 			// print grid and do player 'look' action
 			gridString = game.displayBoard();
@@ -202,6 +176,9 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	private void playerTurn() {
 		String question;
 		boolean gunHasAmmo = game.getSpy().getGun().getNumRounds() > 0;
@@ -255,7 +232,7 @@ public class UserInterface {
 					
 					if (!gunHasAmmo)
 						break;
-					DIRECTION shootDir = getUserDirection(USER_COMMAND.shoot.name());
+					DIRECTION shootDir = getUserDirection(command.name());
 					boolean enemyHit = game.playerShoot(shootDir);
 					if(enemyHit) {
 						System.out.println("you shot the ninja!");
@@ -263,7 +240,8 @@ public class UserInterface {
 					else {
 						System.out.println("you hit something but it wasnt a ninja...");
 					}
-					return;					
+					return;
+					
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
 					gridString = game.displayBoard();
@@ -274,7 +252,7 @@ public class UserInterface {
 				case options:
 					pauseMenu();
 					System.out.println(gridString);
-					return;
+					break;
 					
 				default:
 					break;
@@ -316,18 +294,17 @@ public class UserInterface {
 					gridString = game.displayBoard();
 					System.out.println(gridString);
 					playerLookLoop();
-					break;
+					return;
 					
 				case options:
 					pauseMenu();
 					System.out.println(gridString);
 					playerLookLoop();
-					break;
+					return;
 					
 				default:
 					break;
 				}
-				break;
 			}
 		}
 	}
@@ -374,15 +351,16 @@ public class UserInterface {
 	 */
 	private USER_COMMAND getUserCommand() {
 		String question = "Enter one of the following commands:\n"
-				+ "Shoot\n"
-				+ "Debug";
+				+ "1: Shoot\n"
+				+ "2: Debug\n"
+				+ "3: Options";
 		String userInput;
 		do 
 		{
 			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!USER_COMMAND.abbreviatedNames().containsKey(userInput));
-		return USER_COMMAND.abbreviatedNames().get(userInput);
+		} while(!USER_COMMAND.keyCodes().containsKey(userInput));
+		return USER_COMMAND.keyCodes().get(userInput);
 	}
 	
 	/**
