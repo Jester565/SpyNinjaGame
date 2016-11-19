@@ -249,6 +249,7 @@ public class UserInterface {
 			
 				switch(command) {
 				case shoot:
+					
 					if (!gunHasAmmo)
 						break;
 					DIRECTION shootDir = getUserDirection(USER_COMMAND.shoot.name());
@@ -256,15 +257,10 @@ public class UserInterface {
 					if(enemyHit) {
 						System.out.println("you shot the ninja!");
 					}
-					else { //if((gun.collision)&&(!enemyHit)){
+					else {
 						System.out.println("you hit something but it wasnt a ninja...");
 					}
-	//				else{
-	//					System.out.println("You shot a bullet but it missed...");
-	//					gun.collision = false;
-	//				}
-					return;
-					
+					return;					
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
 					gridString = game.displayBoard();

@@ -56,7 +56,7 @@ public class GameEngine {
 	/**
 	 * The {@link Character} controlled by the user.
 	 */
-	private Spy spy = new Spy();
+	protected Spy spy= new Spy();
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
@@ -237,8 +237,9 @@ public class GameEngine {
 	 */
 	public boolean playerShoot(DIRECTION direction)
 	{
-		return spy.getGun().attack(direction, spy, grid);	
+		return spy.getGun().attack(direction, spy, grid);
 	}
+
 	
 	/**
 	 * Updates the spy's attributes when upon using powerups.
