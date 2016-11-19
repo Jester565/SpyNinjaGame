@@ -19,8 +19,7 @@ public class UserInterface {
 	private static final String STAND_STILL_COMMAND = "S";
 	
 	/**
-	 * Commands the user can make the {@link GameEngine#spy} do during
-	 * the spy's turn
+	 * Commands the user can do during the spy's turn
 	 */
 	public enum USER_COMMAND {
 		shoot("1"), debug("2"), options("3");
@@ -72,12 +71,12 @@ public class UserInterface {
 	private Scanner keyboard = null;
 	
 	/**
-	 * String of the options and hotkey for a direction
+	 * options and hotkeys for the directions
 	 */
 	private String directionOptions = "";
 	
 	/**
-	 * 
+	 * options and hotkeys for {@link #PAUSE_COMMAND}
 	 */
 	private String pauseMenuOptions = "";
 	
@@ -177,7 +176,8 @@ public class UserInterface {
 	}
 	
 	/**
-	 * 
+	 * Print question asking user to enter a direction to move
+	 * or command 
 	 */
 	private void playerTurn() {
 		String question;
@@ -262,8 +262,11 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Ask the user for a direction to look in then change the {@link GameEngine#spy}
-	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
+	 * Ask the user for a direction to look in then
+	 * change the tiles that are visible to the spy by 
+	 * calling {@link GameEngine#playerLook(DIRECTION)}
+	 * {@link #USER_COMMAND} can also be entered here 
+	 * though {@link #USER_COMMAND#shoot} is ignored
 	 */
 	private void playerLookLoop() {
 		String question = "Enter a direction to look in or another command\n"
@@ -310,7 +313,7 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Handle pause menu and execute the requested commands
+	 * Handle pause menu and executes the requested command
 	 */
 	private void pauseMenu() {
 		String userOptions = "Pause Menu\n" + pauseMenuOptions;
