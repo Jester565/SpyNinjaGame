@@ -343,7 +343,6 @@ public class UserInterface {
 		do {
 			System.out.println(userOptions);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-			System.out.println(userInput);
 		} while (!PAUSE_COMMAND.keyCodes().containsKey(userInput));
 		
 		PAUSE_COMMAND command = PAUSE_COMMAND.keyCodes().get(userInput);

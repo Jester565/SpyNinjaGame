@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
-//import edu.cpp.cs.cs141.final_proj.UserInterface.USER_COMMAND;
 
 /**
  * Holds the 2D array containing all of the {@link #gameObjects} and provides

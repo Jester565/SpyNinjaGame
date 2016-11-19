@@ -135,7 +135,7 @@ public class GameEngine {
 	
 	/**
 	 * Checks status of the game
-	 * @return gameStatus to check current status
+	 * @return {@link #gameStatus} to check current status
 	 */
 	public GAME_STATE getGameStatus(){
 		return gameStatus;
