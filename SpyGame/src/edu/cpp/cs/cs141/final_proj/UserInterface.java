@@ -322,7 +322,6 @@ public class UserInterface {
 			break;
 			
 		case options:
-//			System.out.println(gridString);
 			pauseMenu();
 			System.out.println(gridString);
 			playerLookLoop();
@@ -357,8 +356,8 @@ public class UserInterface {
 			break;
 			
 		case menu:
-			// go to main menu
-			// Main.main(null);
+			game.reset();
+			startGame();
 			return;
 			
 		case exit:
