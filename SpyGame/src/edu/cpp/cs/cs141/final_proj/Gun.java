@@ -14,12 +14,6 @@ public class Gun extends Weapon implements Serializable {
 	
 	private static final long serialVersionUID = 4465513368274479943L;
 	
-	private Grid grid = new Grid();
-	
-	public boolean collision;
-	
-	public boolean hit;
-
 	/**
 	 * This integer keeps track of the damage done by the gun. It's kept at 1 for now 
 	 * since the enemies are 1 hit kill.
@@ -58,7 +52,9 @@ public class Gun extends Weapon implements Serializable {
 	 * @param numRoundsAdded Number of rounds to add to the gun.
 	 */
 	void addBullet(int numRoundsAdded){
+		if(this.numRounds < 1){
 		this.numRounds += numRoundsAdded;
+		}
 	}
 	
 	/**

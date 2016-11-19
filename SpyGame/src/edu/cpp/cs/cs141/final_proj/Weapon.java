@@ -1,7 +1,5 @@
 package edu.cpp.cs.cs141.final_proj;
 
-import java.util.ArrayList;
-
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
 /**
@@ -28,14 +26,6 @@ public abstract class Weapon {
 		this.range = range;
 	}
 	
-	/**
-	 * This method is also used in both sword and gun class and it is called
-	 * when something gets hit with a gun or sword.
-	 * @param character The {@link Character} to deal damage to.
-	 */
-	public void hit(Character character){
-		character.takeDamage(damage);
-	}
 	
 	/**
 	 * This is the attack method that will be called by {@link GameEngine}. It calls on the 
@@ -88,7 +78,9 @@ public abstract class Weapon {
 			 		if (object instanceof Character)
 			 		{
 			 			((Character)object).takeDamage(damage);
+			 			
 			 			characterHit = true;
+			 			
 			 		}
 			 		if (object instanceof Room)
 			 		{
