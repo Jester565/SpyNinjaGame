@@ -41,6 +41,10 @@ public class Ninja extends Character implements Serializable {
 		enemy.takeDamage(sword.damage);
 	}
 	
+	public Sword getSword(){
+		return sword;
+	}
+	
 	/**
 	 * Overrides so that when an {@link Spy} steps on the {@code this}, it loses.
 	 */

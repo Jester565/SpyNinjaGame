@@ -56,7 +56,7 @@ public class GameEngine {
 	/**
 	 * The {@link Character} controlled by the user.
 	 */
-	protected Spy spy = new Spy();
+	private Spy spy = new Spy();
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
@@ -281,7 +281,14 @@ public class GameEngine {
 				}
 			}
 			directionArray.clear();
+			DIRECTION direction = null;
+			enemyStab(i, direction);
 		}
+	}
+	
+	public boolean enemyStab(int i, DIRECTION direction){
+
+		return ninjas.get(i).getSword().attack( direction, ninjas.get(i), grid);
 	}
 	
 	/**

@@ -2,6 +2,8 @@ package edu.cpp.cs.cs141.final_proj;
 
 import java.io.Serializable;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+
 /**
  * The short ranged and high damage weapons used by {@link Ninja}s.
  */
@@ -33,6 +35,20 @@ public class Sword extends Weapon implements Serializable {
 	 */
 	public void hit(Character character){
 		character.takeDamage(SWORD_DAMAGE);
+	}
+	
+	
+	protected boolean attack(DIRECTION direction, Ninja ninja, Grid grid){
+		boolean test = false;
+		for( DIRECTION dir : DIRECTION.values()){
+			test = super.attack(dir, ninja, grid);
+			
+	 		if(test){
+	 			break;
+	 		}
+		}
+		return test;
+
 	}
 	
 }
