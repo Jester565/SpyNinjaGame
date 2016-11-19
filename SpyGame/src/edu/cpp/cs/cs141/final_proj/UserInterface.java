@@ -12,7 +12,12 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public class UserInterface {
 	
+	/**
+	 * Hotkey command for when {@link GameEngine#spy} is stuck and needs to do nothing
+	 * this turn
+	 */
 	private static final String STAND_STILL_COMMAND = "S";
+	
 	/**
 	 * Commands the user can make the {@link GameEngine#spy} do during
 	 * the spy's turn
@@ -98,7 +103,12 @@ public class UserInterface {
 	private String directionOptions = "";
 	
 	/**
-	 * String of grid 
+	 * 
+	 */
+	private String pauseMenuOptions = "";
+	
+	/**
+	 * String of grid
 	 */
 	private String gridString = "";
 	
@@ -110,6 +120,7 @@ public class UserInterface {
 		this.game = game;
 		keyboard = new Scanner(System.in);
 		directionOptions = "W: Up | A: Left | S: Down | D: Right";
+		pauseMenuOptions = "1: Resume | 2: Save | 3: Main Menu | 4: Exit Game";
 	}
 	
 	/**
@@ -169,7 +180,8 @@ public class UserInterface {
 		while (true)
 		{
 			// print grid, do player 'look' action
-			System.out.println(game.displayBoard());
+			gridString = game.displayBoard();
+			System.out.println(gridString);
 			playerLookLoop();
 			
 			// 
@@ -192,7 +204,7 @@ public class UserInterface {
 		boolean moveable = game.playerMoveable();
 		if (moveable)
 		{
-			question = "Enter direction to move or another command\n"
+			question = "Enter a direction to move or another command\n"
 					+ directionOptions + "\n";
 		}
 		else
@@ -269,19 +281,57 @@ public class UserInterface {
 		String question = "Enter a direction to look in or another command\n"
 				+ directionOptions + "\n"
 				+ "2: Debug | 3: More Options";
-		String action = "look";
-		DIRECTION lookDirection = getUserDirection(action);
-		game.playerLook(lookDirection);
+		String userInput;
+		
+		DIRECTION lookDirection = null;
+		USER_COMMAND command = null;
+		while (true) {
+			System.out.println(question);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+			
+			if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
+				lookDirection = DIRECTION.abbreviatedNames().get(userInput);
+				game.playerLook(lookDirection);
+				return;
+			}
+				
+			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
+				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+				break;
+			}
+		}
+		
+		// do USER_COMMAND given
+		switch(command) {		
+		case debug: 
+			GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+			gridString = game.displayBoard();
+			System.out.println(gridString);
+			playerLookLoop();
+			break;
+			
+		case options:
+//			System.out.println(gridString);
+			pauseMenu();
+			System.out.println(gridString);
+			playerLookLoop();
+			break;
+			
+		default:
+			break;
+			
+		
+		}
+		
 	}
 	
 	/**
 	 * Handle pause menu and execute the requested commands
 	 */
 	private void pauseMenu() {
-		String userOptions = "Pause Menu\n"
-				+ "1: Resume | 2: Save | 3: Main Menu | 4: Exit Game";
-		
+		String userOptions = "Pause Menu\n" + pauseMenuOptions;
 		String userInput;
+		
 		do {
 			System.out.println(userOptions);
 			userInput = keyboard.nextLine().toLowerCase().trim();
@@ -319,11 +369,11 @@ public class UserInterface {
 	private USER_COMMAND getUserCommand() {
 		String question = "Enter one of the following commands:\n"
 				+ "Shoot\n"
-				+ "Debug\n";
+				+ "Debug";
 		String userInput;
 		do 
 		{
-			System.out.print(question);
+			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 		} while(!USER_COMMAND.abbreviatedNames().containsKey(userInput));
 		return USER_COMMAND.abbreviatedNames().get(userInput);
