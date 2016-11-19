@@ -56,7 +56,7 @@ public class GameEngine {
 	/**
 	 * The {@link Character} controlled by the user.
 	 */
-	private Spy spy= new Spy();
+	private Spy spy = new Spy();
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
@@ -254,7 +254,7 @@ public class GameEngine {
 	public void enemyTurn() {
 		for (int i = 0; i < ninjas.size(); i++)
 		{
-			ArrayList <DIRECTION> directionArray = new ArrayList<DIRECTION>();
+			ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
 			directionArray.add(DIRECTION.DOWN);
 			directionArray.add(DIRECTION.UP);
 			directionArray.add(DIRECTION.LEFT);
@@ -281,6 +281,13 @@ public class GameEngine {
 			}
 			directionArray.clear();
 		}
+	}
+	
+	/**
+	 * @return {@link #spy}
+	 */
+	public Spy getSpy() {
+		return spy;
 	}
 	
 	/**
