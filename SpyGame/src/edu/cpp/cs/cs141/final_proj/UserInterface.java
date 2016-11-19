@@ -18,15 +18,15 @@ public class UserInterface {
 	 * the spy's turn
 	 */
 	public enum USER_COMMAND {
-		shoot("1"), debug("2");
+		shoot("1"), debug("2"), options("3");
 		
-		private String keyCode = null;
+		public final String keyCode;
 		private USER_COMMAND(String code) {
 			keyCode = code;
 		}
 		
 		/**
-		 * @return {@code {"shoot", "debug"}} in an ArrayList<String> 
+		 * @return {@code {"shoot", "debug", "options"}} in an ArrayList<String> 
 		 */
 		public static ArrayList<String> names() {
 			ArrayList<String> names = new ArrayList<String>();
@@ -60,8 +60,26 @@ public class UserInterface {
 			}
 			return abbreviatedKeyCodes;
 		}
+	}
+	
+	/**
+	 * Commands available when user pauses game
+	 */
+	public enum PAUSE_COMMAND {
+		resume("1"), save("2"), menu("3"), exit("4");
 		
+		public String keyCode;
+		private PAUSE_COMMAND(String code) {
+			keyCode = code;
+		}
 		
+		public static HashMap<String, PAUSE_COMMAND> keyCodes() {
+			HashMap<String, PAUSE_COMMAND> keyCodes = new HashMap<String, PAUSE_COMMAND>();
+			for (PAUSE_COMMAND command: PAUSE_COMMAND.values()) {
+				keyCodes.put(command.keyCode, command);
+			}
+			return keyCodes;
+		}
 	}
 	
 	/**
@@ -181,73 +199,66 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += "1: Shoot | 2: Debug";
+		question += "1: Shoot | 2: Debug | 3: More Options";
 		String userInput;
-		
-		DIRECTION moveDir = null;
-		USER_COMMAND command = null;
-		// Get DIRECTION to move in or USER_COMMAND
+
+		// loop until valid direction or command is entered
 		while (true) {
 			System.out.println(question);
-			userInput = keyboard.nextLine();
-			if (moveable && DIRECTION.abbreviatedNames().containsKey(userInput)) {
-				moveDir = DIRECTION.abbreviatedNames().get(userInput);
-				break;
-			}
-			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
-				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
-				break;
-			}
-			else if (moveable && userInput == STAND_STILL_COMMAND)
-			{
+			userInput = keyboard.nextLine().toLowerCase().trim();
+			
+			if (!moveable && userInput.equals(STAND_STILL_COMMAND)) {
 				System.out.println("Stood still");
 				return;
 			}
-		}
-		
-		// Spy move
-		if (moveDir != null) {
-			MoveStatus moveStatus = null;
-
-			moveStatus = game.playerMove(moveDir);
-			System.out.println("Move Status: " + moveStatus.msg);
-			
-			// RECURSION: ILLEGAL move attempted, print grid & call this method
-			if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
-				System.out.println(gridString);
-				playerTurn();
-				return;
+				
+			else if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
+				DIRECTION moveDir = DIRECTION.abbreviatedNames().get(userInput);
+				MoveStatus moveStatus = game.playerMove(moveDir);
+				System.out.println("Move Status: " + moveStatus.msg);
+				
+				// RECURSION: ILLEGAL move attempted, print grid & call this method
+				if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
+					System.out.println(gridString);
+					playerTurn();
+					return;
+				}
+				break;
 			}
-		}
-		
-		// Spy command (shoot, debug)
-		else if (command != null) {
-			switch(command) {
+			
+			switch(USER_COMMAND.abbreviatedKeyCodes().get(userInput)) {
 			case shoot:
-				DIRECTION shootDir = getUserDirection(command.name());
+				DIRECTION shootDir = getUserDirection(USER_COMMAND.shoot.name());
 				boolean enemyHit = game.playerShoot(shootDir);
-				if(enemyHit){
+				if(enemyHit) {
 					System.out.println("you shot the ninja!");
 				}
-				else{ //if((gun.collision)&&(!enemyHit)){
+				else { //if((gun.collision)&&(!enemyHit)){
 					System.out.println("you hit something but it wasnt a ninja...");
 				}
 //				else{
 //					System.out.println("You shot a bullet but it missed...");
 //					gun.collision = false;
 //				}
-				break;
-			case debug:
+				return;
+				
+			case debug: 
 				GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
 				gridString = game.displayBoard();
 				System.out.println(gridString);
 				playerTurn();
+				return;
+				
+			case options:
+				pauseMenu();
+				System.out.println(gridString);
 				break;
+				
 			default:
-				System.out.println("what happened in playerTurn() method");
+				break;
 			}
+			game.updateSpy();
 		}
-		game.updateSpy();
 	}
 	
 	/**
@@ -255,9 +266,49 @@ public class UserInterface {
 	 * change the tiles that are visible to the spy by calling {@link GameEngine#playerLook(DIRECTION)}
 	 */
 	private void playerLookLoop() {
+		String question = "Enter a direction to look in or another command\n"
+				+ directionOptions + "\n"
+				+ "2: Debug | 3: More Options";
 		String action = "look";
 		DIRECTION lookDirection = getUserDirection(action);
 		game.playerLook(lookDirection);
+	}
+	
+	/**
+	 * Handle pause menu and execute the requested commands
+	 */
+	private void pauseMenu() {
+		String userOptions = "Pause Menu\n"
+				+ "1: Resume | 2: Save | 3: Main Menu | 4: Exit Game";
+		
+		String userInput;
+		do {
+			System.out.println(userOptions);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+			System.out.println(userInput);
+		} while (!PAUSE_COMMAND.keyCodes().containsKey(userInput));
+		
+		PAUSE_COMMAND command = PAUSE_COMMAND.keyCodes().get(userInput);
+		switch (command) {
+		case resume:
+			break;
+			
+		case save:
+			game.save("/home/j/savefile.dat");
+			break;
+			
+		case menu:
+			// go to main menu
+			// Main.main(null);
+			return;
+			
+		case exit:
+			System.exit(0);
+			break;
+			
+		default:
+			break;
+		}
 	}
 	
 	/**
