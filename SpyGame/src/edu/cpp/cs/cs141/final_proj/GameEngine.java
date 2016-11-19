@@ -306,7 +306,7 @@ public class GameEngine {
 	 * @return The String holding the drawing of the {@link Grid}.
 	 */
 	public String displayBoard() {
-		String whiteSpacePadding = String.format("%5s", "");
+		String whiteSpacePadding = String.format("%3s", "");
 		ArrayList<String> spyInfoMessages = new ArrayList<String>();
 		spyInfoMessages.add("Lives: " + spy.getLives() + "\n");
 		spyInfoMessages.add("Ammo: " + spy.getGun().getNumRounds() + "\n");
