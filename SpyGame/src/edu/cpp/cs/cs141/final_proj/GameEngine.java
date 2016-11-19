@@ -249,7 +249,7 @@ public class GameEngine {
 	
 	/**
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn. A ninja will
-		check all 4 possible directions (randomly) until a valid move can be made.
+	 * check all 4 possible directions (randomly) until a valid move can be made.
 	 */
 	public void enemyTurn() {
 		for (int i = 0; i < ninjas.size(); i++)
