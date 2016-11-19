@@ -137,6 +137,8 @@ public class UserInterface {
 				gameLoop();
 				break;
 			case 2:
+				game.load("/home/j/savefile.dat");
+			case 3:
 				quit = true;
 				break;
 			default:
@@ -160,8 +162,9 @@ public class UserInterface {
 	 */
 	private int mainMenu() {
 		System.out.println("Select an option:\n"
-				+ "1. Start New Game.\n"
-				+ "2. Quit.");
+				+ "1: Start New Game\n"
+				+ "2: Load Game\n"
+				+ "3: Exit");
 		
 		while(!keyboard.hasNextInt()) {
 			keyboard.nextLine();

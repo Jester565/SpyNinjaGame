@@ -56,7 +56,7 @@ public class GameEngine {
 	/**
 	 * The {@link Character} controlled by the user.
 	 */
-	protected Spy spy= new Spy();
+	protected Spy spy = new Spy();
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
@@ -296,8 +296,6 @@ public class GameEngine {
 	 * @param fileDir The directory to save in.
 	 */
 	public void save(String fileDir) {
-		
-		
 		
 	}
 	
