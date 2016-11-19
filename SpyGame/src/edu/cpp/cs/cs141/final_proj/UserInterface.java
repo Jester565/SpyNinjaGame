@@ -56,7 +56,7 @@ public class UserInterface {
 			return abbreviatedNames;
 		}
 		
-		public static HashMap<String, USER_COMMAND> abbreviatedKeyCodes() {
+		public static HashMap<String, USER_COMMAND> keyCodes() {
 			HashMap<String, USER_COMMAND> abbreviatedKeyCodes = new HashMap<String, USER_COMMAND>();
 			String abbrevName;
 			for (USER_COMMAND command: USER_COMMAND.values()) {
@@ -231,8 +231,8 @@ public class UserInterface {
 			}
 				
 			// DIRECTION was given
-			else if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
-				DIRECTION moveDir = DIRECTION.abbreviatedNames().get(userInput);
+			else if (DIRECTION.keyCodes().containsKey(userInput)) {
+				DIRECTION moveDir = DIRECTION.keyCodes().get(userInput);
 				MoveStatus moveStatus = game.playerMove(moveDir);
 				System.out.println("Move Status: " + moveStatus.msg);
 				
@@ -247,8 +247,8 @@ public class UserInterface {
 			}
 			
 			// USER_COMMAND was given
-			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
-				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+			else if (USER_COMMAND.keyCodes().containsKey(userInput)) {
+				command = USER_COMMAND.keyCodes().get(userInput);
 			
 				switch(command) {
 				case shoot:
@@ -300,15 +300,15 @@ public class UserInterface {
 			userInput = keyboard.nextLine().toLowerCase().trim();
 			
 			// DIRECTION to look in given
-			if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
-				lookDirection = DIRECTION.abbreviatedNames().get(userInput);
+			if (DIRECTION.keyCodes().containsKey(userInput)) {
+				lookDirection = DIRECTION.keyCodes().get(userInput);
 				game.playerLook(lookDirection);
 				break;
 			}
 			
 			// USER_COMMAND given
-			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
-				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+			else if (USER_COMMAND.keyCodes().containsKey(userInput)) {
+				command = USER_COMMAND.keyCodes().get(userInput);
 			
 				switch(command) {		
 				case debug: 
@@ -399,7 +399,7 @@ public class UserInterface {
 		{
 			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!DIRECTION.abbreviatedNames().containsKey(userInput));
-		return DIRECTION.abbreviatedNames().get(userInput);
+		} while(!DIRECTION.keyCodes().containsKey(userInput));
+		return DIRECTION.keyCodes().get(userInput);
 	}
 }

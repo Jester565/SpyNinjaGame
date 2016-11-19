@@ -17,7 +17,12 @@ public class Grid implements Serializable {
 	 * Stores the different directions that can be easily interpreted by the {@link #gameObjects}.
 	 */
 	public enum DIRECTION {
-		UP, RIGHT, DOWN, LEFT;
+		UP("w"), RIGHT("d"), DOWN("s"), LEFT("a");
+		
+		public final String keyCode;
+		private DIRECTION(String code) {
+			keyCode = code;
+		}
 		
 		/**
 		 * @return {@code {"UP", "RIGHT", "DOWN", "LEFT"}} in an ArrayList<String> 
@@ -29,18 +34,12 @@ public class Grid implements Serializable {
 			}
 			return names;
 		}
-		public static HashMap<String, DIRECTION> abbreviatedNames() {
-			String[] hotkeys = {"w", "d", "s", "a"};
-			int hotkeysIndex = 0;
-			HashMap<String, DIRECTION> abbreviatedNames = new HashMap<String, DIRECTION>();
-			String abbrevName;
+		public static HashMap<String, DIRECTION> keyCodes() {
+			HashMap<String, DIRECTION> keyCodes = new HashMap<String, DIRECTION>();
 			for (DIRECTION command: DIRECTION.values()) {
-				abbrevName = command.name().substring(0, 1);
-				abbreviatedNames.put(abbrevName, command);
-				abbreviatedNames.put(hotkeys[hotkeysIndex], command);
-				hotkeysIndex++;
+				keyCodes.put(command.keyCode, command);
 			}
-			return abbreviatedNames;
+			return keyCodes;
 		}
 	}
 	
