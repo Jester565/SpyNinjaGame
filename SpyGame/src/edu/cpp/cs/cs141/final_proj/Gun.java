@@ -73,10 +73,9 @@ public class Gun extends Weapon implements Serializable {
 	 * This method simply returns the number of rounds the {@link Spy} has left.
 	 * @return
 	 */
-	public int getNumRounds(){
-		
-			return numRounds;
-	 	}
+	public int getNumRounds() {	
+		return numRounds;
+	}
 	
 	/**
 	 * This overrides the attack method in the parent class {@link Weapon} to check if the 

@@ -179,28 +179,29 @@ public class UserInterface {
 		System.out.println("New game started! ");
 		while (true)
 		{
-			// print grid, do player 'look' action
+			// print grid and do player 'look' action
 			gridString = game.displayBoard();
 			System.out.println(gridString);
 			playerLookLoop();
 			
-			// 
+			// store the gridString and print it
 			gridString = game.displayBoard();
 			System.out.println(gridString);
 			
 			// make all gameObjects invisible (except for spy & rooms)
 			game.resetVisibility();
 			
-			// get command & direction from user then do that command in that direction
+			// get command or direction to move in from user then do corresponding action
 			playerTurn();
 			
-			// enemies follow their AI rules then check if spy is adjacent to them
+			// each ninja kills player if in range then moves according to their AI rules
 			game.enemyTurn();
 		}
 	}
 	
 	private void playerTurn() {
 		String question;
+		boolean gunHasAmmo = game.getSpy().getGun().getNumRounds() > 0;
 		boolean moveable = game.playerMoveable();
 		if (moveable)
 		{
@@ -211,65 +212,75 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += "1: Shoot | 2: Debug | 3: More Options";
+		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options";
 		String userInput;
+		USER_COMMAND command = null;
 
 		// loop until valid direction or command is entered
 		while (true) {
 			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 			
+			// Spy is stuck
 			if (!moveable && userInput.equals(STAND_STILL_COMMAND)) {
 				System.out.println("Stood still");
-				return;
+				break;
 			}
 				
+			// DIRECTION was given
 			else if (DIRECTION.abbreviatedNames().containsKey(userInput)) {
 				DIRECTION moveDir = DIRECTION.abbreviatedNames().get(userInput);
 				MoveStatus moveStatus = game.playerMove(moveDir);
 				System.out.println("Move Status: " + moveStatus.msg);
 				
-				// RECURSION: ILLEGAL move attempted, print grid & call this method
+				// ILLEGAL move attempted, print grid & call this method
 				if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
 					System.out.println(gridString);
 					playerTurn();
 					return;
 				}
+				game.updateSpy();
 				break;
 			}
 			
-			switch(USER_COMMAND.abbreviatedKeyCodes().get(userInput)) {
-			case shoot:
-				DIRECTION shootDir = getUserDirection(USER_COMMAND.shoot.name());
-				boolean enemyHit = game.playerShoot(shootDir);
-				if(enemyHit) {
-					System.out.println("you shot the ninja!");
+			// USER_COMMAND was given
+			else if (USER_COMMAND.abbreviatedKeyCodes().containsKey(userInput)) {
+				command = USER_COMMAND.abbreviatedKeyCodes().get(userInput);
+			
+				switch(command) {
+				case shoot:
+					if (!gunHasAmmo)
+						break;
+					DIRECTION shootDir = getUserDirection(USER_COMMAND.shoot.name());
+					boolean enemyHit = game.playerShoot(shootDir);
+					if(enemyHit) {
+						System.out.println("you shot the ninja!");
+					}
+					else { //if((gun.collision)&&(!enemyHit)){
+						System.out.println("you hit something but it wasnt a ninja...");
+					}
+	//				else{
+	//					System.out.println("You shot a bullet but it missed...");
+	//					gun.collision = false;
+	//				}
+					return;
+					
+				case debug: 
+					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+					gridString = game.displayBoard();
+					System.out.println(gridString);
+					playerTurn();
+					return;
+					
+				case options:
+					pauseMenu();
+					System.out.println(gridString);
+					return;
+					
+				default:
+					break;
 				}
-				else { //if((gun.collision)&&(!enemyHit)){
-					System.out.println("you hit something but it wasnt a ninja...");
-				}
-//				else{
-//					System.out.println("You shot a bullet but it missed...");
-//					gun.collision = false;
-//				}
-				return;
-				
-			case debug: 
-				GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-				gridString = game.displayBoard();
-				System.out.println(gridString);
-				playerTurn();
-				return;
-				
-			case options:
-				pauseMenu();
-				System.out.println(gridString);
-				break;
-				
-			default:
-				break;
 			}
-			game.updateSpy();
 		}
 	}
 	
@@ -319,8 +330,6 @@ public class UserInterface {
 			
 		default:
 			break;
-			
-		
 		}
 		
 	}
