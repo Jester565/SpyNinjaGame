@@ -108,10 +108,23 @@ public class UserInterface {
 			
 			switch(option) {
 			case 1:
+				game.reset();
+				System.out.println("New game started! ");
 				gameLoop();
 				break;
 			case 2:
-				game.load("/home/j/savefile.dat");
+				System.out.print("Enter in the file to load from: ");
+				String loadFile = keyboard.nextLine();
+				if (game.load(loadFile))
+				{
+					System.out.println("Load was successful!");
+				}
+				else
+				{
+					System.out.println("Load failed");
+				}
+				gameLoop();
+				break;
 			case 3:
 				quit = true;
 				break;
@@ -152,8 +165,6 @@ public class UserInterface {
 	 * Game loop to handle player and enemy turns.
 	 */
 	private void gameLoop() {
-		game.reset();
-		System.out.println("New game started! ");
 		while (game.getGameStatus().equals(GAME_STATE.UNFINISHED))
 		{
 			// print grid and do player 'look' action
@@ -340,7 +351,16 @@ public class UserInterface {
 			break;
 			
 		case save:
-			game.save("/home/j/savefile.dat");
+			System.out.print("Enter in the file to save to: ");
+			String saveFile = keyboard.nextLine();
+			if (game.save(saveFile))
+			{
+				System.out.println("Save was successful!");
+			}
+			else
+			{
+				System.out.println("Save failed");
+			}
 			break;
 			
 		case menu:
