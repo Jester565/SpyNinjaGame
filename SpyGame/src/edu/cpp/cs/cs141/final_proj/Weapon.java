@@ -1,11 +1,19 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
 /**
  * Represents a Weapon that can attack {@link Character}s.
  */
-public abstract class Weapon {	
+public abstract class Weapon implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5302248009740573761L;
+
 	/**
 	 * This will store the amount of damage done by the sword or gun.
 	 */

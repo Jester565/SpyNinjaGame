@@ -1,5 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -285,5 +287,17 @@ public class Grid implements Serializable {
 			gridString += "\n";
 		}
 		return gridString;
+	}
+	
+	/**
+	 * Called when deserializing a Grid object.  Uses the default deserialization but calls setToInvisible()
+	 * @param ois The input stream to deserialize from
+	 * @throws ClassNotFoundException Thrown when a class is not found or cannot be deserialized properly.
+	 * @throws IOException Something is wrong with ois.
+	 */
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException 
+	{
+	   ois.defaultReadObject();
+	   setToInvisible();
 	}
 }

@@ -1,10 +1,16 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.Serializable;
+
 /**
  * An abstract class for Spy and Ninja class which has the attributes and behaviors for 
  * Spy and Ninja
  */
-public abstract class Character extends GameObject{
+public abstract class Character extends GameObject implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7397173327731318547L;
 	/**
 	 * Value to keep track of how much more damage can be taken before dead.
 	 */

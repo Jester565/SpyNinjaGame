@@ -1,5 +1,12 @@
 package edu.cpp.cs.cs141.final_proj;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -52,6 +59,11 @@ public class GameEngine {
 	 * Stores the environment the game is played in.
 	 */
 	private Grid grid;
+	
+	/**
+	 * The {@link Room} that contains the briefcase.
+	 */
+	private Room briefcaseRoom;
 	
 	/**
 	 * The {@link Character} controlled by the user.
@@ -135,6 +147,10 @@ public class GameEngine {
 		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
 			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
 				Room room = new Room(roomIndex == briefRoomIndex);
+				if (roomIndex == briefRoomIndex)
+				{
+					briefcaseRoom = room;
+				}
 				grid.setGameObject(room, colIndex, rowIndex);
 				roomIndex++;
 			}
@@ -314,16 +330,59 @@ public class GameEngine {
 	 * Saves the file to the fileName specified by the parameter.
 	 * @param fileDir The directory to save in.
 	 */
-	public void save(String fileDir) {
-		
+	public boolean save(String fileDir) {
+		File file = new File(fileDir);
+		FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream(file);
+			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+			objectOut.writeBoolean(DebugMode);
+			objectOut.writeObject(gameStatus);
+			objectOut.writeObject(spy);
+			objectOut.writeObject(ninjas);
+			objectOut.writeObject(briefcaseRoom);
+			objectOut.writeObject(grid);
+			objectOut.close();
+			fileOut.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	/**
 	 * Loads a previous session of the game from the directory specified.
 	 * @param fileDir The file to load from.
 	 */
-	public void load(String fileDir) {
-		
+	public boolean load(String fileDir) {
+		File file = new File(fileDir);
+		FileInputStream fileIn;
+		try {
+			fileIn = new FileInputStream(file);
+			ObjectInputStream objectOut = new ObjectInputStream(fileIn);
+			DebugMode = objectOut.readBoolean();
+			gameStatus = (GAME_STATE)objectOut.readObject();
+			spy = (Spy)objectOut.readObject();
+			ninjas = (ArrayList <Ninja>)objectOut.readObject();
+			briefcaseRoom = (Room)objectOut.readObject();
+			grid = (Grid)objectOut.readObject();
+			objectOut.close();
+			fileIn.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	/**
