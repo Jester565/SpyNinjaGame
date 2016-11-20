@@ -170,7 +170,7 @@ public class UserInterface {
 			// if spy is not alive reset the grid
 			if (!game.getSpy().isAlive()) {
 				System.out.println("You are stabed by the ninja, return to original point");
-				game.reset();
+				game.resetGrid();
 			}
 			
 			// print grid and do player 'look' action

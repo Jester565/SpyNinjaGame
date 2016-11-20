@@ -106,6 +106,17 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Reset the grid when player is stabbed, back to original point when player still have lives 
+	 */
+	public void resetGrid()	{
+		grid = new Grid();
+		setPlayer();
+		setRooms();
+		setItems();
+		setNinjas();
+	}
+	
+	/**
 	 * Set the player
 	 */
 	public void setPlayer()	{
