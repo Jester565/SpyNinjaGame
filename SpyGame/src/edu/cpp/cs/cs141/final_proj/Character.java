@@ -36,6 +36,13 @@ public abstract class Character extends GameObject implements Serializable {
 	}
 	
 	/**
+	 * Set health number
+	 */
+	public void setHealth(int health) {
+		this.health = health;
+	}
+	
+	/**
 	 * Checks the life status of a character
 	 * @return {@code true} if {@link #health} is less than 0, {@code false} otherwise
 	 */

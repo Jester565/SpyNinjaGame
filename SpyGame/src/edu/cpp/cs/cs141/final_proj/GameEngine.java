@@ -110,6 +110,7 @@ public class GameEngine {
 	 */
 	public void resetGrid()	{
 		grid = new Grid();
+		spy.aliveAgain();
 		setPlayer();
 		setRooms();
 		setItems();

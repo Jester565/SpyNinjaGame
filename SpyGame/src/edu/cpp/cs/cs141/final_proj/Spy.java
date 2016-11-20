@@ -90,6 +90,13 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
+	 * Let spy alive again, set the health back
+	 */
+	public void aliveAgain() {
+		setHealth(SPY_MAX_HEALTH);
+	}
+	
+	/**
 	 * Check if the player is run of the live
 	 */
 	public boolean hasLives() {
