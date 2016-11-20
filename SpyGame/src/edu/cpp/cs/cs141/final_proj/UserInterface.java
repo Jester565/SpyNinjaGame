@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_STATE;
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
@@ -172,6 +173,10 @@ public class UserInterface {
 			
 			// each ninja kills player if in range then moves according to their AI rules
 			game.enemyTurn();
+			
+			// set debug mode as true if killed by a ninja
+			if(game.getGameStatus() == GAME_STATE.LOST)
+				game.SetDebugMode(true);
 		}
 	}
 	

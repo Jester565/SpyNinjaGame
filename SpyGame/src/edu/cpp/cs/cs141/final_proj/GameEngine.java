@@ -27,7 +27,7 @@ public class GameEngine {
 	/**
 	 * Describes the current status of the game.
 	 */
-	private GAME_STATE gameStatus = GAME_STATE.UNFINISHED;
+	private GAME_STATE gameStatus;
 	/**
 	 * {@code true} will make all elements in the {@link Grid} visible.
 	 */
@@ -51,17 +51,17 @@ public class GameEngine {
 	/**
 	 * Stores the environment the game is played in.
 	 */
-	private Grid grid = new Grid();
+	private Grid grid;
 	
 	/**
 	 * The {@link Character} controlled by the user.
 	 */
-	private Spy spy = new Spy();
+	private Spy spy;
 	
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
 	 */
-	private ArrayList<Ninja> ninjas = new ArrayList<Ninja>();
+	private ArrayList<Ninja> ninjas;
 	
 	/**
 	 * Resets the visibility of the {@link #grid}.
@@ -75,8 +75,16 @@ public class GameEngine {
 	 * Populates the {@link #grid} with {@link #spy}, {@link #ninjas}, and {@link Useable}s.
 	 */
 	public void reset() {
+		//initialize objects
+		grid = new Grid();
+		spy = new Spy();
+		ninjas = new ArrayList<Ninja>();
+		
 		//set gameStatus as unfinished
 		gameStatus = GAME_STATE.UNFINISHED;
+		//set debugMode as false
+		DebugMode = false;
+		
 		//set the player
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 		
