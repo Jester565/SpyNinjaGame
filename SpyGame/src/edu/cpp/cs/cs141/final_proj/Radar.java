@@ -31,9 +31,10 @@ public class Radar extends GameObject implements Useable, Serializable {
 	 * 
 	 * @param spy - The player character
 	 */
-	public void useOn(Spy spy)
+	public boolean useOn(Spy spy)
 	{
 		spy.setRadar(true);
+		return true;
 	}
 	
 	/**

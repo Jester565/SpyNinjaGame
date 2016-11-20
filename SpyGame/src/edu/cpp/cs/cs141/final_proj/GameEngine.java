@@ -298,8 +298,19 @@ public class GameEngine {
 	
 	/**
 	 * Updates the spy's attributes when upon using powerups.
+	 * Reduces the invincibilty counter one and reveals the briefcase
+	 * to the player.
 	 */
-	public void updateSpy(){
+	public void updateSpyPowerups(){
+		spy.reduceInvincibility();
+		if (spy.hasRadar()){
+			briefcaseRoom.revealBriefCase();
+		}
+	}
+	/**
+	 * Method to use powerups on the spy.
+	 */
+	public void useSpyPowerup(){
 		spy.usePowerups();
 	}
 	

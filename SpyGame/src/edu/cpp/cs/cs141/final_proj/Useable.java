@@ -8,5 +8,5 @@ public interface Useable {
 	 * Causes an effect on the {@link Spy} passed in as a parameter.
 	 * @param player The {@link Spy} to effect.
 	 */
-	abstract void useOn(Spy player);
+	abstract boolean useOn(Spy player);
 }

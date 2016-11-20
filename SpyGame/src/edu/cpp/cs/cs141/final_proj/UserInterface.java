@@ -246,7 +246,8 @@ public class UserInterface {
 					playerTurn();
 					return;
 				}
-				game.updateSpy();
+				game.useSpyPowerup();
+				game.updateSpyPowerups();
 				break;
 			}
 			

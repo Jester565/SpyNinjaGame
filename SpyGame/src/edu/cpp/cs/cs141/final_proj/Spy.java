@@ -70,10 +70,8 @@ public class Spy extends Character implements Serializable {
 	 */
 	void usePowerups()
 	{
-		reduceInvincibility();
-		if (getBelowObject() != null) {
-			if (getBelowObject() instanceof Useable){
-				((Useable)getBelowObject()).useOn(this);
+		if (getBelowObject() != null && getBelowObject() instanceof Useable) {
+			if (((Useable)getBelowObject()).useOn(this)){
 				setBelowObject(null);
 			}
 		}
@@ -86,6 +84,12 @@ public class Spy extends Character implements Serializable {
 		if (invincibleTurns > 0)
 		{
 			invincibleTurns--;
+		}
+	}
+	
+	public void takeDamage(int dmg) {
+		if (!isInvincible()) {
+			super.takeDamage(dmg);
 		}
 	}
 	
