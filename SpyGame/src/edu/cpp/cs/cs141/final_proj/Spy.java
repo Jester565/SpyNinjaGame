@@ -181,7 +181,7 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
-	 * Get stabbed or shot and health is reduced by dmg.
+	 * Get stabbed or shot and health is reduced by dmg. Lose one live as well.
 	 * @param dmg The amount of damage to be dealt.
 	 */
 	public void takeDamage(int dmg) {
