@@ -271,11 +271,14 @@ public class GameEngine {
 			int randomNum, ninX, ninY;
 			DIRECTION currentDir;
 			MoveStatus moveStatus;
+			ninX = ninjas.get(i).getX();
+			ninY = ninjas.get(i).getY();
+			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1){
+				gameStatus = GAME_STATE.LOST;
+			}
 			while (directionArray.size() > 0)
 			{
 				randomNum = rng.nextInt(directionArray.size());
-				ninX = ninjas.get(i).getX();
-				ninY = ninjas.get(i).getY();
 				currentDir = directionArray.get(randomNum);
 				moveStatus = grid.checkMoveStatus(currentDir, ninX, ninY);
 				if (moveStatus.moveResult == MOVE_RESULT.LEGAL)

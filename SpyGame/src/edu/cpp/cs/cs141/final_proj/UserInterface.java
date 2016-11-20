@@ -175,8 +175,10 @@ public class UserInterface {
 			game.enemyTurn();
 			
 			// set debug mode as true if killed by a ninja
-			if(game.getGameStatus() == GAME_STATE.LOST)
+			if(game.getGameStatus() == GAME_STATE.LOST){
 				game.SetDebugMode(true);
+				System.out.println("Game Over");
+			}
 		}
 	}
 	
