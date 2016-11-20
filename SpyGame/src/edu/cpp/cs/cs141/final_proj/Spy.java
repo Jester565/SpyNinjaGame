@@ -183,8 +183,10 @@ public class Spy extends Character implements Serializable {
 	 * @param dmg The amount of damage to be dealt.
 	 */
 	public void takeDamage(int dmg) {
-		super.takeDamage(dmg);
-		lives --;
+		if (!isInvincible()) {
+			super.takeDamage(dmg);
+			lives --;
+		}
 	}
 	
 	/**
