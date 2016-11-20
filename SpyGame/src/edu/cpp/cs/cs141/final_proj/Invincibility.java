@@ -36,7 +36,7 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	 * @param spy - The player character
 	 */
 	public void useOn(Spy spy) {
-		spy.setInvincibility();
+		spy.setInvincibility(INVINCIBLE_TURNS);
 	}
 	
 	/**

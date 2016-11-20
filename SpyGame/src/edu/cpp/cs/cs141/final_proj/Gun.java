@@ -28,7 +28,7 @@ public class Gun extends Weapon implements Serializable {
 	/**
 	 * This integer stores the maximum number of rounds that the {@link Spy} can start with.
 	 */
-	private static final int MAX_ROUNDS = 1;
+	public static final int MAX_ROUNDS = 1;
 	
 	/**
 	 * this integer stores the amount of grid spaces a {@link Character}'s weapon can travel. Guns

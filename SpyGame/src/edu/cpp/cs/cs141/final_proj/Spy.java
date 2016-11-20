@@ -38,7 +38,7 @@ public class Spy extends Character implements Serializable {
 	private static final int SPY_MAX_HEALTH = 1;
 	
 	/**
-	 * Keeps track of if the {@link Spy} has aquired the {@link Radar} powerup.
+	 * Keeps track of if the {@link Spy} has acquired the {@link Radar} powerup.
 	 */
 	private boolean hasRadar = false;
 	
@@ -56,11 +56,6 @@ public class Spy extends Character implements Serializable {
 	 * The lives of the player
 	 */
 	private int lives = 3;
-	
-	/**
-	 * The turn of the invincibility
-	 */
-	public static final int INVINCIBLE_TURNS = 5;
 	
 	/**
 	 * Creates an instance of {@link Spy} with a {@link Gun}.
@@ -123,8 +118,8 @@ public class Spy extends Character implements Serializable {
 	 * Sets {@link #invincibleTurns} to the parameter turns.
 	 * @param turns Amount of turns to grant invincibility for.
 	 */
-	public void setInvincibility() {
-		invincibleTurns = INVINCIBLE_TURNS;
+	public void setInvincibility(int Turns) {
+		invincibleTurns = Turns;
 	}
 
 	/**

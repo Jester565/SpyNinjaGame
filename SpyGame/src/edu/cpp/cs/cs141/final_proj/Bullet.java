@@ -34,7 +34,9 @@ public class Bullet extends GameObject implements Useable, Serializable {
 	 * @param spy - The player character
 	 */
 	public void useOn(Spy spy) {
-		spy.getGun().addBullet(BULLETS_GIVEN);
+		if (spy.getGun().getNumRounds() < Gun.MAX_ROUNDS) {
+			spy.getGun().addBullet(BULLETS_GIVEN);
+		}
 	}
 	
 	/**
