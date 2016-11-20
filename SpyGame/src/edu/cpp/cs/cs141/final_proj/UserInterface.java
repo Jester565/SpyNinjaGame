@@ -174,9 +174,15 @@ public class UserInterface {
 			// each ninja kills player if in range then moves according to their AI rules
 			game.enemyTurn();
 		}
-		game.SetDebugMode(true);
-		System.out.println("Game Over\n"
-				+ game.displayBoard());
+		// Game is finished
+		GameEngine.SetDebugMode(true);
+		if (game.getGameStatus().equals(GAME_STATE.LOST)) {
+			System.out.println("Game Over");
+		}
+		else if (game.getGameStatus().equals(GAME_STATE.WON)) {
+			System.out.println("You Win!");
+		}
+		System.out.println(game.displayBoard());
 	}
 	
 	/**
