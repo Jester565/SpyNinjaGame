@@ -87,12 +87,6 @@ public class Spy extends Character implements Serializable {
 		}
 	}
 	
-	public void takeDamage(int dmg) {
-		if (!isInvincible()) {
-			super.takeDamage(dmg);
-		}
-	}
-	
 	/**
 	 * Let spy alive again, set the health back
 	 */
