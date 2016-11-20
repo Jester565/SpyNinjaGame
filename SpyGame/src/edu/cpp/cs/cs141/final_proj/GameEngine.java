@@ -351,10 +351,11 @@ public class GameEngine {
 				{
 					stabDirection = DIRECTION.UP;
 				}
-				
-				boolean spyWasStabbed = enemyStab(i, stabDirection);
-				if (spyWasStabbed) {
-					return; //This should not return.  The ninjas should finish moving but the UI should also show the board in the way the player died. This means separating the ninjaAttack and ninjaMove steps.
+				ninjas.get(i).getSword().attack(stabDirection, ninjas.get(i), grid);
+				if (!spy.hasLives())
+				{
+					gameStatus = GAME_STATE.LOST;
+					return;	//This should not return.  The ninjas should finish moving but the UI should also show the board in the way the player died. This means separating the ninjaAttack and ninjaMove steps.
 				}
 			}
 			
@@ -382,29 +383,8 @@ public class GameEngine {
 		}
 	}
 	
-	/**
-	 * Attempt to stab the {@link #spy} if in range and decrease the {@link Spy#health}
-	 *  and {@link Spy#lives} if the {@link #spy} was stabbed
-	 * @param i index of a {@link Ninja} located in {@link #ninjas}
-	 * @param direction the direction in which to stab
-	 * @return {@code true} if {@link #spy} was stabbed, {@code false} otherwise
-	 */
 	public boolean enemyStab(int i, DIRECTION direction) {
-		boolean spyWasStabbed = ninjas.get(i).getSword().attack( direction, ninjas.get(i), grid);
-		// if the ninja stabbed the spy
-		if (spyWasStabbed) {
-			if (spy.hasLives()) {
-				spy.takeDamage(Sword.SWORD_DAMAGE);
-				if (!spy.isAlive()) {
-					// decrease spy lives by 1
-				}
-			}
-			else if (!spy.hasLives()) {
-				gameStatus = GAME_STATE.LOST;
-			}
-			return true;
-		}
-		return false;
+		return ninjas.get(i).getSword().attack( direction, ninjas.get(i), grid);
 	}
 	
 	/**

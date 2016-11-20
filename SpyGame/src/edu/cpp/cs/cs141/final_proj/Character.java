@@ -44,7 +44,7 @@ public abstract class Character extends GameObject implements Serializable {
 	
 	/**
 	 * Checks the life status of a character
-	 * @return {@code true} if {@link #health} is greater than 0, {@code false} otherwise
+	 * @return {@code true} if {@link #health} is less than 0, {@code false} otherwise
 	 */
 	public boolean isAlive() {
 		if (health <= 0)
