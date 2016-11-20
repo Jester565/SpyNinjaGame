@@ -179,6 +179,16 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Check if the player is run out the ammo
+	 * return true if the gun of player is equal 0
+	 */
+	public boolean playerRunOutAmmo() {
+		if (spy.getGun().getNumRounds() == 0)
+			return true;
+		return false;
+	}
+	
+	/**
 	 * The {@link GameObject}s next to the {@link #spy} are set to visible.
 	 * @param lookDirection The direction to look in.
 	 */

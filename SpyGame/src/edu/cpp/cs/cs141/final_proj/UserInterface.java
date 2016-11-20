@@ -203,7 +203,11 @@ public class UserInterface {
 				}
 				else
 				{
-					if (game.playerShoot(playerDirection))
+					if (game.playerRunOutAmmo())
+					{
+						System.out.println("You don't have any ammo, can't shot :(");
+					}
+					else if (game.playerShoot(playerDirection))
 					{
 						System.out.println("A ninja was shot");
 					}
