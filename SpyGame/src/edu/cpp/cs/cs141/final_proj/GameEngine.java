@@ -275,6 +275,7 @@ public class GameEngine {
 			ninY = ninjas.get(i).getY();
 			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1){
 				gameStatus = GAME_STATE.LOST;
+				return;
 			}
 			while (directionArray.size() > 0)
 			{

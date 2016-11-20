@@ -154,7 +154,7 @@ public class UserInterface {
 	private void gameLoop() {
 		game.reset();
 		System.out.println("New game started! ");
-		while (game.getGameStatus().equals(GameEngine.GAME_STATE.UNFINISHED))
+		while (game.getGameStatus().equals(GAME_STATE.UNFINISHED))
 		{
 			// print grid and do player 'look' action
 			gridString = game.displayBoard();
@@ -173,13 +173,10 @@ public class UserInterface {
 			
 			// each ninja kills player if in range then moves according to their AI rules
 			game.enemyTurn();
-			
-			// set debug mode as true if killed by a ninja
-			if(game.getGameStatus() == GAME_STATE.LOST){
-				game.SetDebugMode(true);
-				System.out.println("Game Over");
-			}
 		}
+		game.SetDebugMode(true);
+		System.out.println("Game Over\n"
+				+ game.displayBoard());
 	}
 	
 	/**
