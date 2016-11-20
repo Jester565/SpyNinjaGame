@@ -115,6 +115,7 @@ public class GameEngine {
 		setRooms();
 		setItems();
 		setNinjas();
+		grid.setToInvisible();
 	}
 	
 	/**
