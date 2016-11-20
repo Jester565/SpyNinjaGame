@@ -290,8 +290,29 @@ public class GameEngine {
 			ninX = ninjas.get(i).getX();
 			ninY = ninjas.get(i).getY();
 			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1){
-				gameStatus = GAME_STATE.LOST;
-				return;
+				DIRECTION stabDirection = null;
+				if (spy.getX() < ninX)
+				{
+					stabDirection = DIRECTION.LEFT;
+				}
+				else if (spy.getX() > ninX)
+				{
+					stabDirection = DIRECTION.RIGHT;
+				}
+				else if (spy.getY() > ninY)
+				{
+					stabDirection = DIRECTION.DOWN;
+				}
+				else if (spy.getY() < ninY)
+				{
+					stabDirection = DIRECTION.UP;
+				}
+				ninjas.get(i).getSword().attack(stabDirection, ninjas.get(i), grid);
+				if (!spy.isAlive())
+				{
+					gameStatus = GAME_STATE.LOST;
+					return;	//This should not return.  The ninjas should finish moving but the UI should also show the board in the way the player died. This means separating the ninjaAttack and ninjaMove steps.
+				}
 			}
 			while (directionArray.size() > 0)
 			{
