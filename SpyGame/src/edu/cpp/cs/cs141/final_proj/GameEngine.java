@@ -90,19 +90,51 @@ public class GameEngine {
 		//initialize objects
 		grid = new Grid();
 		spy = new Spy();
-		ninjas = new ArrayList<Ninja>();
 		
 		//set gameStatus as unfinished
 		gameStatus = GAME_STATE.UNFINISHED;
 		//set debugMode as false
 		DebugMode = false;
-		
 		//set the player
-		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
-		
+		setPlayer();
 		//set rooms
 		setRooms();
-		
+		//three items
+		setItems();
+		//set ninjas
+		setNinjas();
+	}
+	
+	/**
+	 * Set the player
+	 */
+	public void setPlayer()	{
+		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
+	}
+	
+	/**
+	 * Set six rooms
+	 */
+	public void setRooms() {
+		int briefRoomIndex = rng.nextInt(ROOMS_SIZE);
+		int roomIndex = 0;
+		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
+			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
+				Room room = new Room(roomIndex == briefRoomIndex);
+				if (roomIndex == briefRoomIndex)
+				{
+					briefcaseRoom = room;
+				}
+				grid.setGameObject(room, colIndex, rowIndex);
+				roomIndex++;
+			}
+		}
+	}
+	
+	/**
+	 * Set three items 
+	 */
+	public void setItems() {
 		int diceX, diceY;
 		//set invincibilityItem
 		do {
@@ -124,8 +156,14 @@ public class GameEngine {
 			diceY = rng.nextInt(Grid.GRID_SIZE);
 		} while (!grid.emptyGrid(diceX, diceY));
 		grid.setGameObject(new Bullet(), diceX, diceY);
-		
-		//set ninjas
+	}
+	
+	/**
+	 * Set the enemies
+	 */
+	public void setNinjas() {
+		ninjas = new ArrayList<Ninja>();
+		int diceX, diceY;
 		ninjas.clear();
 		for (int i = 0; i < NINJAS_SIZE; i ++) {
 			Ninja ninja = new Ninja();
@@ -135,25 +173,6 @@ public class GameEngine {
 			} while(!grid.canSetNinja(diceX, diceY));
 			grid.setGameObject(ninja, diceX, diceY);
 			ninjas.add(ninja);
-		}
-	}
-	
-	/**
-	 * Set six rooms
-	 */
-	public void setRooms() {
-		int briefRoomIndex = rng.nextInt(ROOMS_SIZE);
-		int roomIndex = 0;
-		for (int rowIndex = 1; rowIndex < Grid.GRID_SIZE; rowIndex += 3) {
-			for (int colIndex = 1; colIndex < Grid.GRID_SIZE; colIndex += 3) {
-				Room room = new Room(roomIndex == briefRoomIndex);
-				if (roomIndex == briefRoomIndex)
-				{
-					briefcaseRoom = room;
-				}
-				grid.setGameObject(room, colIndex, rowIndex);
-				roomIndex++;
-			}
 		}
 	}
 	
