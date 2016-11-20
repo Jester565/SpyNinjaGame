@@ -145,7 +145,8 @@ public class UserInterface {
 	/**
 	 * This method prompt user to choose start game or quit game,
 	 * and take player's input.
-	 * @return input {@code 1} indicates start new game, {@code 2} indicates quit game
+	 * @return input integers indicate the following: {@code 1} to start new game, 
+	 * {@code 2} to load a game, and {@code 3} to quit game
 	 */
 	private int mainMenu() {
 		System.out.println("Select an option:\n"
@@ -191,6 +192,7 @@ public class UserInterface {
 			// each ninja kills player if in range then moves according to their AI rules
 			game.enemyTurn();
 		}
+		
 		// Game is finished
 		GameEngine.SetDebugMode(true);
 		if (game.getGameStatus().equals(GAME_STATE.LOST)) {
@@ -257,7 +259,6 @@ public class UserInterface {
 			
 				switch(command) {
 				case shoot:
-					
 					if (!gunHasAmmo)
 						break;
 					DIRECTION shootDir = getUserDirection(command.name());

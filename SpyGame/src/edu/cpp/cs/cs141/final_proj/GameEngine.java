@@ -331,6 +331,8 @@ public class GameEngine {
 			MoveStatus moveStatus;
 			ninX = ninjas.get(i).getX();
 			ninY = ninjas.get(i).getY();
+			
+			// Ninja attacks if Spy is in range
 			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1){
 				DIRECTION stabDirection = null;
 				if (spy.getX() < ninX)
@@ -356,6 +358,8 @@ public class GameEngine {
 					return;	//This should not return.  The ninjas should finish moving but the UI should also show the board in the way the player died. This means separating the ninjaAttack and ninjaMove steps.
 				}
 			}
+			
+			// Ninja moves in a random direction
 			while (directionArray.size() > 0)
 			{
 				randomNum = rng.nextInt(directionArray.size());
@@ -373,12 +377,13 @@ public class GameEngine {
 			}
 			directionArray.clear();
 			DIRECTION direction = null;
+
+			// Ninja attacks for the 2nd time if Spy is in range
 			enemyStab(i, direction);
 		}
 	}
 	
-	public boolean enemyStab(int i, DIRECTION direction){
-
+	public boolean enemyStab(int i, DIRECTION direction) {
 		return ninjas.get(i).getSword().attack( direction, ninjas.get(i), grid);
 	}
 	
