@@ -19,9 +19,12 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	/**
 	 * This field represents the number of turns that the player
 	 * is given invincibility.
-	 * This field will never change and will stay at {@code 5}
+	 * This field will never change and will stay at {@code 6}
+	 * This field is {@code 6} because it starts counting down as soon
+	 * as the player receives the powerup. This way the player gets 5 full turns
+	 * where the player can move and look.
 	 */
-	private static final int INVINCIBLE_TURNS = 5;
+	private static final int INVINCIBLE_TURNS = 6;
 	
 	/**
 	 * Creates an instance of {@link Invincibility} and sets the gridRepresentation.
@@ -34,6 +37,7 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	 * This method gives the spy invincibility for {@link #INVINCIBLE_TURNS}.
 	 * 
 	 * @param spy - The player character
+	 * @return Returns true for usage of invincibility powerup
 	 */
 	public boolean useOn(Spy spy) {
 		spy.setInvincibility(INVINCIBLE_TURNS);
@@ -46,6 +50,6 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LEGAL, "You aquired invisiblility!");
+		return new MoveStatus(MOVE_RESULT.LEGAL, "You acquired invincibility!");
 	}
 }

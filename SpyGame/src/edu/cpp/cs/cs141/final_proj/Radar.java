@@ -30,6 +30,7 @@ public class Radar extends GameObject implements Useable, Serializable {
 	 * This method gives the spy radar
 	 * 
 	 * @param spy - The player character
+	 * @return Returns true for usage of Radar powerup
 	 */
 	public boolean useOn(Spy spy)
 	{
@@ -43,6 +44,6 @@ public class Radar extends GameObject implements Useable, Serializable {
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
-		return new MoveStatus(MOVE_RESULT.LEGAL, "Radar aquired!");
+		return new MoveStatus(MOVE_RESULT.LEGAL, "Radar acquired!");
 	}
 }
