@@ -36,8 +36,8 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	/**
 	 * This method gives the spy invincibility for {@link #INVINCIBLE_TURNS}.
 	 * 
-	 * @param spy - The player character
-	 * @return Returns true for usage of invincibility powerup
+	 * @param spy The player character
+	 * @return true for usage of invincibility powerup
 	 */
 	public boolean useOn(Spy spy) {
 		spy.setInvincibility(INVINCIBLE_TURNS);

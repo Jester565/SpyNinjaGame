@@ -31,8 +31,8 @@ public class Bullet extends GameObject implements Useable, Serializable {
 
 	/**
 	 * This method gives the spy a bullet
-	 * @param spy - The player character
-	 * @return Returns whether or not the bullet is used.
+	 * @param spy The player character
+	 * @return {@code true} if bullet is used, {@code false} otherwise
 	 */
 	public boolean useOn(Spy spy) {
 		if (spy.getGun().getNumRounds() < Gun.MAX_ROUNDS) {
