@@ -201,24 +201,39 @@ public class GameEngine {
 	 * The {@link GameObject}s next to the {@link #spy} are set to visible.
 	 * @param lookDirection The direction to look in.
 	 */
-	public void playerLook(DIRECTION lookDirection) {
+	public boolean playerLook(DIRECTION lookDirection) {
+		boolean ninjaAhead = false;
 		switch (lookDirection)
 		{
 		case UP:
 			playerLook(0, -1, Spy.LOOK_RANGE);
+			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Ninja ||
+				grid.getGameObject(spy.getX(), spy.getY() - 2) instanceof Ninja)
+				return true;
 			break;
 		case RIGHT:
 			playerLook(1, 0, Spy.LOOK_RANGE);
+			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Ninja ||
+				grid.getGameObject(spy.getX() + 2, spy.getY()) instanceof Ninja)
+					return true;
 			break;
 		case DOWN:
 			playerLook(0, 1, Spy.LOOK_RANGE);
+			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Ninja ||
+				grid.getGameObject(spy.getX(), spy.getY() + 2) instanceof Ninja)
+					return true;
 			break;
 		case LEFT:
 			playerLook(-1, 0, Spy.LOOK_RANGE);
+			if (grid.getGameObject(spy.getX() - 1, spy.getY()) instanceof Ninja ||
+				grid.getGameObject(spy.getX() - 2, spy.getY()) instanceof Ninja)
+					return true;
 			break;
 		default:
 			System.err.println("Invalid look option");	
+			return ninjaAhead;
 		}
+		return ninjaAhead;
 	}
 	
 	/**
