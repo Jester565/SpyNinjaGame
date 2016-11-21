@@ -247,9 +247,11 @@ public class Grid implements Serializable {
 	 * @return The {@link GameObject} at the position.  Can be {@code null}.
 	 */
 	public GameObject getGameObject(int x, int y) {
-		if (x < 0 || y < 0 || x > GRID_SIZE - 1 || y > GRID_SIZE - 1)
+		if (inRange(x,y)) {
+			return gameObjects[y][x];
+		} else {
 			return null;
-		return gameObjects[y][x];
+		}
 	}
 	
 	/**

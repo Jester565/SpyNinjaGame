@@ -312,11 +312,7 @@ public class UserInterface {
 			// DIRECTION to look in given
 			if (DIRECTION.keyCodes().containsKey(userInput)) {
 				lookDirection = DIRECTION.keyCodes().get(userInput);
-				if (game.playerLook(lookDirection)) {
-					System.out.println("Ninja Ahead!");
-				} else {
-					System.out.println("Clear");
-				}
+				System.out.println(game.playerLook(lookDirection));
 				break;
 			}
 			

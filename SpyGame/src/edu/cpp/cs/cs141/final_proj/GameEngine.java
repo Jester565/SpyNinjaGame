@@ -201,39 +201,52 @@ public class GameEngine {
 	 * The {@link GameObject}s next to the {@link #spy} are set to visible.
 	 * @param lookDirection The direction to look in.
 	 */
-	public boolean playerLook(DIRECTION lookDirection) {
-		boolean ninjaAhead = false;
+	public String playerLook(DIRECTION lookDirection) {
+		String message1 = "You can see nothing in this direction...";
+		String message2 = "Ninja Ahead!";
+		String message3 = "Clear";
 		switch (lookDirection)
 		{
 		case UP:
 			playerLook(0, -1, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Ninja ||
 				grid.getGameObject(spy.getX(), spy.getY() - 2) instanceof Ninja)
-				return true;
+				return message2;
+			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Room ||
+				!grid.inRange(spy.getX(), spy.getY() - 1))
+				return message1;
 			break;
 		case RIGHT:
 			playerLook(1, 0, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Ninja ||
 				grid.getGameObject(spy.getX() + 2, spy.getY()) instanceof Ninja)
-					return true;
+					return message2;
+			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room ||
+					!grid.inRange(spy.getX() + 1, spy.getY()))
+					return message1;
 			break;
 		case DOWN:
 			playerLook(0, 1, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Ninja ||
 				grid.getGameObject(spy.getX(), spy.getY() + 2) instanceof Ninja)
-					return true;
+					return message2;
+			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Room ||
+					!grid.inRange(spy.getX(), spy.getY() + 1))
+					return message1;
 			break;
 		case LEFT:
 			playerLook(-1, 0, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX() - 1, spy.getY()) instanceof Ninja ||
 				grid.getGameObject(spy.getX() - 2, spy.getY()) instanceof Ninja)
-					return true;
+					return message2;
+			if (grid.getGameObject(spy.getX() - 1, spy.getY()) instanceof Room ||
+					!grid.inRange(spy.getX() - 1, spy.getY()))
+					return message1;
 			break;
 		default:
 			System.err.println("Invalid look option");	
-			return ninjaAhead;
 		}
-		return ninjaAhead;
+		return message3;
 	}
 	
 	/**
