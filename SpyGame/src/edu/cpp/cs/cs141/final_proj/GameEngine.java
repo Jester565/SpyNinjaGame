@@ -248,8 +248,6 @@ public class GameEngine {
 			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room)
 				return message4;
 			break;
-		default:
-			System.err.println("Invalid look option");	
 		}
 		return message3;
 	}
