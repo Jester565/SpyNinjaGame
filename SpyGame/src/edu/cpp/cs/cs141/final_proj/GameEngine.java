@@ -205,6 +205,7 @@ public class GameEngine {
 		String message1 = "You can see nothing in this direction...";
 		String message2 = "Ninja Ahead!";
 		String message3 = "Clear";
+		String message4 = "A room is blocking your vision ahead";
 		switch (lookDirection)
 		{
 		case UP:
@@ -212,36 +213,40 @@ public class GameEngine {
 			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Ninja ||
 				grid.getGameObject(spy.getX(), spy.getY() - 2) instanceof Ninja)
 				return message2;
-			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Room ||
-				!grid.inRange(spy.getX(), spy.getY() - 1))
+			if (!grid.inRange(spy.getX(), spy.getY() - 1))
 				return message1;
+			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Room)
+				return message4;
 			break;
 		case RIGHT:
 			playerLook(1, 0, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Ninja ||
 				grid.getGameObject(spy.getX() + 2, spy.getY()) instanceof Ninja)
 					return message2;
-			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room ||
-					!grid.inRange(spy.getX() + 1, spy.getY()))
+			if (!grid.inRange(spy.getX() + 1, spy.getY()))
 					return message1;
+			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room)
+				return message4;
 			break;
 		case DOWN:
 			playerLook(0, 1, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Ninja ||
 				grid.getGameObject(spy.getX(), spy.getY() + 2) instanceof Ninja)
 					return message2;
-			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Room ||
-					!grid.inRange(spy.getX(), spy.getY() + 1))
+			if (!grid.inRange(spy.getX(), spy.getY() + 1))
 					return message1;
+			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Room)
+				return message4;
 			break;
 		case LEFT:
 			playerLook(-1, 0, Spy.LOOK_RANGE);
 			if (grid.getGameObject(spy.getX() - 1, spy.getY()) instanceof Ninja ||
 				grid.getGameObject(spy.getX() - 2, spy.getY()) instanceof Ninja)
 					return message2;
-			if (grid.getGameObject(spy.getX() - 1, spy.getY()) instanceof Room ||
-					!grid.inRange(spy.getX() - 1, spy.getY()))
+			if (!grid.inRange(spy.getX() - 1, spy.getY()))
 					return message1;
+			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room)
+				return message4;
 			break;
 		default:
 			System.err.println("Invalid look option");	
