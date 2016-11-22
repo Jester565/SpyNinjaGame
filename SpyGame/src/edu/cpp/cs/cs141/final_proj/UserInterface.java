@@ -236,7 +236,7 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options";
+		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options  4:hard mode";
 		String userInput;
 		USER_COMMAND command = null;
 
