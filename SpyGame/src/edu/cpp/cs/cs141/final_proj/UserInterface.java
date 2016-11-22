@@ -22,7 +22,7 @@ public class UserInterface {
 	 * Commands the user can do during the spy's turn
 	 */
 	public enum USER_COMMAND {
-		shoot("1"), debug("2"), options("3");
+		shoot("1"), debug("2"), options("3"), hardMode("4");
 		
 		public final String keyCode;
 		private USER_COMMAND(String code) {
@@ -236,7 +236,7 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options";
+		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options | 4: HardMode";
 		String userInput;
 		USER_COMMAND command = null;
 
@@ -294,7 +294,10 @@ public class UserInterface {
 						return;
 					}
 					break;
-					
+				case hardMode:
+					GameEngine.setHardMode(true);
+					System.out.println("Hard Mode is active");
+					break;
 				default:
 					break;
 				}
