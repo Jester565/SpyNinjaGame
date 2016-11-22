@@ -73,7 +73,7 @@ public class GameEngine {
 	/**
 	 * hard mode of game
 	 */
-	private boolean hardMode = false;
+	private static boolean hardMode = false;
 	
 	/**
 	 * Resets the visibility of the {@link #grid}.
@@ -438,45 +438,49 @@ public class GameEngine {
 				int ninY = ninjas.get(i).getY();
 				if ( enemyLook(ninX, ninY, "up") ) {
 					grid.move(DIRECTION.UP ,ninX, ninY);
+					break;
 				}
-				else if ( enemyLook(ninX, ninY, "down") ) {
+				if ( enemyLook(ninX, ninY, "down") ) {
 					grid.move(DIRECTION.DOWN ,ninX, ninY);
+					break;
 				}
-				else if ( enemyLook(ninX, ninY, "left") ) {
+				if ( enemyLook(ninX, ninY, "left") ) {
 					grid.move(DIRECTION.LEFT ,ninX, ninY);
+					break;
 				}
-				else if ( enemyLook(ninX, ninY, "right") ) {
+				if ( enemyLook(ninX, ninY, "right") ) {
 					grid.move(DIRECTION.RIGHT ,ninX, ninY);
+					break;
 				}
-				else {
-					ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
-					directionArray.add(DIRECTION.DOWN);
-					directionArray.add(DIRECTION.UP);
-					directionArray.add(DIRECTION.LEFT);
-					directionArray.add(DIRECTION.RIGHT);
-					DIRECTION currentDir;
-					MoveStatus moveStatus;
-					int ninX2 = ninjas.get(i).getX();
-					int ninY2 = ninjas.get(i).getY();
-					// Ninja moves in a random direction
-					while (directionArray.size() > 0)
+				
+				ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
+				directionArray.add(DIRECTION.DOWN);
+				directionArray.add(DIRECTION.UP);
+				directionArray.add(DIRECTION.LEFT);
+				directionArray.add(DIRECTION.RIGHT);
+				DIRECTION currentDir;
+				MoveStatus moveStatus;
+				int ninX2 = ninjas.get(i).getX();
+				int ninY2 = ninjas.get(i).getY();
+				// Ninja moves in a random direction
+				while (directionArray.size() > 0)
+				{
+					int randomNum = rng.nextInt(directionArray.size());
+					currentDir = directionArray.get(randomNum);
+					moveStatus = grid.checkMoveStatus(currentDir, ninX2, ninY2);
+					if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
 					{
-						int randomNum = rng.nextInt(directionArray.size());
-						currentDir = directionArray.get(randomNum);
-						moveStatus = grid.checkMoveStatus(currentDir, ninX2, ninY2);
-						if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
-						{
-							grid.move(currentDir, ninX2, ninY2);
-							break;
-						}
-						else
-						{
-							directionArray.remove(randomNum);
-						}
+						grid.move(currentDir, ninX2, ninY2);
+						break;
 					}
-					directionArray.clear();
+					else
+					{
+						directionArray.remove(randomNum);
+					}
 				}
+				directionArray.clear();
 			}
+			
 			
 		} else {
 			for (int i = 0; i < ninjas.size(); i++)
@@ -580,7 +584,7 @@ public class GameEngine {
 	/**
 	 * Set hard mode
 	 */
-	public void setHardMode(boolean mode) {
+	public static void setHardMode(boolean mode) {
 		hardMode = mode;
 	}
 	

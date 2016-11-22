@@ -22,7 +22,7 @@ public class UserInterface {
 	 * Commands the user can do during the spy's turn
 	 */
 	public enum USER_COMMAND {
-		shoot("1"), debug("2"), options("3");
+		shoot("1"), debug("2"), options("3"), hardMode("4");
 		
 		public final String keyCode;
 		private USER_COMMAND(String code) {
@@ -294,7 +294,9 @@ public class UserInterface {
 						return;
 					}
 					break;
-					
+				case hardMode:
+					GameEngine.setHardMode(true);
+					break;
 				default:
 					break;
 				}
