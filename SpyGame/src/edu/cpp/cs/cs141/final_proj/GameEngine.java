@@ -17,6 +17,8 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Handles high level game logic and user movement.
  */
 public class GameEngine {
+	
+	private static String[] LOOK_MESSAGES = new String[] {"Something is blocking your vision", "Clear", "Ninja Ahead!"};
 	/**
 	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
 	 * @param mode The value to set {@link #DebugMode} to.
@@ -223,7 +225,6 @@ public class GameEngine {
 	 */
 	private String playerLook(int dX, int dY, int range)
 	{
-		String[] msgArr = new String[] {"Something is blocking your vision", "Clear", "Ninja Ahead!"};
 		int msgI = 0;
 		int sX = spy.getX();
 		int sY = spy.getY();
@@ -233,7 +234,7 @@ public class GameEngine {
 			sY += dY;
 			if (!grid.setAsVisible(sX, sY))
 			{
-				return msgArr[msgI];
+				break;
 			}
 			GameObject gObj = grid.getGameObject(sX, sY);
 			if (gObj != null)
@@ -252,7 +253,7 @@ public class GameEngine {
 				msgI = 1;
 			}
 		}
-		return msgArr[msgI];
+		return LOOK_MESSAGES[msgI];
 	}
 	
 	/**
