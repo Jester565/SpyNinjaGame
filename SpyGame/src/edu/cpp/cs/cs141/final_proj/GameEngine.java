@@ -408,15 +408,7 @@ public class GameEngine {
 				}
 			}
 			directionArray.clear();
-			DIRECTION direction = null;
-
-			// Ninja attacks for the 2nd time if Spy is in range
-			enemyStab(i, direction);
 		}
-	}
-	
-	public boolean enemyStab(int i, DIRECTION direction) {
-		return ninjas.get(i).getSword().attack( direction, ninjas.get(i), grid);
 	}
 	
 	/**
