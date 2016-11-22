@@ -60,6 +60,8 @@ public class UserInterface {
 		}
 	}
 	
+	private boolean exitToMenu = false;
+	
 	/**
 	 * Used to control the game
 	 */
@@ -98,8 +100,8 @@ public class UserInterface {
 		printWelcomeMessage();
 		boolean quit = false;
 		while(!quit) {
+			exitToMenu = false;
 			int option = mainMenu();
-			
 			switch(option) {
 			case 1:
 				game.reset();
@@ -163,9 +165,17 @@ public class UserInterface {
 		while (true)
 		{	
 			playerLookLoop();
+			if (exitToMenu)
+			{
+				return;
+			}
 			
 			// get command or direction to move in from user then do corresponding action
 			playerTurn();
+			if (exitToMenu)
+			{
+				return;
+			}
 			
 			if (game.getGameStatus().equals(GAME_STATE.WON))
 			{
@@ -279,6 +289,10 @@ public class UserInterface {
 					break;
 				case options:
 					pauseMenu();
+					if (exitToMenu)
+					{
+						return;
+					}
 					break;
 					
 				default:
@@ -325,6 +339,10 @@ public class UserInterface {
 					break;
 				case options:
 					pauseMenu();
+					if (exitToMenu)
+					{
+						return;
+					}
 					break;
 				default:
 					break;
@@ -368,8 +386,7 @@ public class UserInterface {
 			break;
 			
 		case menu:
-			game.reset();
-			startGame();
+			exitToMenu = true;
 			return;
 			
 		case exit:
