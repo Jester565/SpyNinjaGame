@@ -296,6 +296,7 @@ public class UserInterface {
 					break;
 				case hardMode:
 					GameEngine.setHardMode(true);
+					System.out.println("Hard Mode is active");
 					break;
 				default:
 					break;

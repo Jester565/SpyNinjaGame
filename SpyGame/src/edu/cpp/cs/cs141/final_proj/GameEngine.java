@@ -123,7 +123,9 @@ public class GameEngine {
 					diceX = rng.nextInt(Grid.GRID_SIZE);
 					diceY = rng.nextInt(Grid.GRID_SIZE);
 				} while(!grid.canSetNinja(diceX, diceY));
-				grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
+				if (!(grid.getGameObject(ninjas.get(i).getX(), ninjas.get(i).getY()) == null)) {
+					grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
+				}
 			}
 		}
 		setPlayer();
@@ -404,35 +406,42 @@ public class GameEngine {
 	public boolean enemyLook(int x, int y, String direction) {
 		int aheadNum = 1;
 		if (direction == "up") {
-			while (! (grid.getGameObject(x, y - aheadNum) instanceof Room)) {
+			while (! (grid.getGameObject(x, y - aheadNum) instanceof Room)
+					& (y - aheadNum) >= 0 ) {
 				if (grid.getGameObject(x, y - aheadNum) instanceof Spy)
 					return true;
-				aheadNum ++;
+				aheadNum += 1;
 			}
 		}
 		if (direction == "down") {
-			while (! (grid.getGameObject(x, y + aheadNum) instanceof Room)) {
+			while (! (grid.getGameObject(x, y + aheadNum) instanceof Room)
+					& (y + aheadNum) <= (Grid.GRID_SIZE -1) ) {
 				if (grid.getGameObject(x, y + aheadNum) instanceof Spy)
 					return true;
+				aheadNum += 1;
 			}
 		}
 		if (direction == "left") {
-			while (! (grid.getGameObject(x - aheadNum, y) instanceof Room)) {
+			while (! (grid.getGameObject(x - aheadNum, y) instanceof Room)
+					& (x - aheadNum) >= 0 ) {
 				if (grid.getGameObject(x - aheadNum, y) instanceof Spy)
 					return true;
+				aheadNum += 1;
 			}
 		}
 		if (direction == "right") {
-			while (! (grid.getGameObject(x + aheadNum, y) instanceof Room)) {
+			while (! (grid.getGameObject(x + aheadNum, y) instanceof Room)
+					& (x + aheadNum) <= (Grid.GRID_SIZE - 1) ) {
 				if (grid.getGameObject(x + aheadNum, y) instanceof Spy)
 					return true;
+				aheadNum += 1;
 			}
 		}
 		return false;
 	}
 	void enemyMove()
 	{
-		if (hardMode) {
+		if (hardMode == true) {
 			for (int i = 0; i < ninjas.size(); i++) {
 				int ninX = ninjas.get(i).getX();
 				int ninY = ninjas.get(i).getY();

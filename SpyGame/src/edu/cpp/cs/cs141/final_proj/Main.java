@@ -13,5 +13,4 @@ public class Main {
 		UserInterface ui = new UserInterface(new GameEngine());
 		ui.startGame();
 	}
-
 }
