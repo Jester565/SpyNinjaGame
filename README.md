@@ -8,7 +8,7 @@ CS 141
 * Hao
 * Jason
 * Jessica
-* Fransisco
+* Francisco
 * James Taracevicz
 
 ### Description:
