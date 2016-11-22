@@ -71,7 +71,6 @@ public abstract class Weapon implements Serializable {
 	 * @return
 	 */
 	protected boolean attack(int dX, int dY, Character character, Grid grid){
-		boolean characterHit = false;
 		int bX = character.getX();
 		int bY = character.getY();
 		for(int i=0; i<range; i++){
@@ -81,22 +80,20 @@ public abstract class Weapon implements Serializable {
 				break;
 			}
 			GameObject object = grid.getGameObject(bX, bY);
-			 	if (object != null)
-			 	{
-			 		if (object instanceof Character)
-			 		{
-			 			((Character)object).takeDamage(damage);
-			 			
-			 			characterHit = true;
-			 			
-			 		}
-			 		if (object instanceof Room)
-			 		{
-			 			break;
-			 		}
-			 	}
+		 	if (object != null)
+		 	{
+		 		if (object instanceof Character)
+		 		{
+		 			((Character)object).takeDamage(damage);
+		 			return true;
+		 		}
+		 		else if (object instanceof Room)
+		 		{
+		 			break;
+		 		}
+		 	}
 		}
-		 return characterHit;
+		return false;
 	}
 		
 }

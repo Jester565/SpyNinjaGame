@@ -202,54 +202,19 @@ public class GameEngine {
 	 * @param lookDirection The direction to look in.
 	 */
 	public String playerLook(DIRECTION lookDirection) {
-		String message1 = "You can see nothing in this direction...";
-		String message2 = "Ninja Ahead!";
-		String message3 = "Clear";
-		String message4 = "A room is blocking your vision ahead";
 		switch (lookDirection)
 		{
 		case UP:
-			playerLook(0, -1, Spy.LOOK_RANGE);
-			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Ninja ||
-				grid.getGameObject(spy.getX(), spy.getY() - 2) instanceof Ninja)
-				return message2;
-			if (!grid.inRange(spy.getX(), spy.getY() - 1))
-				return message1;
-			if (grid.getGameObject(spy.getX(), spy.getY() - 1) instanceof Room)
-				return message4;
-			break;
+			return playerLook(0, -1, Spy.LOOK_RANGE);
 		case RIGHT:
-			playerLook(1, 0, Spy.LOOK_RANGE);
-			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Ninja ||
-				grid.getGameObject(spy.getX() + 2, spy.getY()) instanceof Ninja)
-					return message2;
-			if (!grid.inRange(spy.getX() + 1, spy.getY()))
-					return message1;
-			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room)
-				return message4;
-			break;
+			return playerLook(1, 0, Spy.LOOK_RANGE);
 		case DOWN:
-			playerLook(0, 1, Spy.LOOK_RANGE);
-			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Ninja ||
-				grid.getGameObject(spy.getX(), spy.getY() + 2) instanceof Ninja)
-					return message2;
-			if (!grid.inRange(spy.getX(), spy.getY() + 1))
-					return message1;
-			if (grid.getGameObject(spy.getX(), spy.getY() + 1) instanceof Room)
-				return message4;
-			break;
+			return playerLook(0, 1, Spy.LOOK_RANGE);
 		case LEFT:
-			playerLook(-1, 0, Spy.LOOK_RANGE);
-			if (grid.getGameObject(spy.getX() - 1, spy.getY()) instanceof Ninja ||
-				grid.getGameObject(spy.getX() - 2, spy.getY()) instanceof Ninja)
-					return message2;
-			if (!grid.inRange(spy.getX() - 1, spy.getY()))
-					return message1;
-			if (grid.getGameObject(spy.getX() + 1, spy.getY()) instanceof Room)
-				return message4;
-			break;
+			return playerLook(-1, 0, Spy.LOOK_RANGE);
+		default:
+			return new String("What kind of direction was that?");	
 		}
-		return message3;
 	}
 	
 	/**
@@ -258,20 +223,38 @@ public class GameEngine {
 	 * @param dY The change in y from the {@link #spy} to set to visible.
 	 * @param range The amount of elements from the {@link #spy} to set to visible.
 	 */
-	private void playerLook(int dX, int dY, int range)
+	private String playerLook(int dX, int dY, int range)
 	{
+		String[] msgArr = new String[] {"Something is blocking your vision", "Clear", "Ninja Ahead!"};
+		int msgI = 0;
 		int sX = spy.getX();
 		int sY = spy.getY();
 		for (int i = 0; i < range; i++)
 		{
 			sX += dX;
 			sY += dY;
-			// if dX and dY can not be set as visible (i.e.: Room or out of bounds), return;
 			if (!grid.setAsVisible(sX, sY))
 			{
-				return;
+				return msgArr[msgI];
+			}
+			GameObject gObj = grid.getGameObject(sX, sY);
+			if (gObj != null)
+			{
+				if (gObj instanceof Ninja && msgI < 2)
+				{
+					msgI = 2;
+				}
+				else if (msgI < 1)
+				{
+					msgI = 1;
+				}
+			}
+			else if (msgI < 1)
+			{
+				msgI = 1;
 			}
 		}
+		return msgArr[msgI];
 	}
 	
 	/**
