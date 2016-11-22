@@ -195,7 +195,7 @@ public class UserInterface {
 			}
 			
 			//Prevents false advertising of Powerups
-			game.useSpyPowerup();
+			game.updateSpyPowerups();
 		}
 		
 		// Game is finished
@@ -252,7 +252,7 @@ public class UserInterface {
 				if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
 					continue;  //Go back to top of the while loop
 				}
-				game.updateSpyPowerups();
+				game.useSpyPowerup();
 				break;
 			}
 			
