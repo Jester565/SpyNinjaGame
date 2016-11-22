@@ -227,6 +227,7 @@ public class UserInterface {
 		String question;
 		boolean gunHasAmmo = game.getSpy().getGun().getNumRounds() > 0;
 		boolean moveable = game.playerMoveable();
+		boolean hardMode = false;
 		if (moveable)
 		{
 			question = "Enter a direction to move or another command\n"
@@ -295,8 +296,14 @@ public class UserInterface {
 					}
 					break;
 				case hardMode:
-					GameEngine.setHardMode(true);
-					System.out.println("Hard Mode is active");
+					hardMode = !hardMode;
+					if (hardMode) {
+						GameEngine.setHardMode(hardMode);
+						System.out.println("Hard Mode is active");
+					} else {
+						GameEngine.setHardMode(hardMode);
+						System.out.println("Hard Mode is closed");
+					}
 					break;
 				default:
 					break;
