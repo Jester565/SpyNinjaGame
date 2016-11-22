@@ -73,6 +73,9 @@ public class GameEngine {
 	/**
 	 * Resets the visibility of the {@link #grid}.
 	 */
+	
+	private boolean hardMode = false;
+	
 	public void resetVisibility()
 	{
 		grid.setToInvisible();
