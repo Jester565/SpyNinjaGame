@@ -306,6 +306,7 @@ public class GameEngine {
 	 */
 	public boolean playerShoot(DIRECTION direction)
 	{
+		grid.setToInvisible();
 		if (spy.getGun().attack(direction, spy, grid))
 		{
 			for (int i = 0; i < ninjas.size(); i++)
