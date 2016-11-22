@@ -277,10 +277,10 @@ public class UserInterface {
 					DIRECTION shootDir = getUserDirection(command.name());
 					boolean enemyHit = game.playerShoot(shootDir);
 					if(enemyHit) {
-						System.out.println("you shot the ninja!");
+						System.out.println("You shot the ninja!");
 					}
 					else {
-						System.out.println("you hit something but it wasnt a ninja...");
+						System.out.println("You hit something, but it wasn't a ninja...");
 					}
 					return;
 					

@@ -46,7 +46,7 @@ public class Ninja extends Character implements Serializable {
 	}
 	
 	/**
-	 * Overrides so that when an {@link Spy} steps on the {@code this}, it loses.
+	 * Overrides so that a {@link Spy} cannot step on a {@link Ninja}.
 	 */
 	@Override
 	public MoveStatus stepOn(DIRECTION approachDirection)

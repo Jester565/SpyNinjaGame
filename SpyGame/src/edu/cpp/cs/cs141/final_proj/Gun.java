@@ -1,9 +1,6 @@
 package edu.cpp.cs.cs141.final_proj;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-
-import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
 /**
  * This class represents the long range and one hit kill weapon used by the {@link Spy}.

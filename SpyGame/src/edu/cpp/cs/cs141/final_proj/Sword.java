@@ -2,8 +2,6 @@ package edu.cpp.cs.cs141.final_proj;
 
 import java.io.Serializable;
 
-import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
-
 /**
  * The short ranged and high damage weapons used by {@link Ninja}s.
  */
