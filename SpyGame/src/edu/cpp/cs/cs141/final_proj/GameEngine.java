@@ -114,6 +114,7 @@ public class GameEngine {
 		spy.aliveAgain();
 		grid.removeGameObject(spy.getX(), spy.getY());
 		grid.setGameObject(spy.getBelowObject(), spy.getX(), spy.getY());
+		spy.setBelowObject(null);
 		for (int i = 0; i < ninjas.size(); i++)
 		{
 			if (Math.abs(ninjas.get(i).getX() - Spy.INITIAL_X) <= 2 && Math.abs(ninjas.get(i).getY() - Spy.INITIAL_Y) <= 2)
