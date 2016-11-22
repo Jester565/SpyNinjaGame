@@ -427,6 +427,46 @@ public class GameEngine {
 	}
 	
 	/**
+	 * AI method for enemy
+	 */
+	public boolean enemyLook(int x, int y, String direction) {
+		int aheadNum = 1;
+		if (direction == "up") {
+			while (! (grid.getGameObject(x, y - aheadNum) instanceof Room)
+					& (y - aheadNum) >= 0 ) {
+				if (grid.getGameObject(x, y - aheadNum) instanceof Spy)
+					return true;
+				aheadNum += 1;
+			}
+		}
+		if (direction == "down") {
+			while (! (grid.getGameObject(x, y + aheadNum) instanceof Room)
+					& (y + aheadNum) <= (Grid.GRID_SIZE -1) ) {
+				if (grid.getGameObject(x, y + aheadNum) instanceof Spy)
+					return true;
+				aheadNum += 1;
+			}
+		}
+		if (direction == "left") {
+			while (! (grid.getGameObject(x - aheadNum, y) instanceof Room)
+					& (x - aheadNum) >= 0 ) {
+				if (grid.getGameObject(x - aheadNum, y) instanceof Spy)
+					return true;
+				aheadNum += 1;
+			}
+		}
+		if (direction == "right") {
+			while (! (grid.getGameObject(x + aheadNum, y) instanceof Room)
+					& (x + aheadNum) <= (Grid.GRID_SIZE - 1) ) {
+				if (grid.getGameObject(x + aheadNum, y) instanceof Spy)
+					return true;
+				aheadNum += 1;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * @return {@link #spy}
 	 */
 	public Spy getSpy() {
