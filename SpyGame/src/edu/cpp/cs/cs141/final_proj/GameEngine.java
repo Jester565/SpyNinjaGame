@@ -145,7 +145,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Set three items 
+	 * Set three items.
 	 */
 	public void setItems() {
 		int diceX, diceY;
@@ -307,8 +307,8 @@ public class GameEngine {
 		MoveStatus moveStatus = grid.checkMoveStatus(direction, spyX, spyY);
 		
 		if (moveStatus.moveResult == MOVE_RESULT.LEGAL) { 
+			grid.setToInvisible();  //You messed up the order
 			grid.move(direction, spyX, spyY);
-			grid.setToInvisible();
 		}
 			
 		if (moveStatus.moveResult == MOVE_RESULT.WIN)

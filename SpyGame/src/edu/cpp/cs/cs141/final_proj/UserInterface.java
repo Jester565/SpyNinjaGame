@@ -1,6 +1,5 @@
 package edu.cpp.cs.cs141.final_proj;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -80,11 +79,6 @@ public class UserInterface {
 	 * options and hotkeys for {@link #PAUSE_COMMAND}
 	 */
 	private String pauseMenuOptions = "";
-	
-	/**
-	 * String of grid
-	 */
-	private String gridString = "";
 	
 	/**
 	 * Constructor for creating UserInterface objects
@@ -174,17 +168,7 @@ public class UserInterface {
 				game.resetGrid();
 			}
 			
-			// print grid and do player 'look' action
-			gridString = game.displayBoard();
-			System.out.println(gridString);
 			playerLookLoop();
-			
-			// store the gridString and print it
-			gridString = game.displayBoard();
-			System.out.println(gridString);
-			
-			// make all gameObjects invisible (except for spy & rooms)
-			game.resetVisibility();
 			
 			// get command or direction to move in from user then do corresponding action
 			playerTurn();
@@ -227,6 +211,7 @@ public class UserInterface {
 
 		// loop until valid direction or command is entered
 		while (true) {
+			System.out.println(game.displayBoard());
 			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 			
@@ -244,9 +229,7 @@ public class UserInterface {
 				
 				// ILLEGAL move attempted, print grid & call this method
 				if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
-					System.out.println(gridString);
-					playerTurn();
-					return;
+					continue;  //Go back to top of the while loop
 				}
 				game.useSpyPowerup();
 				game.updateSpyPowerups();
@@ -273,14 +256,9 @@ public class UserInterface {
 					
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-					gridString = game.displayBoard();
-					System.out.println(gridString);
-					playerTurn();
-					return;
-					
+					break;
 				case options:
 					pauseMenu();
-					System.out.println(gridString);
 					break;
 					
 				default:
@@ -306,6 +284,7 @@ public class UserInterface {
 		DIRECTION lookDirection = null;
 		USER_COMMAND command = null;
 		while (true) {
+			System.out.println(game.displayBoard());  //Show board here.  Less code needed.
 			System.out.println(question);
 			userInput = keyboard.nextLine().toLowerCase().trim();
 			
@@ -323,20 +302,17 @@ public class UserInterface {
 				switch(command) {		
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-					gridString = game.displayBoard();
-					System.out.println(gridString);
-					playerLookLoop();
-					return;
-					
+					break;
 				case options:
 					pauseMenu();
-					System.out.println(gridString);
-					playerLookLoop();
-					return;
-					
+					break;
 				default:
 					break;
 				}
+			}
+			else
+			{
+				System.out.println("Invalid input... try again");
 			}
 		}
 	}
@@ -383,25 +359,6 @@ public class UserInterface {
 		default:
 			break;
 		}
-	}
-	
-	/**
-	 * Continually ask user to give a command for the {@link GameEngine#spy}
-	 * until a valid command is entered
-	 * @return {@link #userCommand} of the command the user chose 
-	 */
-	private USER_COMMAND getUserCommand() {
-		String question = "Enter one of the following commands:\n"
-				+ "1: Shoot\n"
-				+ "2: Debug\n"
-				+ "3: Options";
-		String userInput;
-		do 
-		{
-			System.out.println(question);
-			userInput = keyboard.nextLine().toLowerCase().trim();
-		} while(!USER_COMMAND.keyCodes().containsKey(userInput));
-		return USER_COMMAND.keyCodes().get(userInput);
 	}
 	
 	/**
