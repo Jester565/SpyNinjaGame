@@ -160,21 +160,39 @@ public class UserInterface {
 	 * Game loop to handle player and enemy turns.
 	 */
 	private void gameLoop() {
-		while (game.getGameStatus().equals(GAME_STATE.UNFINISHED))
-		{
-			// if spy is not alive reset the grid
-			if (!game.getSpy().isAlive()) {
-				System.out.println("You were stabbed by the ninja, return to original point");
-				game.setSpyBackToInitialState();
-			}
-			
+		while (true)
+		{	
 			playerLookLoop();
 			
 			// get command or direction to move in from user then do corresponding action
 			playerTurn();
 			
-			// each ninja kills player if in range then moves according to their AI rules
-			game.enemyTurn();
+			if (game.getGameStatus().equals(GAME_STATE.WON))
+			{
+				break;
+			}
+			
+			// each ninja kills player if in range
+			game.enemyAttack();
+			
+			// if spy is not alive reset the grid
+			if (!game.getSpy().isAlive()) {
+				if (game.getGameStatus().equals(GAME_STATE.LOST))
+				{
+					break;
+				}
+				System.out.println(game.displayBoard());
+				System.out.println("You were stabbed by the ninja, press enter to continue");
+				keyboard.nextLine();
+				game.resetVisibility();
+				game.enemyMove();
+				game.setSpyBackToInitialState();
+			}
+			else
+			{
+				// each ninja moves
+				game.enemyMove();
+			}
 			
 			//Prevents false advertising of Powerups
 			game.useSpyPowerup();

@@ -356,19 +356,12 @@ public class GameEngine {
 	 * Handles the enemie's AI and movement.  Called after the user has taken their turn. A ninja will
 	 * check all 4 possible directions (randomly) until a valid move can be made.
 	 */
-	public void enemyTurn() {
+	public void enemyAttack() {
+		Ninja killer = null;
 		for (int i = 0; i < ninjas.size(); i++)
 		{
-			ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
-			directionArray.add(DIRECTION.DOWN);
-			directionArray.add(DIRECTION.UP);
-			directionArray.add(DIRECTION.LEFT);
-			directionArray.add(DIRECTION.RIGHT);
-			int randomNum, ninX, ninY;
-			DIRECTION currentDir;
-			MoveStatus moveStatus;
-			ninX = ninjas.get(i).getX();
-			ninY = ninjas.get(i).getY();
+			int ninX = ninjas.get(i).getX();
+			int ninY = ninjas.get(i).getY();
 			
 			// Ninja attacks if Spy is in range
 			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1){
@@ -393,20 +386,42 @@ public class GameEngine {
 				{
 					if (!spy.isAlive())
 					{
+						if (killer == null)
+						{
+							killer = ninjas.get(i);
+						}
 						if (!spy.hasLives())
 						{
 							gameStatus = GAME_STATE.LOST;
-							return;
 						}
 						break;
 					}
 				}
 			}
-			
+		}
+		if (killer != null)
+		{
+			grid.setAsVisible(killer.getX(), killer.getY());
+		}
+	}
+	
+	void enemyMove()
+	{
+		for (int i = 0; i < ninjas.size(); i++)
+		{
+			ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
+			directionArray.add(DIRECTION.DOWN);
+			directionArray.add(DIRECTION.UP);
+			directionArray.add(DIRECTION.LEFT);
+			directionArray.add(DIRECTION.RIGHT);
+			DIRECTION currentDir;
+			MoveStatus moveStatus;
+			int ninX = ninjas.get(i).getX();
+			int ninY = ninjas.get(i).getY();
 			// Ninja moves in a random direction
 			while (directionArray.size() > 0)
 			{
-				randomNum = rng.nextInt(directionArray.size());
+				int randomNum = rng.nextInt(directionArray.size());
 				currentDir = directionArray.get(randomNum);
 				moveStatus = grid.checkMoveStatus(currentDir, ninX, ninY);
 				if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
