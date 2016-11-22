@@ -70,7 +70,7 @@ public class Spy extends Character implements Serializable {
 	 */
 	void usePowerups()
 	{
-		if (getBelowObject() != null && getBelowObject() instanceof Useable) {
+		if (getBelowObject() instanceof Useable) {
 			if (((Useable)getBelowObject()).useOn(this)){
 				setBelowObject(null);
 			}
