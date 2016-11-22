@@ -292,6 +292,10 @@ public class GameEngine {
 			grid.setToInvisible();  //You messed up the order
 			grid.move(direction, spyX, spyY);
 		}
+		
+		// The player tried to move into the room from the north side but it didn't have the briefcase
+		if (moveStatus.moveResult == MOVE_RESULT.UNMOVED_TURN_TAKEN)
+			grid.setToInvisible();
 			
 		if (moveStatus.moveResult == MOVE_RESULT.WIN)
 			gameStatus = GAME_STATE.WON;
