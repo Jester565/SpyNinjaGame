@@ -24,7 +24,7 @@ public class Invincibility extends GameObject implements Useable, Serializable {
 	 * as the player receives the powerup. This way the player gets 5 full turns
 	 * where the player can move and look.
 	 */
-	private static final int INVINCIBLE_TURNS = 6;
+	private static final int INVINCIBLE_TURNS = 5;
 	
 	/**
 	 * Creates an instance of {@link Invincibility} and sets the gridRepresentation.
