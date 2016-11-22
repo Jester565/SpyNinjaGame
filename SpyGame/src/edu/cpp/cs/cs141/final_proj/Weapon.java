@@ -73,6 +73,7 @@ public abstract class Weapon implements Serializable {
 		 	{
 		 		if (object instanceof Character)
 		 		{
+		 			((Character)object).takeDamage(damage);
 		 			targetHit = true;
 		 		}
 		 		else if (object instanceof Room)
