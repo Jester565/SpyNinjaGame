@@ -71,6 +71,11 @@ public class GameEngine {
 	private ArrayList<Ninja> ninjas;
 	
 	/**
+	 * Hard mode
+	 */
+	public static boolean HardMode = false;
+	
+	/**
 	 * Resets the visibility of the {@link #grid}.
 	 */
 	public void resetVisibility()
@@ -397,6 +402,28 @@ public class GameEngine {
 	{
 		for (int i = 0; i < ninjas.size(); i++)
 		{
+			int ninX = ninjas.get(i).getX();
+			int ninY = ninjas.get(i).getY();
+			
+			if (HardMode) {
+				if ( enemyLook(ninX, ninY, "up") ) {
+					grid.move(DIRECTION.UP ,ninX, ninY);
+					break;
+				}
+				if ( enemyLook(ninX, ninY, "down") ) {
+					grid.move(DIRECTION.DOWN ,ninX, ninY);
+					break;
+				}
+				if ( enemyLook(ninX, ninY, "left") ) {
+					grid.move(DIRECTION.LEFT ,ninX, ninY);
+					break;
+				}
+				if ( enemyLook(ninX, ninY, "right") ) {
+					grid.move(DIRECTION.RIGHT ,ninX, ninY);
+					break;
+				}
+			}
+			
 			ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
 			directionArray.add(DIRECTION.DOWN);
 			directionArray.add(DIRECTION.UP);
@@ -404,8 +431,6 @@ public class GameEngine {
 			directionArray.add(DIRECTION.RIGHT);
 			DIRECTION currentDir;
 			MoveStatus moveStatus;
-			int ninX = ninjas.get(i).getX();
-			int ninY = ninjas.get(i).getY();
 			// Ninja moves in a random direction
 			while (directionArray.size() > 0)
 			{
@@ -539,6 +564,13 @@ public class GameEngine {
 	public static void SetDebugMode(boolean mode)
 	{
 		DebugMode = mode;
+	}
+	
+	/**
+	 * Set hard mode
+	 */
+	public static void setHardMode(boolean mode) {
+		HardMode = mode;
 	}
 	
 	/**
