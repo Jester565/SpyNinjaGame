@@ -324,7 +324,20 @@ public class GameEngine {
 	 */
 	public boolean playerShoot(DIRECTION direction)
 	{
-		return spy.getGun().attack(direction, spy, grid);
+		if (spy.getGun().attack(direction, spy, grid))
+		{
+			for (int i = 0; i < ninjas.size(); i++)
+			{
+				if (!ninjas.get(i).isAlive())
+				{
+					grid.removeGameObject(ninjas.get(i).getX(), ninjas.get(i).getY());
+					ninjas.remove(i);
+					i--;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	
