@@ -617,7 +617,6 @@ public class GameEngine {
 		spyInfoMessages.add("Ammo: " + spy.getGun().getNumRounds() + "\n");
 		spyInfoMessages.add("Invincible Turns: " + spy.getInvincibleTurns() + "\n");
 		spyInfoMessages.add("Radar: " + (spy.hasRadar() ? "Enabled": "Disabled") + "\n");
-		
 		String board = "";
 		String gridString = grid.toString();
 		int msgIndex = 0;
