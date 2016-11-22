@@ -19,11 +19,16 @@ public class Grid implements Serializable {
 	 * Stores the different directions that can be easily interpreted by the {@link #gameObjects}.
 	 */
 	public enum DIRECTION {
-		UP("w"), RIGHT("d"), DOWN("s"), LEFT("a");
+		UP("w", 0, -1), RIGHT("d", 1, 0), DOWN("s", 0, 1), LEFT("a", -1, 0);
 		
 		public final String keyCode;
-		private DIRECTION(String code) {
+		public final int deltaX;
+		public final int deltaY;
+		
+		private DIRECTION(String code, int dX, int dY) {
 			keyCode = code;
+			deltaX = dX;
+			deltaY = dY;
 		}
 		
 		/**
@@ -151,25 +156,8 @@ public class Grid implements Serializable {
 	 * @return array of integers representing the coordinate after moving in the (parameter) direction
 	 */
 	private int[] getCoordinate(DIRECTION direction, int x, int y) {
-		int moveX = x;
-		int moveY = y;
-		switch (direction)
-		{
-		case UP:
-			moveY--;
-			break;
-		case RIGHT:
-			moveX++;
-			break;
-		case DOWN:
-			moveY++;
-			break;
-		case LEFT:
-			moveX--;
-			break;
-		default:
-			System.err.println("Invalid direction given");
-		}
+		int moveX = x + direction.deltaX;
+		int moveY = y + direction.deltaY;
 		int[] coord = {moveX, moveY};
 		return coord;
 	}

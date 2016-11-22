@@ -212,19 +212,7 @@ public class GameEngine {
 	 * @param lookDirection The direction to look in.
 	 */
 	public String playerLook(DIRECTION lookDirection) {
-		switch (lookDirection)
-		{
-		case UP:
-			return playerLook(0, -1, Spy.LOOK_RANGE);
-		case RIGHT:
-			return playerLook(1, 0, Spy.LOOK_RANGE);
-		case DOWN:
-			return playerLook(0, 1, Spy.LOOK_RANGE);
-		case LEFT:
-			return playerLook(-1, 0, Spy.LOOK_RANGE);
-		default:
-			return new String("What kind of direction was that?");	
-		}
+		return playerLook(lookDirection.deltaX, lookDirection.deltaY, Spy.LOOK_RANGE);
 	}
 	
 	/**

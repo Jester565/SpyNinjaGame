@@ -45,20 +45,7 @@ public abstract class Weapon implements Serializable {
 	 * @return
 	 */
 	public boolean attack(DIRECTION shootDirection, Character character, Grid grid) {
-		switch (shootDirection)
-		{
-		case UP:
-			return attack(0, -1, character, grid);
-		case RIGHT:
-			return attack(1, 0, character, grid);
-		case DOWN:
-			return attack(0, 1, character, grid);
-		case LEFT:
-			return attack(-1, 0, character, grid);
-		default:
-			System.err.println("Invalid shoot option");
-			return false;
-		}
+		return attack(shootDirection.deltaX, shootDirection.deltaY, character, grid);
 	}
 	
 	/**
