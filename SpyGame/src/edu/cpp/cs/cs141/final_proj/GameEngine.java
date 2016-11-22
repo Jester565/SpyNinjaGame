@@ -19,14 +19,7 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 public class GameEngine {
 	
 	private static String[] LOOK_MESSAGES = new String[] {"Something is blocking your vision", "Clear", "Ninja Ahead!"};
-	/**
-	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
-	 * @param mode The value to set {@link #DebugMode} to.
-	 */
-	public static void SetDebugMode(boolean mode)
-	{
-		DebugMode = mode;
-	}
+	
 	/**
 	 *Describes the status of the game: unfinished, won, or lost.
 	 */
@@ -497,6 +490,15 @@ public class GameEngine {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	/**
+	 * Modifier for {@link #DebugMode}.  While not necessary to modify, the intent is more clear.
+	 * @param mode The value to set {@link #DebugMode} to.
+	 */
+	public static void SetDebugMode(boolean mode)
+	{
+		DebugMode = mode;
 	}
 	
 	/**
