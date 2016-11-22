@@ -383,11 +383,17 @@ public class GameEngine {
 				{
 					stabDirection = DIRECTION.UP;
 				}
-				ninjas.get(i).getSword().attack(stabDirection, ninjas.get(i), grid);
-				if (!spy.hasLives())
+				if (ninjas.get(i).getSword().attack(stabDirection, ninjas.get(i), grid))
 				{
-					gameStatus = GAME_STATE.LOST;
-					return;	//This should not return.  The ninjas should finish moving but the UI should also show the board in the way the player died. This means separating the ninjaAttack and ninjaMove steps.
+					if (!spy.isAlive())
+					{
+						if (!spy.hasLives())
+						{
+							gameStatus = GAME_STATE.LOST;
+							return;
+						}
+						break;
+					}
 				}
 			}
 			
