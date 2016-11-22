@@ -108,14 +108,24 @@ public class GameEngine {
 	/**
 	 * Reset the grid when player is stabbed, back to original point when player still have lives 
 	 */
-	public void resetGrid()	{
-		grid = new Grid();
+	public void setSpyBackToInitialState()	{
 		spy.aliveAgain();
-		setPlayer();
-		setRooms();
-		setItems();
-		setNinjas();
-		grid.setToInvisible();
+		grid.removeGameObject(spy.getX(), spy.getY());
+		grid.setGameObject(spy.getBelowObject(), spy.getX(), spy.getY());
+		for (int i = 0; i < ninjas.size(); i++)
+		{
+			if (Math.abs(ninjas.get(i).getX() - Spy.INITIAL_X) <= 2 && Math.abs(ninjas.get(i).getY() - Spy.INITIAL_Y) <= 2)
+			{
+				int diceX;
+				int diceY;
+				do {
+					diceX = rng.nextInt(Grid.GRID_SIZE);
+					diceY = rng.nextInt(Grid.GRID_SIZE);
+				} while(!grid.canSetNinja(diceX, diceY));
+				grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
+			}
+		}
+		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 	}
 	
 	/**
