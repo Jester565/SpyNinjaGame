@@ -114,12 +114,12 @@ public class UserInterface {
 				if (game.load(loadFile))
 				{
 					System.out.println("Load was successful!");
+					gameLoop();
 				}
 				else
 				{
 					System.out.println("Load failed");
 				}
-				gameLoop();
 				break;
 			case 3:
 				quit = true;

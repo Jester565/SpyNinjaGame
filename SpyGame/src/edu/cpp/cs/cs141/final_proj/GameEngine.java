@@ -438,9 +438,9 @@ public class GameEngine {
 	 * @param fileDir The directory to save in.
 	 */
 	public boolean save(String fileDir) {
-		File file = new File(fileDir);
-		FileOutputStream fileOut;
 		try {
+			File file = new File(fileDir);
+			FileOutputStream fileOut;
 			fileOut = new FileOutputStream(file);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeBoolean(DebugMode);
@@ -466,9 +466,9 @@ public class GameEngine {
 	 * @param fileDir The file to load from.
 	 */
 	public boolean load(String fileDir) {
-		File file = new File(fileDir);
-		FileInputStream fileIn;
 		try {
+			File file = new File(fileDir);
+			FileInputStream fileIn;
 			fileIn = new FileInputStream(file);
 			ObjectInputStream objectOut = new ObjectInputStream(fileIn);
 			DebugMode = objectOut.readBoolean();
