@@ -123,7 +123,9 @@ public class GameEngine {
 					diceX = rng.nextInt(Grid.GRID_SIZE);
 					diceY = rng.nextInt(Grid.GRID_SIZE);
 				} while(!grid.canSetNinja(diceX, diceY));
-				grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
+				if (!(grid.getGameObject(ninjas.get(i).getX(), ninjas.get(i).getY()) == null)) {
+					grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
+				}
 			}
 		}
 		setPlayer();
