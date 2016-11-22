@@ -175,6 +175,9 @@ public class UserInterface {
 			
 			// each ninja kills player if in range then moves according to their AI rules
 			game.enemyTurn();
+			
+			//Prevents false advertising of Powerups
+			game.useSpyPowerup();
 		}
 		
 		// Game is finished
@@ -231,7 +234,6 @@ public class UserInterface {
 				if (moveStatus.moveResult == MOVE_RESULT.ILLEGAL) {
 					continue;  //Go back to top of the while loop
 				}
-				game.useSpyPowerup();
 				game.updateSpyPowerups();
 				break;
 			}

@@ -125,13 +125,13 @@ public class GameEngine {
 				grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
 			}
 		}
-		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
+		setPlayer();
 	}
 	
 	/**
 	 * Set the player
 	 */
-	public void setPlayer()	{
+	private void setPlayer()	{
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 	}
 	
