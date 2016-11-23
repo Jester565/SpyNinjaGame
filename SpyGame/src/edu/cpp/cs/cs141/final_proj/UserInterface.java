@@ -16,13 +16,13 @@ public class UserInterface {
 	 * Hotkey command for when {@link GameEngine#spy} is stuck and needs to do nothing
 	 * this turn
 	 */
-	private static final String STAND_STILL_COMMAND = "S";
+	private static final String STAND_STILL_COMMAND = "s";
 	
 	/**
 	 * Commands the user can do during the spy's turn
 	 */
 	public enum USER_COMMAND {
-		shoot("1"), debug("2"), options("3");
+		shoot("1"), debug("2"), options("3"), hardMode("4");
 		
 		public final String keyCode;
 		private USER_COMMAND(String code) {
@@ -164,10 +164,12 @@ public class UserInterface {
 	private void gameLoop() {
 		while (true)
 		{	
-			playerLookLoop();
-			if (exitToMenu)
-			{
-				return;
+			if (!game.DebugMode) {
+				playerLookLoop();
+				if (exitToMenu)
+				{
+					return;
+				}
 			}
 			
 			// get command or direction to move in from user then do corresponding action
@@ -175,6 +177,9 @@ public class UserInterface {
 			if (exitToMenu)
 			{
 				return;
+			}
+			if (!game.DebugMode) {
+				continue;
 			}
 			
 			if (game.getGameStatus().equals(GAME_STATE.WON))
@@ -227,6 +232,7 @@ public class UserInterface {
 		String question;
 		boolean gunHasAmmo = game.getSpy().getGun().getNumRounds() > 0;
 		boolean moveable = game.playerMoveable();
+		boolean hardMode = false;
 		if (moveable)
 		{
 			question = "Enter a direction to move or another command\n"
@@ -236,7 +242,7 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options";
+		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options | 4: HardMode";
 		String userInput;
 		USER_COMMAND command = null;
 
@@ -286,6 +292,9 @@ public class UserInterface {
 					
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+					if(!game.DebugMode) {
+						return;
+					}
 					break;
 				case options:
 					pauseMenu();
@@ -294,7 +303,16 @@ public class UserInterface {
 						return;
 					}
 					break;
-					
+				case hardMode:
+					hardMode = !hardMode;
+					if (hardMode) {
+						GameEngine.setHardMode(hardMode);
+						System.out.println("Hard Mode is active");
+					} else {
+						GameEngine.setHardMode(hardMode);
+						System.out.println("Hard Mode is closed");
+					}
+					break;
 				default:
 					break;
 				}
@@ -336,6 +354,9 @@ public class UserInterface {
 				switch(command) {		
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+					if (game.DebugMode) {
+						return;
+					}
 					break;
 				case options:
 					pauseMenu();

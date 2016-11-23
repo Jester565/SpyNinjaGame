@@ -72,6 +72,11 @@ public class GameEngine {
 	private ArrayList<Ninja> ninjas;
 	
 	/**
+	 * Hard mode
+	 */
+	public static boolean HardMode = false;
+	
+	/**
 	 * Resets the visibility of the {@link #grid}.
 	 */
 	public void resetVisibility()
@@ -91,6 +96,7 @@ public class GameEngine {
 		gameStatus = GAME_STATE.UNFINISHED;
 		//set debugMode as false
 		DebugMode = false;
+		HardMode = false;
 		//set the player
 		setPlayer();
 		//set rooms
@@ -286,6 +292,9 @@ public class GameEngine {
 		if (moveStatus.moveResult == MOVE_RESULT.LEGAL) { 
 			grid.setToInvisible();  //You messed up the order
 			grid.move(direction, spyX, spyY);
+			if (spy.getGun().getNumRounds() == 1 & moveStatus.msg == "You picked up a bullet!") {
+				moveStatus.msg = "Your ammo is full, can't pick this bullet!";
+			}
 		}
 		
 		// The player tried to move into the room from the north side but it didn't have the briefcase
@@ -384,7 +393,6 @@ public class GameEngine {
 					return;
 				}
 			}
-			return;
 		}
 	}
 	
@@ -565,6 +573,13 @@ public class GameEngine {
 	public static void SetDebugMode(boolean mode)
 	{
 		DebugMode = mode;
+	}
+	
+	/**
+	 * Set hard mode
+	 */
+	public static void setHardMode(boolean mode) {
+		HardMode = mode;
 	}
 	
 	/**
