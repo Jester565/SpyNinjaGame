@@ -290,6 +290,9 @@ public class GameEngine {
 		if (moveStatus.moveResult == MOVE_RESULT.LEGAL) { 
 			grid.setToInvisible();  //You messed up the order
 			grid.move(direction, spyX, spyY);
+			if (spy.getGun().getNumRounds() == 1 & moveStatus.msg == "You picked up a bullet!") {
+				moveStatus.msg = "Your ammo is full, can't pick this bullet!";
+			}
 		}
 		
 		// The player tried to move into the room from the north side but it didn't have the briefcase
