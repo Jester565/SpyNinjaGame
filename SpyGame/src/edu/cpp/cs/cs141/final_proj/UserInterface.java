@@ -164,7 +164,7 @@ public class UserInterface {
 	private void gameLoop() {
 		while (true)
 		{	
-			if (!game.DebugMode) {
+			if (!GameEngine.DebugMode) {
 				playerLookLoop();
 				if (exitToMenu)
 				{
@@ -287,12 +287,14 @@ public class UserInterface {
 					}
 					return;
 					
-				case debug: 
+				case debug:
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-					if(!game.DebugMode) {
-						return;
-					}
-					break;
+					System.out.println("DebugMode: " + GameEngine.DebugMode);
+					if (!GameEngine.DebugMode)
+						gameLoop();
+					else
+						playerTurn();
+					return;
 				case options:
 					pauseMenu();
 					if (exitToMenu)
@@ -351,10 +353,9 @@ public class UserInterface {
 				switch(command) {		
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-					if (game.DebugMode) {
-						return;
-					}
-					break;
+					System.out.println("DebugMode: " + GameEngine.DebugMode);
+					playerLookLoop();
+					return;
 				case options:
 					pauseMenu();
 					if (exitToMenu)
