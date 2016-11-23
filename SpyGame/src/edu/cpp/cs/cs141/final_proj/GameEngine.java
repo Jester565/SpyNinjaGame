@@ -471,12 +471,12 @@ public class GameEngine {
 		int ninjaY = ninja.getY();
 		DIRECTION ninjaDirection = ninja.getDirectionFacing();
 		
+		MOVE_RESULT moveResult = grid.checkMoveStatus(ninjaDirection, ninjaX, ninjaY).moveResult;
 		// if ninja can move in the ninjaDirection on the grid
-		if (grid.checkMoveStatus(ninjaDirection, ninjaX, ninjaY).moveResult == 
-				MOVE_RESULT.LEGAL) {
+		if (moveResult == MOVE_RESULT.LEGAL) {
 			grid.move(ninjaDirection, ninjaX, ninjaY);
 		}
-		else {
+		else if (moveResult == MOVE_RESULT.UNMOVED || moveResult == MOVE_RESULT.UNMOVED_TURN_TAKEN) {
 			ninja.setDestinationCoordinate(null);
 		}
 	}
