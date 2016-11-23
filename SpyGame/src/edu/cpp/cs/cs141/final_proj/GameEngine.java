@@ -341,60 +341,6 @@ public class GameEngine {
 		spy.usePowerups();
 	}
 	
-	public void enemyTurn() {
-		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
-			enemyAttack(ninjaIndex);
-			enemyMove(ninjaIndex);
-		}
-	}
-	
-	/**
-	 * Grabs a ninja from {@link #ninjas} using ninjaIndex then stabs the spy if in range
-	 * @param ninjaIndex the index used to select a ninja from {@link #ninjas}
-	 * @return {@code true} if spy was stabbed, {@code false} otherwise
-	 */
-	public boolean enemyAttack(int ninjaIndex) {
-		Ninja ninja = ninjas.get(ninjaIndex);
-		int ninX = ninjas.get(ninjaIndex).getX();
-		int ninY = ninjas.get(ninjaIndex).getY();
-		
-		// Ninja attacks if Spy is in range
-		if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1)
-		{
-			DIRECTION stabDirection = null;
-			if (spy.getX() < ninX)
-			{
-				stabDirection = DIRECTION.LEFT;
-			}
-			else if (spy.getX() > ninX)
-			{
-				stabDirection = DIRECTION.RIGHT;
-			}
-			else if (spy.getY() > ninY)
-			{
-				stabDirection = DIRECTION.DOWN;
-			}
-			else if (spy.getY() < ninY)
-			{
-				stabDirection = DIRECTION.UP;
-			}
-			// if successfully stabbed
-			if (ninja.getSword().attack(stabDirection, ninja, grid))
-			{
-				grid.setAsVisible(ninja.getX(), ninja.getY());
-				if (!spy.isAlive())
-				{
-					if (!spy.hasLives())
-					{
-						gameStatus = GAME_STATE.LOST;
-					}
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public void enemyAttack() {		
 		for (Ninja ninja: ninjas) {
 			int ninX = ninja.getX();
@@ -476,23 +422,6 @@ public class GameEngine {
 					break;
 			}
 		}
-	}
-	
-	/**
-	 * If ninja has a destination target then move it foward ({@link Ninja#directionFacing})
-	 * else move ninja in a random direction
-	 * @param ninjaIndex
-	 */
-	public void enemyMove(int ninjaIndex)
-	{
-		Ninja ninja = ninjas.get(ninjaIndex);
-		if (ninja.arrivedAtDestination())
-			ninja.setDestinationCoordinate(null);
-		
-		if (ninja.getDestinationCoordinate() == null)
-			enemyMoveInRandomDirection(ninjaIndex);
-		else
-			enemyMoveFoward(ninjaIndex);
 	}
 	
 	public void enemyMove()
