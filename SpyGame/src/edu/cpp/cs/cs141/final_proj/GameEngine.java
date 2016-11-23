@@ -448,6 +448,8 @@ public class GameEngine {
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
+			enemyLook(ninjaIndex);
+			
 			if (ninja.arrivedAtDestination())
 				ninja.setDestinationCoordinate(null);
 			
@@ -455,8 +457,6 @@ public class GameEngine {
 				enemyMoveFoward(ninjaIndex);
 			else if (ninja.getDestinationCoordinate() == null)
 				enemyMoveInRandomDirection(ninjaIndex);
-			
-			enemyLook(ninjaIndex);
 		}
 	}
 	
