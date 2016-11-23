@@ -21,9 +21,14 @@ public class Ninja extends Character implements Serializable {
 	private static final int NINJA_MAX_HEALTH = 1;
 	
 	/**
+	 * The default value for the ninja look range
+	 */
+	public static final int DEFAULT_LOOK_RANGE = Spy.LOOK_RANGE;
+	
+	/**
 	 * The range of the {@link Ninja} vision
 	 */
-	public static final int SIGHT_RANGE = Grid.GRID_SIZE;
+	private int lookRange = DEFAULT_LOOK_RANGE;
 	
 	/**
 	 * The {@link Sword} to attack in the method {@link #stab(Character)}.
@@ -119,5 +124,20 @@ public class Ninja extends Character implements Serializable {
 	 */
 	public void setDirectionFacing(DIRECTION dirFacing) {
 		directionFacing = dirFacing;
+	}
+	
+	/**
+	 * @return {@link #lookRange}
+	 */
+	public int getLookRange() {
+		return lookRange;
+	}
+	
+	/**
+	 * Set {@link #lookRange}
+	 * @param sightRange {@link #lookRange} becomes this value
+	 */
+	public void setLookRange(int sightRange) {
+		lookRange = sightRange;
 	}
 }

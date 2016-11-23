@@ -414,7 +414,7 @@ public class GameEngine {
 			int x = ninjaX;
 			int y = ninjaY;
 			// iterate over each tile in a direction
-			for (int tileIndex = 0; tileIndex < Ninja.SIGHT_RANGE;)
+			for (int tileIndex = 0; tileIndex < ninja.getLookRange();)
 			{
 				x += direction.deltaX;
 				y += direction.deltaY;
@@ -447,17 +447,14 @@ public class GameEngine {
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
-			if (HardMode) {
-				enemyLook(ninjaIndex);
-				
-				if (ninja.arrivedAtDestination())
-					ninja.setDestinationCoordinate(null);
-				
-				if (ninja.getDestinationCoordinate() != null)
-					enemyMoveFoward(ninjaIndex);
-			}
+			enemyLook(ninjaIndex);
 			
-			if (!HardMode || ninja.getDestinationCoordinate() == null)
+			if (ninja.arrivedAtDestination())
+				ninja.setDestinationCoordinate(null);
+			
+			if (ninja.getDestinationCoordinate() != null)
+				enemyMoveFoward(ninjaIndex);
+			else if (ninja.getDestinationCoordinate() == null)
 				enemyMoveInRandomDirection(ninjaIndex);
 		}
 	}
@@ -567,6 +564,11 @@ public class GameEngine {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public void changeAllNinjasLookRangeTo(int lookRange) {
+		for (Ninja ninja: ninjas)
+			ninja.setLookRange(lookRange);
 	}
 	
 	/**

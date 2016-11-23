@@ -287,14 +287,14 @@ public class UserInterface {
 					return;
 					
 				case debug:
-					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-					System.out.println("DebugMode: " + GameEngine.DebugMode);
+					toggleDebugMode();
 					if (!GameEngine.DebugMode) {
 						game.resetVisibility();
 						gameLoop();
 					}
-					else
+					else {
 						playerTurn();
+					}
 					return;
 				case options:
 					pauseMenu();
@@ -304,8 +304,7 @@ public class UserInterface {
 					}
 					break;
 				case hardMode:
-					GameEngine.setHardMode(GameEngine.HardMode ? false: true);
-					System.out.println("Hard Mode is " + (GameEngine.HardMode ? "activated": "diactivated"));
+					toggleHardMode();
 				default:
 					break;
 				}
@@ -346,8 +345,7 @@ public class UserInterface {
 			
 				switch(command) {		
 				case debug: 
-					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
-					System.out.println("DebugMode: " + GameEngine.DebugMode);
+					toggleDebugMode();
 					playerLookLoop();
 					return;
 				case options:
@@ -409,6 +407,25 @@ public class UserInterface {
 		default:
 			break;
 		}
+	}
+	
+	/**
+	 * Change {@link GameEngine#HardMode} to opposite boolean & print message indicating mode entered
+	 * Changes the sight or look range of all the ninjas to a either {@link Grid#GRID_SIZE} or 
+	 * {@link Ninja#DEFAULT_LOOK_RANGE} depending on whether debug mode was disabled or enabled
+	 */
+	private void toggleHardMode() {
+		GameEngine.setHardMode(GameEngine.HardMode ? false: true);
+		System.out.println("Hard Mode is " + (GameEngine.HardMode ? "activated": "deactivated"));
+		game.changeAllNinjasLookRangeTo(GameEngine.HardMode ? Grid.GRID_SIZE: Ninja.DEFAULT_LOOK_RANGE);
+	}
+	
+	/**
+	 * Change {@link GameEngine#DebugMode} to opposite boolean & print message indicating mode entered
+	 */
+	private void toggleDebugMode() {
+		GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+		System.out.println("Debug Mode is " + (GameEngine.DebugMode ? "activated": "deactivated"));
 	}
 	
 	/**
