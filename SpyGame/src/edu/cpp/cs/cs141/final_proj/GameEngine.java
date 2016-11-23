@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -340,19 +341,68 @@ public class GameEngine {
 		spy.usePowerups();
 	}
 	
+	public void enemyTurn() {
+		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
+			enemyAttack(ninjaIndex);
+			enemyMove(ninjaIndex);
+		}
+	}
+	
 	/**
-	 * Handles the enemie's AI and movement.  Called after the user has taken their turn. A ninja will
-	 * check all 4 possible directions (randomly) until a valid move can be made.
+	 * Grabs a ninja from {@link #ninjas} using ninjaIndex then stabs the spy if in range
+	 * @param ninjaIndex the index used to select a ninja from {@link #ninjas}
+	 * @return {@code true} if spy was stabbed, {@code false} otherwise
 	 */
-	public void enemyAttack() {
-		Ninja killer = null;
-		for (int i = 0; i < ninjas.size(); i++)
+	public boolean enemyAttack(int ninjaIndex) {
+		Ninja ninja = ninjas.get(ninjaIndex);
+		int ninX = ninjas.get(ninjaIndex).getX();
+		int ninY = ninjas.get(ninjaIndex).getY();
+		
+		// Ninja attacks if Spy is in range
+		if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1)
 		{
-			int ninX = ninjas.get(i).getX();
-			int ninY = ninjas.get(i).getY();
-			
+			DIRECTION stabDirection = null;
+			if (spy.getX() < ninX)
+			{
+				stabDirection = DIRECTION.LEFT;
+			}
+			else if (spy.getX() > ninX)
+			{
+				stabDirection = DIRECTION.RIGHT;
+			}
+			else if (spy.getY() > ninY)
+			{
+				stabDirection = DIRECTION.DOWN;
+			}
+			else if (spy.getY() < ninY)
+			{
+				stabDirection = DIRECTION.UP;
+			}
+			// if successfully stabbed
+			if (ninja.getSword().attack(stabDirection, ninja, grid))
+			{
+				grid.setAsVisible(ninja.getX(), ninja.getY());
+				if (!spy.isAlive())
+				{
+					if (!spy.hasLives())
+					{
+						gameStatus = GAME_STATE.LOST;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void enemyAttack() {		
+		for (Ninja ninja: ninjas) {
+			int ninX = ninja.getX();
+			int ninY = ninja.getY();
+		
 			// Ninja attacks if Spy is in range
-			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1){
+			if(Math.abs(spy.getX() - ninX) + Math.abs(spy.getY() - ninY) <= 1)
+			{
 				DIRECTION stabDirection = null;
 				if (spy.getX() < ninX)
 				{
@@ -370,59 +420,138 @@ public class GameEngine {
 				{
 					stabDirection = DIRECTION.UP;
 				}
-				if (ninjas.get(i).getSword().attack(stabDirection, ninjas.get(i), grid))
+				// if successfully stabbed
+				if (ninja.getSword().attack(stabDirection, ninja, grid))
 				{
+					grid.setAsVisible(ninja.getX(), ninja.getY());
 					if (!spy.isAlive())
 					{
-						if (killer == null)
-						{
-							killer = ninjas.get(i);
-						}
 						if (!spy.hasLives())
 						{
 							gameStatus = GAME_STATE.LOST;
 						}
-						break;
 					}
+					return;
 				}
 			}
-		}
-		if (killer != null)
-		{
-			grid.setAsVisible(killer.getX(), killer.getY());
+			return;
 		}
 	}
 	
-	void enemyMove()
+	/**
+	 * The ninja looks in all four directions as far as {@link Ninja#SIGHT_RANGE}
+	 * with any {@link Room} blocking vision, and if {@link GameEngine#spy} is 
+	 * spotted then set {@link Ninja#destinationCoordinate} to the spy's coordinate
+	 * @param ninjaIndex
+	 */
+	public void enemyLook(int ninjaIndex)
 	{
-		for (int i = 0; i < ninjas.size(); i++)
+		Ninja ninja = ninjas.get(ninjaIndex);
+		int ninjaX = ninja.getX();
+		int ninjaY = ninja.getY();
+		// iterate over all four directions to check for spy
+		directionLoop:
+		for (DIRECTION direction: DIRECTION.values()) 
 		{
-			ArrayList<DIRECTION> directionArray = new ArrayList<DIRECTION>();
-			directionArray.add(DIRECTION.DOWN);
-			directionArray.add(DIRECTION.UP);
-			directionArray.add(DIRECTION.LEFT);
-			directionArray.add(DIRECTION.RIGHT);
-			DIRECTION currentDir;
-			MoveStatus moveStatus;
-			int ninX = ninjas.get(i).getX();
-			int ninY = ninjas.get(i).getY();
-			// Ninja moves in a random direction
-			while (directionArray.size() > 0)
+			int x = ninjaX;
+			int y = ninjaY;
+			// iterate over each tile in a direction
+			for (int tileIndex = 0; tileIndex < Ninja.SIGHT_RANGE;)
 			{
-				int randomNum = rng.nextInt(directionArray.size());
-				currentDir = directionArray.get(randomNum);
-				moveStatus = grid.checkMoveStatus(currentDir, ninX, ninY);
-				if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
-				{
-					grid.move(currentDir, ninX, ninY);
+				x += direction.deltaX;
+				y += direction.deltaY;
+				if (grid.inRange(x, y)) {
+					GameObject object = grid.getGameObject(x, y);
+					if (object instanceof Spy) {
+						ninja.setDestinationCoordinate(x, y);
+						ninja.setDirectionFacing(direction);
+						System.out.println(ninja.getDestinationCoordinate());
+						break directionLoop;
+					}
+					if (object instanceof Room) {
+						break;
+					}
+				}
+				else if (!grid.inRange(x, y))
 					break;
-				}
-				else
-				{
-					directionArray.remove(randomNum);
-				}
 			}
-			directionArray.clear();
+		}
+	}
+	
+	/**
+	 * If ninja has a destination target then move it foward ({@link Ninja#directionFacing})
+	 * else move ninja in a random direction
+	 * @param ninjaIndex
+	 */
+	public void enemyMove(int ninjaIndex)
+	{
+		Ninja ninja = ninjas.get(ninjaIndex);
+		if (ninja.arrivedAtDestination())
+			ninja.setDestinationCoordinate(null);
+		
+		if (ninja.getDestinationCoordinate() == null)
+			enemyMoveInRandomDirection(ninjaIndex);
+		else
+			enemyMoveFoward(ninjaIndex);
+	}
+	
+	public void enemyMove()
+	{
+		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
+			Ninja ninja = ninjas.get(ninjaIndex);
+			
+			enemyLook(ninjaIndex);
+			System.out.println(ninja.getDestinationCoordinate());
+			
+			if (ninja.getDestinationCoordinate() == null)
+				enemyMoveInRandomDirection(ninjaIndex);
+			else
+				enemyMoveFoward(ninjaIndex);
+			
+			if (ninja.arrivedAtDestination())
+				ninja.setDestinationCoordinate(null);
+		}
+	}
+	
+	/**
+	 * Moves the ninja in the direction its facing {@link Ninja#directionFacing}
+	 * @param ninjaIndex the index of {@link #ninjas} used to select a ninja
+	 */
+	public void enemyMoveFoward(int ninjaIndex)
+	{
+		Ninja ninja = ninjas.get(ninjaIndex);
+		int ninjaX = ninja.getX();
+		int ninjaY = ninja.getY();
+		DIRECTION ninjaDirection = ninja.getDirectionFacing();
+		
+		// if ninja can move in the ninjaDirection on the grid
+		if (grid.checkMoveStatus(ninjaDirection, ninjaX, ninjaY).moveResult == 
+				MOVE_RESULT.LEGAL) {
+			System.out.println(ninjaX + " " + ninjaY);
+			grid.move(ninjaDirection, ninjaX, ninjaY);
+		}
+	}
+	
+	/**
+	 * Move a ninja from {@link #ninjas} in a random direction
+	 * @param ninjaIndex the index of {@link #ninjas} used to select a ninja
+	 */
+	public void enemyMoveInRandomDirection(int ninjaIndex)
+	{
+		Ninja ninja = ninjas.get(ninjaIndex);
+		int ninjaX = ninja.getX();
+		int ninjaY = ninja.getY();
+		ArrayList<DIRECTION> availableDirections = new ArrayList<DIRECTION>(Arrays.asList(DIRECTION.values()));
+		
+		// check each direction randomly until list is exhausted without repeating a direction
+		while (availableDirections.size() > 0) {
+			DIRECTION randomDir = availableDirections.get(rng.nextInt(availableDirections.size()));
+			MoveStatus moveStatus = grid.checkMoveStatus(randomDir, ninjaX, ninjaY);
+			if (moveStatus.moveResult == MOVE_RESULT.LEGAL) {
+				grid.move(randomDir, ninjaX, ninjaY);
+				break;
+			}
+			availableDirections.remove(randomDir);
 		}
 	}
 	
