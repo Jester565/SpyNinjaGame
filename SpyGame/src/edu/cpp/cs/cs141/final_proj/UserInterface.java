@@ -288,14 +288,7 @@ public class UserInterface {
 					
 				case debug:
 					toggleDebugMode();
-					if (!GameEngine.DebugMode) {
-						game.resetVisibility();
-						gameLoop();
-					}
-					else {
-						playerTurn();
-					}
-					return;
+					break;
 				case options:
 					pauseMenu();
 					if (exitToMenu)
@@ -305,6 +298,7 @@ public class UserInterface {
 					break;
 				case hardMode:
 					toggleHardMode();
+					break;
 				default:
 					break;
 				}
@@ -346,8 +340,7 @@ public class UserInterface {
 				switch(command) {		
 				case debug: 
 					toggleDebugMode();
-					playerLookLoop();
-					return;
+					break;
 				case options:
 					pauseMenu();
 					if (exitToMenu)
