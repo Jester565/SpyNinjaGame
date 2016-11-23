@@ -389,8 +389,8 @@ public class GameEngine {
 						{
 							gameStatus = GAME_STATE.LOST;
 						}
+						return;
 					}
-					return;
 				}
 			}
 		}
@@ -447,15 +447,18 @@ public class GameEngine {
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
-			enemyLook(ninjaIndex);
+			if (HardMode) {
+				enemyLook(ninjaIndex);
+				
+				if (ninja.arrivedAtDestination())
+					ninja.setDestinationCoordinate(null);
+				
+				if (ninja.getDestinationCoordinate() != null)
+					enemyMoveFoward(ninjaIndex);
+			}
 			
-			if (ninja.getDestinationCoordinate() == null)
+			if (!HardMode || ninja.getDestinationCoordinate() == null)
 				enemyMoveInRandomDirection(ninjaIndex);
-			else
-				enemyMoveFoward(ninjaIndex);
-			
-			if (ninja.arrivedAtDestination())
-				ninja.setDestinationCoordinate(null);
 		}
 	}
 	
