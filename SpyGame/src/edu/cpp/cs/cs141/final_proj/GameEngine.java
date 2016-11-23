@@ -341,6 +341,10 @@ public class GameEngine {
 		spy.usePowerups();
 	}
 	
+	/**
+	 * For each ninja in {@link #ninjas} attack spy with {@link Ninja#weapon}
+	 * if spy is in range
+	 */
 	public void enemyAttack() {		
 		for (Ninja ninja: ninjas) {
 			int ninX = ninja.getX();
@@ -424,6 +428,13 @@ public class GameEngine {
 		}
 	}
 	
+	/**
+	 * For each ninja in {@link #ninjas} this makes the ninja look which checks in all four
+	 * directions to see if spy is there. If spotted then stores the coordinate of the spy 
+	 * and changes the {@link Ninja#directionFacing} towards the spy. The ninja will move 
+	 * in the direction facing until it reaches {@link Ninja#destinationCoordinate} at which
+	 * point it'll use the {@link enemyMoveInRandomDirection(int)} method.
+	 */
 	public void enemyMove()
 	{
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
