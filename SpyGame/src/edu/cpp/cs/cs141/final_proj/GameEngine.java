@@ -95,6 +95,7 @@ public class GameEngine {
 		gameStatus = GAME_STATE.UNFINISHED;
 		//set debugMode as false
 		DebugMode = false;
+		HardMode = false;
 		//set the player
 		setPlayer();
 		//set rooms
