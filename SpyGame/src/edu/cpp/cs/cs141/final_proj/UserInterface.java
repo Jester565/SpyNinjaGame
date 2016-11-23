@@ -164,10 +164,12 @@ public class UserInterface {
 	private void gameLoop() {
 		while (true)
 		{	
-			playerLookLoop();
-			if (exitToMenu)
-			{
-				return;
+			if (!game.DebugMode) {
+				playerLookLoop();
+				if (exitToMenu)
+				{
+					return;
+				}
 			}
 			
 			// get command or direction to move in from user then do corresponding action
@@ -175,6 +177,9 @@ public class UserInterface {
 			if (exitToMenu)
 			{
 				return;
+			}
+			if (!game.DebugMode) {
+				continue;
 			}
 			
 			if (game.getGameStatus().equals(GAME_STATE.WON))
@@ -287,6 +292,9 @@ public class UserInterface {
 					
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+					if(!game.DebugMode) {
+						return;
+					}
 					break;
 				case options:
 					pauseMenu();
@@ -346,6 +354,9 @@ public class UserInterface {
 				switch(command) {		
 				case debug: 
 					GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
+					if (game.DebugMode) {
+						return;
+					}
 					break;
 				case options:
 					pauseMenu();
