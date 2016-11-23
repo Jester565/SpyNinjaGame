@@ -407,9 +407,10 @@ public class GameEngine {
 		Ninja ninja = ninjas.get(ninjaIndex);
 		int ninjaX = ninja.getX();
 		int ninjaY = ninja.getY();
+		
+		DIRECTION[] directions = GameEngine.HardMode ? DIRECTION.values(): ninja.getDirectionFacingAsArray();
 		// iterate over all four directions to check for spy
-		directionLoop:
-		for (DIRECTION direction: DIRECTION.values()) 
+		for (DIRECTION direction: directions) 
 		{
 			int x = ninjaX;
 			int y = ninjaY;
@@ -423,7 +424,7 @@ public class GameEngine {
 					if (object instanceof Spy) {
 						ninja.setDestinationCoordinate(x, y);
 						ninja.setDirectionFacing(direction);
-						break directionLoop;
+						return;
 					}
 					if (object instanceof Room) {
 						break;
@@ -447,8 +448,6 @@ public class GameEngine {
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
-			enemyLook(ninjaIndex);
-			
 			if (ninja.arrivedAtDestination())
 				ninja.setDestinationCoordinate(null);
 			
@@ -456,6 +455,8 @@ public class GameEngine {
 				enemyMoveFoward(ninjaIndex);
 			else if (ninja.getDestinationCoordinate() == null)
 				enemyMoveInRandomDirection(ninjaIndex);
+			
+			enemyLook(ninjaIndex);
 		}
 	}
 	
@@ -478,7 +479,8 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Move a ninja from {@link #ninjas} in a random direction
+	 * Move a ninja from {@link #ninjas} in a random direction & set the ninja {@link Ninja#directionFacing}
+	 * to the direction moved in
 	 * @param ninjaIndex the index of {@link #ninjas} used to select a ninja
 	 */
 	public void enemyMoveInRandomDirection(int ninjaIndex)
@@ -494,6 +496,7 @@ public class GameEngine {
 			MoveStatus moveStatus = grid.checkMoveStatus(randomDir, ninjaX, ninjaY);
 			if (moveStatus.moveResult == MOVE_RESULT.LEGAL) {
 				grid.move(randomDir, ninjaX, ninjaY);
+				ninja.setDirectionFacing(randomDir);
 				break;
 			}
 			availableDirections.remove(randomDir);
@@ -567,8 +570,9 @@ public class GameEngine {
 	}
 	
 	public void changeAllNinjasLookRangeTo(int lookRange) {
-		for (Ninja ninja: ninjas)
+		for (Ninja ninja: ninjas) {
 			ninja.setLookRange(lookRange);
+		}
 	}
 	
 	/**

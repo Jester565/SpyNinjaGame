@@ -119,6 +119,14 @@ public class Ninja extends Character implements Serializable {
 	}
 	
 	/**
+	 * @return {@link #directionFacing} in an array
+	 */
+	public DIRECTION[] getDirectionFacingAsArray() {
+		DIRECTION[] dirFacing = {directionFacing};
+		return dirFacing;
+	}
+	
+	/**
 	 * Set {@link #directionFacing}
 	 * @param dirFacing {@link #directionFacing} becomes this value
 	 */
