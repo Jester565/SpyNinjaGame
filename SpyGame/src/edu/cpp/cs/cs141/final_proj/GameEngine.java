@@ -472,6 +472,8 @@ public class GameEngine {
 	
 	/**
 	 * AI method for enemy
+	 * Enemy check the direction ahead if there is spy ahead,
+	 * if there is a room on his direction, the room will broke ninja's vision
 	 */
 	public boolean enemyLook(int x, int y, String direction) {
 		int aheadNum = 1;
