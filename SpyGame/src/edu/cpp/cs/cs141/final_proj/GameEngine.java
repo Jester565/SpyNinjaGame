@@ -596,6 +596,9 @@ public class GameEngine {
 		spyInfoMessages.add("Ammo: " + spy.getGun().getNumRounds() + "\n");
 		spyInfoMessages.add("Invincible Turns: " + spy.getInvincibleTurns() + "\n");
 		spyInfoMessages.add("Radar: " + (spy.hasRadar() ? "Enabled": "Disabled") + "\n");
+		spyInfoMessages.add("---\n");
+		spyInfoMessages.add("Hard Mode: " + (GameEngine.HardMode ? "Enabled": "Disabled") + "\n");
+		spyInfoMessages.add("Debug Mode: " + (GameEngine.DebugMode ? "Enabled": "Disabled") + "\n");
 		String board = "";
 		String gridString = grid.toString();
 		int msgIndex = 0;
