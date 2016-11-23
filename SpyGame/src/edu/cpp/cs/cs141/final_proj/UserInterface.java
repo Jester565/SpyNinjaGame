@@ -16,7 +16,7 @@ public class UserInterface {
 	 * Hotkey command for when {@link GameEngine#spy} is stuck and needs to do nothing
 	 * this turn
 	 */
-	private static final String STAND_STILL_COMMAND = "S";
+	private static final String STAND_STILL_COMMAND = "s";
 	
 	/**
 	 * Commands the user can do during the spy's turn
