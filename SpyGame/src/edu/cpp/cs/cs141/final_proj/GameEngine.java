@@ -410,19 +410,19 @@ public class GameEngine {
 			if (HardMode) {
 				if ( enemyLook(ninX, ninY, "up") ) {
 					grid.move(DIRECTION.UP ,ninX, ninY);
-					break;
+					continue;
 				}
 				if ( enemyLook(ninX, ninY, "down") ) {
 					grid.move(DIRECTION.DOWN ,ninX, ninY);
-					break;
+					continue;
 				}
 				if ( enemyLook(ninX, ninY, "left") ) {
 					grid.move(DIRECTION.LEFT ,ninX, ninY);
-					break;
+					continue;
 				}
 				if ( enemyLook(ninX, ninY, "right") ) {
 					grid.move(DIRECTION.RIGHT ,ninX, ninY);
-					break;
+					continue;
 				}
 			}
 			
