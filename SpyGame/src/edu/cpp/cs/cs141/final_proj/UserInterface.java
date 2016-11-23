@@ -178,9 +178,6 @@ public class UserInterface {
 			{
 				return;
 			}
-			if (!game.DebugMode) {
-				continue;
-			}
 			
 			if (game.getGameStatus().equals(GAME_STATE.WON))
 			{
