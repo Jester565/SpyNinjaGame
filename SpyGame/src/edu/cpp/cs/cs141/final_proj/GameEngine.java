@@ -476,6 +476,9 @@ public class GameEngine {
 				MOVE_RESULT.LEGAL) {
 			grid.move(ninjaDirection, ninjaX, ninjaY);
 		}
+		else {
+			ninja.setDestinationCoordinate(null);
+		}
 	}
 	
 	/**
