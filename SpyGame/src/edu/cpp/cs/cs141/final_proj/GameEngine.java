@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -27,10 +28,34 @@ public class GameEngine {
 	public enum GAME_STATE {
 		UNFINISHED, WON, LOST;
 	}
+	
 	/**
 	 * Describes the current status of the game.
 	 */
-	private GAME_STATE gameStatus;
+	private GAME_STATE gameStatus = null;
+	
+	/**
+	 * The various difficulties for the game
+	 */
+	public enum GAME_DIFFICULTY {
+		EASY("1"), MEDIUM("2"), HARD("3"), VERY_HARD("4");
+		public final String keyCode;
+		private GAME_DIFFICULTY(String code) {
+			keyCode = code;
+		}
+		public static HashMap<String, GAME_DIFFICULTY> keyCodes() {
+			HashMap<String, GAME_DIFFICULTY> keyCodes = new HashMap<String, GAME_DIFFICULTY>();
+			for (GAME_DIFFICULTY difficulty: GAME_DIFFICULTY.values())
+				keyCodes.put(difficulty.keyCode, difficulty);
+			return keyCodes;
+		}
+	}
+	
+	/**
+	 * Depending on the difficulty, the enemy AI will behave differently
+	 */
+	private GAME_DIFFICULTY difficulty = null;
+	
 	/**
 	 * {@code true} will make all elements in the {@link Grid} visible.
 	 */
@@ -94,6 +119,8 @@ public class GameEngine {
 		
 		//set gameStatus as unfinished
 		gameStatus = GAME_STATE.UNFINISHED;
+		//set difficulty for game to medium
+		difficulty = GAME_DIFFICULTY.MEDIUM;
 		//set debugMode as false
 		DebugMode = false;
 		HardMode = false;
@@ -575,6 +602,27 @@ public class GameEngine {
 	public void changeAllNinjasLookRangeTo(int lookRange) {
 		for (Ninja ninja: ninjas) {
 			ninja.setLookRange(lookRange);
+		}
+	}
+	
+	/**
+	 * Change {@link #difficulty} to the value of the (argument) newDifficulty
+	 * Call {@link #changeAllNinjasLookRangeTo(int)} if hard or very hard mode enabled
+	 * @param newDifficulty set {@link #difficulty} using the value from {@code newDifficulty}
+	 */
+	public void changeDifficulty(GAME_DIFFICULTY newDifficulty) {
+		difficulty = newDifficulty;
+		switch(difficulty) {
+		case EASY:
+			break;
+		case MEDIUM:
+			break;
+		case HARD:
+			changeAllNinjasLookRangeTo(Ninja.DEFAULT_LOOK_RANGE);
+			break;
+		case VERY_HARD:
+			changeAllNinjasLookRangeTo(Grid.GRID_SIZE);
+			break;
 		}
 	}
 	
