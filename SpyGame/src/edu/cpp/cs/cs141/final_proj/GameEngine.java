@@ -415,7 +415,6 @@ public class GameEngine {
 					if (object instanceof Spy) {
 						ninja.setDestinationCoordinate(x, y);
 						ninja.setDirectionFacing(direction);
-						System.out.println(ninja.getDestinationCoordinate());
 						break directionLoop;
 					}
 					if (object instanceof Room) {
@@ -441,7 +440,6 @@ public class GameEngine {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
 			enemyLook(ninjaIndex);
-			System.out.println(ninja.getDestinationCoordinate());
 			
 			if (ninja.getDestinationCoordinate() == null)
 				enemyMoveInRandomDirection(ninjaIndex);
@@ -467,7 +465,6 @@ public class GameEngine {
 		// if ninja can move in the ninjaDirection on the grid
 		if (grid.checkMoveStatus(ninjaDirection, ninjaX, ninjaY).moveResult == 
 				MOVE_RESULT.LEGAL) {
-			System.out.println(ninjaX + " " + ninjaY);
 			grid.move(ninjaDirection, ninjaX, ninjaY);
 		}
 	}
