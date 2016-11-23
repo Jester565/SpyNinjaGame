@@ -60,7 +60,16 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Used to exit main game loop to enter menu
+	 */
 	private boolean exitToMenu = false;
+	
+	/**
+	 * Used to skip enemy turn when switching from !debug to
+	 * debug mode in player turn
+	 */
+	private boolean skipEnemyTurn = false;
 	
 	/**
 	 * Used to control the game
@@ -184,30 +193,32 @@ public class UserInterface {
 				break;
 			}
 			
-			// each ninja kills player if in range
-			game.enemyAttack();
-			
-			// if spy is not alive reset the grid
-			if (!game.getSpy().isAlive()) {
-				if (game.getGameStatus().equals(GAME_STATE.LOST))
-				{
-					break;
+			if (!skipEnemyTurn) {
+				// each ninja kills player if in range
+				game.enemyAttack();
+				
+				// if spy is not alive reset the grid
+				if (!game.getSpy().isAlive()) {
+					if (game.getGameStatus().equals(GAME_STATE.LOST))
+					{
+						break;
+					}
+					System.out.println(game.displayBoard());
+					System.out.println("You were stabbed by the ninja, press enter to continue");
+					keyboard.nextLine();
+					game.resetVisibility();
+					game.enemyMove();
+					game.setSpyBackToInitialState();
 				}
-				System.out.println(game.displayBoard());
-				System.out.println("You were stabbed by the ninja, press enter to continue");
-				keyboard.nextLine();
-				game.resetVisibility();
-				game.enemyMove();
-				game.setSpyBackToInitialState();
+				else
+				{
+					// each ninja moves
+					game.enemyMove();
+				}
+				
+				//Prevents false advertising of Powerups
+				game.updateSpyPowerups();
 			}
-			else
-			{
-				// each ninja moves
-				game.enemyMove();
-			}
-			
-			//Prevents false advertising of Powerups
-			game.updateSpyPowerups();
 		}
 		
 		// Game is finished
@@ -229,6 +240,7 @@ public class UserInterface {
 		String question;
 		boolean gunHasAmmo = game.getSpy().getGun().getNumRounds() > 0;
 		boolean moveable = game.playerMoveable();
+		skipEnemyTurn = false;
 		if (moveable)
 		{
 			question = "Enter a direction to move or another command\n"
@@ -288,7 +300,14 @@ public class UserInterface {
 					
 				case debug:
 					toggleDebugMode();
-					break;
+					if (!GameEngine.DebugMode) {
+						game.resetVisibility();
+						skipEnemyTurn = true;
+						return;
+					}
+					else {
+						break;
+					}
 				case options:
 					pauseMenu();
 					if (exitToMenu)
@@ -340,6 +359,8 @@ public class UserInterface {
 				switch(command) {		
 				case debug: 
 					toggleDebugMode();
+					if (GameEngine.DebugMode)
+						return;
 					break;
 				case options:
 					pauseMenu();
