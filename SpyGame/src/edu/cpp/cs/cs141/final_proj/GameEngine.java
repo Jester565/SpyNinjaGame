@@ -382,9 +382,9 @@ public class GameEngine {
 				// if successfully stabbed
 				if (ninja.getSword().attack(stabDirection, ninja, grid))
 				{
-					grid.setAsVisible(ninja.getX(), ninja.getY());
 					if (!spy.isAlive())
 					{
+						grid.setAsVisible(ninja.getX(), ninja.getY());
 						if (!spy.hasLives())
 						{
 							gameStatus = GAME_STATE.LOST;
