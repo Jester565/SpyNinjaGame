@@ -123,9 +123,7 @@ public class GameEngine {
 					diceX = rng.nextInt(Grid.GRID_SIZE);
 					diceY = rng.nextInt(Grid.GRID_SIZE);
 				} while(!grid.canSetNinja(diceX, diceY));
-				if (!(grid.getGameObject(ninjas.get(i).getX(), ninjas.get(i).getY()) == null)) {
-					grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
-				}
+				grid.move(ninjas.get(i).getX(), ninjas.get(i).getY(), diceX, diceY);
 			}
 		}
 		setPlayer();
@@ -409,20 +407,36 @@ public class GameEngine {
 			
 			if (HardMode) {
 				if ( enemyLook(ninX, ninY, "up") ) {
-					grid.move(DIRECTION.UP ,ninX, ninY);
-					continue;
+					MoveStatus moveStatus = grid.checkMoveStatus(DIRECTION.UP, ninX, ninY);
+					if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
+					{
+						grid.move(DIRECTION.UP, ninX, ninY);
+						continue;
+					}
 				}
 				if ( enemyLook(ninX, ninY, "down") ) {
-					grid.move(DIRECTION.DOWN ,ninX, ninY);
-					continue;
+					MoveStatus moveStatus = grid.checkMoveStatus(DIRECTION.DOWN, ninX, ninY);
+					if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
+					{
+						grid.move(DIRECTION.DOWN, ninX, ninY);
+						continue;
+					}
 				}
 				if ( enemyLook(ninX, ninY, "left") ) {
-					grid.move(DIRECTION.LEFT ,ninX, ninY);
-					continue;
+					MoveStatus moveStatus = grid.checkMoveStatus(DIRECTION.LEFT, ninX, ninY);
+					if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
+					{
+						grid.move(DIRECTION.LEFT, ninX, ninY);
+						continue;
+					}
 				}
 				if ( enemyLook(ninX, ninY, "right") ) {
-					grid.move(DIRECTION.RIGHT ,ninX, ninY);
-					continue;
+					MoveStatus moveStatus = grid.checkMoveStatus(DIRECTION.RIGHT, ninX, ninY);
+					if (moveStatus.moveResult == MOVE_RESULT.LEGAL)
+					{
+						grid.move(DIRECTION.RIGHT, ninX, ninY);
+						continue;
+					}
 				}
 			}
 			
