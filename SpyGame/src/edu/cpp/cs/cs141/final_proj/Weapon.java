@@ -84,5 +84,12 @@ public abstract class Weapon implements Serializable {
 		}
 		return targetHit;
 	}
+	
+	/**
+	 * @return {@link #damage}
+	 */
+	public int getDamage() {
+		return damage;
+	}
 		
 }

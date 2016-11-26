@@ -72,7 +72,7 @@ public class Spy extends Character implements Serializable {
 	public String getGridRepresentation() {
 		String mark = "*";
 		if (GameEngine.DebugMode) {
-			mark = "N";
+			mark = "S";
 		}
 		else if (isVisible()) {
 			switch(getDirectionFacing()) {
@@ -89,7 +89,7 @@ public class Spy extends Character implements Serializable {
 				mark = "\u25c1";
 				break;
 			default:
-				mark = "N";
+				mark = "S";
 				break;
 			}
 		}
@@ -147,7 +147,7 @@ public class Spy extends Character implements Serializable {
 	 * @param target {@link Character} to deal damage to.
 	 */
 	public void shoot(Character target) {
-		target.takeDamage(gun.damage);
+		target.takeDamage(gun.getDamage());
 	}
 	
 	/**
