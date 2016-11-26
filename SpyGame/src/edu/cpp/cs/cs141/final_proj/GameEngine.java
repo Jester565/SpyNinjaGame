@@ -243,6 +243,7 @@ public class GameEngine {
 	 * @param lookDirection The direction to look in.
 	 */
 	public String playerLook(DIRECTION lookDirection) {
+		spy.setDirectionFacing(lookDirection);
 		return playerLook(lookDirection.deltaX, lookDirection.deltaY, Spy.LOOK_RANGE);
 	}
 	

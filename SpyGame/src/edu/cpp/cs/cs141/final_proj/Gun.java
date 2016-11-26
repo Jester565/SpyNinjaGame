@@ -20,7 +20,7 @@ public class Gun extends Weapon implements Serializable {
 	/**
 	 * This keeps track of how many bullets the player has.
 	 */
-	int numRounds;
+	private int numRounds;
 	
 	/**
 	 * This integer stores the maximum number of rounds that the {@link Spy} can start with.
@@ -48,7 +48,7 @@ public class Gun extends Weapon implements Serializable {
 	 * {@link #numRounds}.
 	 * @param numRoundsAdded Number of rounds to add to the gun.
 	 */
-	void addBullet(int numRoundsAdded){
+	public void addBullet(int numRoundsAdded){
 		if(this.numRounds < 1){
 		this.numRounds += numRoundsAdded;
 		}

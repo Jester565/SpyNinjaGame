@@ -66,9 +66,40 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
+	 * @return A triangle pointing in the direction the this spy is facing 
+	 */
+	@Override
+	public String getGridRepresentation() {
+		String mark = "*";
+		if (GameEngine.DebugMode) {
+			mark = "S";
+		}
+		else if (isVisible()) {
+			switch(getDirectionFacing()) {
+			case UP:
+				mark = "\u25b3";
+				break;
+			case RIGHT:
+				mark = "\u25b7";
+				break;
+			case DOWN:
+				mark = "\u25bd";
+				break;
+			case LEFT:
+				mark = "\u25c1";
+				break;
+			default:
+				mark = "S";
+				break;
+			}
+		}
+		return mark;
+	}
+	
+	/**
 	 * Checks if the BelowObject is null and if it isn't then it calls the function to use the power-up.
 	 */
-	void usePowerups()
+	public void usePowerups()
 	{
 		if (getBelowObject() instanceof Useable) {
 			if (((Useable)getBelowObject()).useOn(this)){
@@ -116,7 +147,7 @@ public class Spy extends Character implements Serializable {
 	 * @param target {@link Character} to deal damage to.
 	 */
 	public void shoot(Character target) {
-		target.takeDamage(gun.damage);
+		target.takeDamage(gun.getDamage());
 	}
 	
 	/**
@@ -185,7 +216,8 @@ public class Spy extends Character implements Serializable {
 	public void takeDamage(int dmg) {
 		if (!isInvincible()) {
 			super.takeDamage(dmg);
-			lives --;
+			if (!isAlive())
+				lives--;
 		}
 	}
 	
