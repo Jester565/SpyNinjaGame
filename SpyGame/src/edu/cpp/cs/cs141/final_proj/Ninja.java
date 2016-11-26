@@ -49,8 +49,36 @@ public class Ninja extends Character implements Serializable {
 	 * Every ninja have 1 life point
 	 */
 	public Ninja() {
-		super("N", NINJA_MAX_HEALTH);
+		super("\u25b2", NINJA_MAX_HEALTH);
 		sword = new Sword();
+	}
+	
+	/**
+	 * @return A triangle pointing in the direction the this ninja is facing 
+	 */
+	@Override
+	public String getGridRepresentation() {
+		String mark = "*";
+		if (isVisible()) {
+			switch(directionFacing) {
+			case UP:
+				mark = "\u25b2";
+				break;
+			case RIGHT:
+				mark = "\u25b6";
+				break;
+			case DOWN:
+				mark = "\u25bc";
+				break;
+			case LEFT:
+				mark = "\u25c0";
+				break;
+			default:
+				mark = "N";
+				break;
+			}
+		}
+		return mark;
 	}
 
 	/**

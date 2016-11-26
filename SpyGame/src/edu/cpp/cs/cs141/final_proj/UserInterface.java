@@ -3,6 +3,7 @@ package edu.cpp.cs.cs141.final_proj;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_DIFFICULTY;
 import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_STATE;
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
@@ -22,7 +23,7 @@ public class UserInterface {
 	 * Commands the user can do during the spy's turn
 	 */
 	public enum USER_COMMAND {
-		shoot("1"), debug("2"), options("3"), hardMode("4");
+		shoot("1"), debug("2"), options("3"), difficulty("4");
 		
 		public final String keyCode;
 		private USER_COMMAND(String code) {
@@ -250,7 +251,7 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options | 4: HardMode";
+		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options | 4: Change Difficulty";
 		String userInput;
 		USER_COMMAND command = null;
 
@@ -315,8 +316,8 @@ public class UserInterface {
 						return;
 					}
 					break;
-				case hardMode:
-					toggleHardMode();
+				case difficulty:
+					difficultyMenu();
 					break;
 				default:
 					break;
@@ -335,7 +336,7 @@ public class UserInterface {
 	private void playerLookLoop() {
 		String question = "Enter a direction to look in or another command\n"
 				+ directionOptions + "\n"
-				+ "2: Debug | 3: More Options";
+				+ "2: Debug | 3: More Options | 4: Change Difficulty";
 		String userInput;
 		
 		DIRECTION lookDirection = null;
@@ -368,6 +369,9 @@ public class UserInterface {
 					{
 						return;
 					}
+					break;
+				case difficulty:
+					difficultyMenu();
 					break;
 				default:
 					break;
@@ -424,6 +428,24 @@ public class UserInterface {
 	}
 	
 	/**
+	 * Once a valid input is entered by user, change the game difficulty using the
+	 * {@link GameEngine#changeDifficulty(GAME_DIFFICULTY)} method
+	 */
+	public void difficultyMenu() {
+		String userOptions = "Difficulty Menu\n"
+				+ "1: Easy | 2: Medium | 3: Hard | 4: Very Hard";
+		String userInput;
+		
+		do {
+			System.out.println(userOptions);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+		} while (!GAME_DIFFICULTY.keyCodes().containsKey(userInput));
+		
+		GAME_DIFFICULTY difficulty = GAME_DIFFICULTY.keyCodes().get(userInput);
+		game.changeDifficulty(difficulty);
+	}
+	
+	/**
 	 * Change {@link GameEngine#HardMode} to opposite boolean & print message indicating mode entered
 	 * Changes the sight or look range of all the ninjas to a either {@link Grid#GRID_SIZE} or 
 	 * {@link Ninja#DEFAULT_LOOK_RANGE} depending on whether debug mode was disabled or enabled
@@ -431,7 +453,6 @@ public class UserInterface {
 	private void toggleHardMode() {
 		GameEngine.setHardMode(GameEngine.HardMode ? false: true);
 		System.out.println("Hard Mode is " + (GameEngine.HardMode ? "activated": "deactivated"));
-		game.changeAllNinjasLookRangeTo(GameEngine.HardMode ? Grid.GRID_SIZE: Ninja.DEFAULT_LOOK_RANGE);
 	}
 	
 	/**
