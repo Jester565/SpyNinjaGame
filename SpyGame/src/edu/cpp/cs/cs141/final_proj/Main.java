@@ -9,9 +9,7 @@ public class Main {
 	 * @param args The arguments passed in through command.
 	 */
 	public static void main(String[] args) {
-//		GameEngine.SetDebugMode(true);
 		UserInterface ui = new UserInterface(new GameEngine());
 		ui.startGame();
 	}
-
 }

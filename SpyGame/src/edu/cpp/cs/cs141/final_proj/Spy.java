@@ -66,7 +66,7 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
-	 * @return A triangle pointing in the direction the this ninja is facing 
+	 * @return A triangle pointing in the direction the this spy is facing 
 	 */
 	@Override
 	public String getGridRepresentation() {
@@ -99,7 +99,7 @@ public class Spy extends Character implements Serializable {
 	/**
 	 * Checks if the BelowObject is null and if it isn't then it calls the function to use the power-up.
 	 */
-	void usePowerups()
+	public void usePowerups()
 	{
 		if (getBelowObject() instanceof Useable) {
 			if (((Useable)getBelowObject()).useOn(this)){
@@ -216,7 +216,8 @@ public class Spy extends Character implements Serializable {
 	public void takeDamage(int dmg) {
 		if (!isInvincible()) {
 			super.takeDamage(dmg);
-			lives --;
+			if (!isAlive())
+				lives--;
 		}
 	}
 	
