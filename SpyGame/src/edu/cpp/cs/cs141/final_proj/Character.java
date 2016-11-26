@@ -2,6 +2,8 @@ package edu.cpp.cs.cs141.final_proj;
 
 import java.io.Serializable;
 
+import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
+
 /**
  * An abstract class for Spy and Ninja class which has the attributes and behaviors for 
  * Spy and Ninja
@@ -11,10 +13,21 @@ public abstract class Character extends GameObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7397173327731318547L;
+	
 	/**
 	 * Value to keep track of how much more damage can be taken before dead.
 	 */
 	private int health;
+	
+	/**
+	 * The direction this character is facing
+	 */
+	private DIRECTION directionFacing = DIRECTION.UP;
+	
+	/**
+	 * The amount of tiles this character can see in front of him
+	 */
+	private int lookRange = Spy.LOOK_RANGE;
 	
 	/**
 	 * Call super constructor passing gridRepresentation and set {@link #health} to initialHealth
@@ -51,5 +64,43 @@ public abstract class Character extends GameObject implements Serializable {
 			return false;
 		else
 			return true;
+	}
+	
+	/**
+	 * @return {@link #directionFacing}
+	 */
+	public DIRECTION getDirectionFacing() {
+		return directionFacing;
+	}
+	
+	/**
+	 * @return {@link #directionFacing} in an array
+	 */
+	public DIRECTION[] getDirectionFacingAsArray() {
+		DIRECTION[] dirFacing = {directionFacing};
+		return dirFacing;
+	}
+	
+	/**
+	 * Set {@link #directionFacing}
+	 * @param dirFacing {@link #directionFacing} becomes this value
+	 */
+	public void setDirectionFacing(DIRECTION dirFacing) {
+		directionFacing = dirFacing;
+	}
+	
+	/**
+	 * @return {@link #lookRange}
+	 */
+	public int getLookRange() {
+		return lookRange;
+	}
+	
+	/**
+	 * Set {@link #lookRange}
+	 * @param sightRange {@link #lookRange} becomes this value
+	 */
+	public void setLookRange(int sightRange) {
+		lookRange = sightRange;
 	}
 }

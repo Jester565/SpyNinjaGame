@@ -26,11 +26,6 @@ public class Ninja extends Character implements Serializable {
 	public static final int DEFAULT_LOOK_RANGE = Spy.LOOK_RANGE;
 	
 	/**
-	 * The range of the {@link Ninja} vision
-	 */
-	private int lookRange = DEFAULT_LOOK_RANGE;
-	
-	/**
 	 * The {@link Sword} to attack in the method {@link #stab(Character)}.
 	 */
 	private Sword sword;
@@ -39,11 +34,6 @@ public class Ninja extends Character implements Serializable {
 	 * The coordinate this ninja will move to
 	 */
 	private int[] destinationCoordinate = null;
-	
-	/**
-	 * The {@link Grid#DIRECTION} this ninja is facing
-	 */
-	private DIRECTION directionFacing = DIRECTION.UP;
 	
 	/**
 	 * Every ninja have 1 life point
@@ -60,7 +50,7 @@ public class Ninja extends Character implements Serializable {
 	public String getGridRepresentation() {
 		String mark = "*";
 		if (isVisible()) {
-			switch(directionFacing) {
+			switch(getDirectionFacing()) {
 			case UP:
 				mark = "\u25b2";
 				break;
@@ -137,43 +127,5 @@ public class Ninja extends Character implements Serializable {
 	public boolean arrivedAtDestination() {
 		return destinationCoordinate == null ? 
 				false: x == destinationCoordinate[0] && y == destinationCoordinate[1];		  
-	}
-	
-	/**
-	 * @return {@link #directionFacing}
-	 */
-	public DIRECTION getDirectionFacing() {
-		return directionFacing;
-	}
-	
-	/**
-	 * @return {@link #directionFacing} in an array
-	 */
-	public DIRECTION[] getDirectionFacingAsArray() {
-		DIRECTION[] dirFacing = {directionFacing};
-		return dirFacing;
-	}
-	
-	/**
-	 * Set {@link #directionFacing}
-	 * @param dirFacing {@link #directionFacing} becomes this value
-	 */
-	public void setDirectionFacing(DIRECTION dirFacing) {
-		directionFacing = dirFacing;
-	}
-	
-	/**
-	 * @return {@link #lookRange}
-	 */
-	public int getLookRange() {
-		return lookRange;
-	}
-	
-	/**
-	 * Set {@link #lookRange}
-	 * @param sightRange {@link #lookRange} becomes this value
-	 */
-	public void setLookRange(int sightRange) {
-		lookRange = sightRange;
 	}
 }
