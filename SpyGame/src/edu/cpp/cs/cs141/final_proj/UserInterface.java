@@ -93,6 +93,11 @@ public class UserInterface {
 	private String pauseMenuOptions = "";
 	
 	/**
+	 * options and hotkeys for the game difficulties
+	 */
+	private String gameDifficultyOptions = "";
+	
+	/**
 	 * Constructor for creating UserInterface objects
 	 * @param game set {@link #game} to (parameter) game used to call methods
 	 */
@@ -101,6 +106,9 @@ public class UserInterface {
 		keyboard = new Scanner(System.in);
 		directionOptions = "W: Up | A: Left | S: Down | D: Right";
 		pauseMenuOptions = "1: Resume | 2: Save | 3: Main Menu | 4: Exit Game";
+		for (GAME_DIFFICULTY difficulty: GAME_DIFFICULTY.values())
+			gameDifficultyOptions += difficulty.keyCode + ": " + difficulty.name().toLowerCase() + " | ";
+		gameDifficultyOptions = gameDifficultyOptions.substring(0, gameDifficultyOptions.length() - 3); 
 	}
 	
 	/**
@@ -431,9 +439,8 @@ public class UserInterface {
 	 * Once a valid input is entered by user, change the game difficulty using the
 	 * {@link GameEngine#changeDifficulty(GAME_DIFFICULTY)} method
 	 */
-	public void difficultyMenu() {
-		String userOptions = "Difficulty Menu\n"
-				+ "1: Easy | 2: Medium | 3: Hard | 4: Very Hard";
+	private void difficultyMenu() {
+		String userOptions = "Difficulty Menu\n" + gameDifficultyOptions;
 		String userInput;
 		
 		do {

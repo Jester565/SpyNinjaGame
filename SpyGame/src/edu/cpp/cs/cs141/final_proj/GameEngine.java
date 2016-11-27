@@ -38,7 +38,7 @@ public class GameEngine {
 	 * The various difficulties for the game
 	 */
 	public enum GAME_DIFFICULTY {
-		EASY("1"), MEDIUM("2"), HARD("3"), VERY_HARD("4");
+		RNG_EASY("1"), EASY("2"), MEDIUM("3"), HARD("4"), VERY_HARD("5");
 		public final String keyCode;
 		private GAME_DIFFICULTY(String code) {
 			keyCode = code;
@@ -413,6 +413,7 @@ public class GameEngine {
 				{
 					if (!spy.isAlive())
 					{
+						clearAllNinjasDestinationCoordinate();
 						grid.setAsVisible(ninja.getX(), ninja.getY());
 						if (!spy.hasLives())
 						{
@@ -426,76 +427,82 @@ public class GameEngine {
 	}
 	
 	/**
-	 * The ninja looks in all four directions as far as {@link Ninja#getLookRange()}
-	 * with any {@link Room} blocking vision, and if {@link GameEngine#spy} is 
-	 * spotted then set {@link Ninja#getDestinationCoordinate()} to the spy's coordinate
-	 * @param ninjaIndex
-	 * @return {@code true} if {@link #spy} was spotted, {@code false} otherwise
+	 * Each ninja looks a number of directions as far as {@link Ninja#getLookRange()}
+	 * with any {@link Room} blocking vision, and if {@link #spy} is 
+	 * spotted then call {@link Ninja#setDestinationCoordinate(int, int)} 
+	 * passing the spy's coordinate
 	 */
-	public void enemyLook(int ninjaIndex)
+	public void enemyLook()
 	{
-		Ninja ninja = ninjas.get(ninjaIndex);
-		int ninjaX = ninja.getX();
-		int ninjaY = ninja.getY();
-		
-		DIRECTION[] directions = Integer.parseInt(difficulty.keyCode) == 1 ? 
-				ninja.getDirectionFacingAsArray(): DIRECTION.values();
-		// iterate over all the directions
-		for (DIRECTION direction: directions) 
+		for (Ninja ninja: ninjas)
 		{
-			int x = ninjaX;
-			int y = ninjaY;
-			// iterate over each tile in a direction
-			for (int tileIndex = 0; tileIndex < ninja.getLookRange(); tileIndex++)
+			int ninjaX = ninja.getX();
+			int ninjaY = ninja.getY();
+			
+			DIRECTION[] directions = difficulty == GAME_DIFFICULTY.EASY ? 
+					ninja.getDirectionFacingAsArray(): DIRECTION.values();
+			// iterate over all the directions
+			directionLoop:
+			for (DIRECTION direction: directions)
 			{
-				x += direction.deltaX;
-				y += direction.deltaY;
-				if (grid.inRange(x, y)) {
-					GameObject object = grid.getGameObject(x, y);
-					if (object instanceof Spy) {
-						ninja.setDestinationCoordinate(x, y);
-						ninja.setDirectionFacing(direction);
-						return;
+				int x = ninjaX;
+				int y = ninjaY;
+				// iterate over each tile in a direction
+				for (int tileIndex = 0; tileIndex < ninja.getLookRange(); tileIndex++)
+				{
+					x += direction.deltaX;
+					y += direction.deltaY;
+					if (grid.inRange(x, y)) {
+						GameObject object = grid.getGameObject(x, y);
+						if (object instanceof Spy) {
+							ninja.setDestinationCoordinate(x, y);
+							ninja.setDirectionFacing(direction); 
+							break directionLoop;
+						}
+						if (object instanceof Room) {
+							break;
+						}
 					}
-					if (object instanceof Room) {
+					else if (!grid.inRange(x, y))
 						break;
-					}
 				}
-				else if (!grid.inRange(x, y))
-					break;
 			}
 		}
-		return;
 	}
 	
 	/**
-	 * For each ninja in {@link #ninjas} this makes the ninja look which checks in all four
+	 * For each ninja in {@link #ninjas} this makes the ninja look which checks in 
 	 * directions to see if spy is there. If spotted then stores the coordinate of the spy 
-	 * and changes the {@link Ninja#directionFacing} towards the spy. The ninja will move 
-	 * in the direction facing until it reaches {@link Ninja#destinationCoordinate} at which
-	 * point it'll use the {@link enemyMoveInRandomDirection(int)} method.
+	 * and calls {@link Ninja#setDirectionFacing(DIRECTION)} with dir towards the spy. The ninja will move 
+	 * in the direction facing until it reaches {@link Ninja#getDestinationCoordinate} at which
+	 * point it'll use the {@link #enemyMoveInRandomDirection(int)} method.
 	 */
 	public void enemyMove()
 	{
+		// each ninja looks
+		enemyLook();
+		// each ninja moves
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
-			if (difficulty == GAME_DIFFICULTY.EASY) {
+			if (difficulty == GAME_DIFFICULTY.RNG_EASY) {
 				enemyMoveInRandomDirection(ninjaIndex);
 				continue;
 			}
 			else {
-				enemyLook(ninjaIndex);
-				
 				if (ninja.getDestinationCoordinate() != null)
 					enemyMoveFoward(ninjaIndex);
 				else
 					enemyMoveInRandomDirection(ninjaIndex);
 				
-				if (difficulty == GAME_DIFFICULTY.MEDIUM || ninja.arrivedAtDestination())
+				if (difficulty.compareTo(GAME_DIFFICULTY.MEDIUM) <= 0 || 
+						ninja.arrivedAtDestination())
 					ninja.setDestinationCoordinate(null);
 			}
 		}
+		// ninjas are even more aware on harder difficulties
+		if (difficulty.compareTo(GAME_DIFFICULTY.HARD) >= 0)
+			enemyLook();
 	}
 	
 	/**
@@ -515,6 +522,7 @@ public class GameEngine {
 		if (moveResult == MOVE_RESULT.LEGAL) {
 			grid.move(ninjaDirection, ninjaX, ninjaY);
 		}
+		// else if ninja is stuck on grid boundary or room wall
 		else if (moveResult == MOVE_RESULT.UNMOVED || 
 				moveResult == MOVE_RESULT.UNMOVED_TURN_TAKEN ||
 				moveResult == MOVE_RESULT.WIN) {
@@ -633,14 +641,13 @@ public class GameEngine {
 	public void changeDifficulty(GAME_DIFFICULTY newDifficulty) {
 		difficulty = newDifficulty;
 		
-		// medium or very hard difficulty
-		if (Integer.parseInt(difficulty.keyCode) % 2 == 0)
-			changeAllNinjasLookRangeTo(Grid.GRID_SIZE);
-		else 
+		if (difficulty == GAME_DIFFICULTY.HARD)
 			changeAllNinjasLookRangeTo(Ninja.DEFAULT_LOOK_RANGE);
+		else 
+			changeAllNinjasLookRangeTo(Grid.GRID_SIZE);
 		
-		// easy or medium difficulty
-		if (difficulty.compareTo(GAME_DIFFICULTY.MEDIUM) < 0)
+		// rng_easy, easy, or medium difficulty
+		if (difficulty.compareTo(GAME_DIFFICULTY.MEDIUM) <= 0)
 			clearAllNinjasDestinationCoordinate();
 	}
 	
