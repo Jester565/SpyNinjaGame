@@ -573,6 +573,7 @@ public class GameEngine {
 			fileOut = new FileOutputStream(file);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeBoolean(DebugMode);
+			objectOut.writeObject(difficulty);
 			objectOut.writeObject(gameStatus);
 			objectOut.writeObject(spy);
 			objectOut.writeObject(ninjas);
@@ -601,6 +602,7 @@ public class GameEngine {
 			fileIn = new FileInputStream(file);
 			ObjectInputStream objectOut = new ObjectInputStream(fileIn);
 			DebugMode = objectOut.readBoolean();
+			difficulty = (GAME_DIFFICULTY)objectOut.readObject();
 			gameStatus = (GAME_STATE)objectOut.readObject();
 			spy = (Spy)objectOut.readObject();
 			ninjas = (ArrayList <Ninja>)objectOut.readObject();
