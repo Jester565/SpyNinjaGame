@@ -1,6 +1,7 @@
 package edu.cpp.cs.cs141.final_proj;
 
 import java.util.ArrayList;
+import github.dwicke.PathFinding.*;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 
@@ -28,6 +29,11 @@ public class GameEngineAdvancedAI extends GameEngine {
 				nearestNinja = ninja;
 		}
 		return nearestNinja;
+	}
+	
+	public void getShortestTravelPath(Ninja ninja) {
+		AStar pathFind = new AStar();
+		pathFind.shortestPath(ninja, patrolSpots[0], grid, heuristicFunc)
 	}
 	
 	public void aStar(int[] start, int[] goal) {

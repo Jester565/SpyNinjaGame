@@ -62,6 +62,7 @@ public class Spy extends Character implements Serializable {
 	 */
 	public Spy() {
 		super("S", SPY_MAX_HEALTH);
+		belowObject = new EmptyGridSlot();
 		gun = new Gun();
 	}
 	

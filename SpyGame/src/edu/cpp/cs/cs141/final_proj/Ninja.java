@@ -40,6 +40,7 @@ public class Ninja extends Character implements Serializable {
 	 */
 	public Ninja() {
 		super("\u25b2", NINJA_MAX_HEALTH);
+		belowObject = new EmptyGridSlot();
 		sword = new Sword();
 	}
 	

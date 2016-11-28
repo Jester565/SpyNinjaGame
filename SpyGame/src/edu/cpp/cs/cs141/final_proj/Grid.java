@@ -85,24 +85,20 @@ public class Grid implements Serializable {
 		if (inRange(x, y))
 		{
 			GameObject gameObj = getGameObject(x, y);
-			if (gameObj != null)
+			if (gameObj instanceof Room)
 			{
-				if (gameObj instanceof Room)
-				{
-					return false;
-				}
-				gameObj.setVisibility(true);
-				visibleObjects.add(gameObj);
+				return false;
 			}
-			else
-			{
-				VisibleMark vMark = new VisibleMark();
-				setGameObject(vMark, x, y);
-				visibleObjects.add(vMark);
-			}
-			return true;
+			gameObj.setVisibility(true);
+			visibleObjects.add(gameObj);
 		}
-		return false;
+//			else
+//			{
+//				VisibleMark vMark = new VisibleMark();
+//				setGameObject(vMark, x, y);
+//				visibleObjects.add(vMark);
+//			}
+		return true;	
 	}
 	
 	/**
@@ -112,14 +108,7 @@ public class Grid implements Serializable {
 	{
 		for (GameObject vObj : visibleObjects)
 		{
-			if (vObj instanceof VisibleMark)
-			{
-				removeGameObject(vObj.getX(), vObj.getY());
-			}
-			else
-			{
-				vObj.setVisibility(false);
-			}
+			vObj.setVisibility(false);
 		}
 		visibleObjects.clear();
 	}
@@ -130,7 +119,7 @@ public class Grid implements Serializable {
 	 * @param y The row of the element to set to null.
 	 */
 	public void removeGameObject(int x, int y) {
-		gameObjects[y][x] = null;
+		gameObjects[y][x] = new EmptyGridSlot();
 	}
 	
 	/**
@@ -140,7 +129,7 @@ public class Grid implements Serializable {
 	 * @param y The row of the element to set to gameObject.
 	 */
 	public void setGameObject(GameObject gameObject, int x, int y) {
-		if (gameObject != null)
+		if (!(gameObject instanceof EmptyGridSlot))
 		{
 			gameObject.setLocation(x, y);
 		}
@@ -172,7 +161,7 @@ public class Grid implements Serializable {
 		int moveY = coord[1];
 		if (inRange(moveX, moveY)) {
 			GameObject gameObj = getGameObject(moveX, moveY);
-			if (gameObj == null) {
+			if (gameObj instanceof EmptyGridSlot) {
 				return new MoveStatus(MOVE_RESULT.LEGAL, "Moved!");
 			}
 			else {
@@ -207,7 +196,7 @@ public class Grid implements Serializable {
 	{
 		GameObject movingObject = getGameObject(x, y);
 		GameObject moveToObject = getGameObject(moveX, moveY);
-		if (movingObject != null)
+		if (!(movingObject instanceof EmptyGridSlot))
 		{
 			setGameObject(movingObject.getBelowObject(), x, y);
 		}
@@ -249,7 +238,7 @@ public class Grid implements Serializable {
 	 * @return {@code true} if the element is null, {@code false} otherwise.
 	 */
 	public boolean emptyGrid(int x, int y) {
-		return getGameObject(x, y) == null ? true : false;
+		return (getGameObject(x, y) instanceof EmptyGridSlot) ? true : false;
 	}
 	
 	/**

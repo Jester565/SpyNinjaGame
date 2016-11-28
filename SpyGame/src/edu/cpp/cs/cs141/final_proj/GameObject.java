@@ -17,7 +17,7 @@ public abstract class GameObject implements Serializable {
 	/**
 	 * Stores the object {@link GameObject} that {@code this} covers up.
 	 */
-	private GameObject belowObject = null;
+	protected GameObject belowObject = null;
 	
 	/**
 	 * The column of the grid the {@link GameObject} is stored on.

@@ -79,7 +79,7 @@ public class GameEngine {
 	/**
 	 * Stores the environment the game is played in.
 	 */
-	private Grid grid;
+	protected Grid grid;
 	
 	/**
 	 * The {@link Room} that contains the briefcase.
@@ -129,6 +129,8 @@ public class GameEngine {
 		setItems();
 		//set ninjas
 		setNinjas();
+		//replace remaining null values in 2D array with new EmptyGridSlot object
+		fillGridWithEmptyGridSlots();
 		//set difficulty for game to medium
 		difficulty = GAME_DIFFICULTY.MEDIUM;
 		//called to set defaults for difficulty assigned here
@@ -227,6 +229,19 @@ public class GameEngine {
 			} while(!grid.canSetNinja(diceX, diceY));
 			grid.setGameObject(ninja, diceX, diceY);
 			ninjas.add(ninja);
+		}
+	}
+	
+	/**
+	 * Create and place a {@link EmptyGridSlot} for each null object in {@link #grid}
+	 */
+	public void fillGridWithEmptyGridSlots() {
+		for (int y = 0; y < Grid.GRID_SIZE; y++) {
+			for (int x = 0; x < Grid.GRID_SIZE; x++) {
+				if (grid.getGameObject(x, y) == null) {
+					grid.setGameObject(new EmptyGridSlot(), x, y);
+				}
+			}
 		}
 	}
 	
