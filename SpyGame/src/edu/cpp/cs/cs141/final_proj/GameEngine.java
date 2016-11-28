@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
@@ -36,10 +37,34 @@ public class GameEngine {
 	public enum GAME_OBJECT_TYPE {
 		ENEMY, PLAYER, RADAR, INVINCIBILITY, BULLET, ROOM, BRIEFCASE
 	}
+	
 	/**
 	 * Describes the current status of the game.
 	 */
-	private GAME_STATE gameStatus;
+	private GAME_STATE gameStatus = null;
+	
+	/**
+	 * The various difficulties for the game
+	 */
+	public enum GAME_DIFFICULTY {
+		RNG_EASY("1"), EASY("2"), MEDIUM("3"), HARD("4"), VERY_HARD("5");
+		public final String keyCode;
+		private GAME_DIFFICULTY(String code) {
+			keyCode = code;
+		}
+		public static HashMap<String, GAME_DIFFICULTY> keyCodes() {
+			HashMap<String, GAME_DIFFICULTY> keyCodes = new HashMap<String, GAME_DIFFICULTY>();
+			for (GAME_DIFFICULTY difficulty: GAME_DIFFICULTY.values())
+				keyCodes.put(difficulty.keyCode, difficulty);
+			return keyCodes;
+		}
+	}
+	
+	/**
+	 * Depending on the difficulty, the enemy AI will behave differently
+	 */
+	private GAME_DIFFICULTY difficulty = null;
+	
 	/**
 	 * {@code true} will make all elements in the {@link Grid} visible.
 	 */
@@ -105,7 +130,6 @@ public class GameEngine {
 		gameStatus = GAME_STATE.UNFINISHED;
 		//set debugMode as false
 		DebugMode = false;
-		HardMode = false;
 		//set the player
 		setPlayer();
 		//set rooms
@@ -114,6 +138,10 @@ public class GameEngine {
 		setItems();
 		//set ninjas
 		setNinjas();
+		//set difficulty for game to medium
+		difficulty = GAME_DIFFICULTY.MEDIUM;
+		//called to set defaults for difficulty assigned here
+		changeDifficulty(difficulty);
 	}
 	
 	/**
@@ -224,6 +252,7 @@ public class GameEngine {
 	 * @param lookDirection The direction to look in.
 	 */
 	public String playerLook(DIRECTION lookDirection) {
+		spy.setDirectionFacing(lookDirection);
 		return playerLook(lookDirection.deltaX, lookDirection.deltaY, Spy.LOOK_RANGE);
 	}
 	
@@ -294,12 +323,13 @@ public class GameEngine {
 	 */
 	public MoveStatus playerMove(DIRECTION direction)
 	{
+		spy.setDirectionFacing(direction);
 		int spyX = spy.getX(); 
 		int spyY = spy.getY();
 		MoveStatus moveStatus = grid.checkMoveStatus(direction, spyX, spyY);
 		
 		if (moveStatus.moveResult == MOVE_RESULT.LEGAL) { 
-			grid.setToInvisible();  //You messed up the order
+			grid.setToInvisible();
 			grid.move(direction, spyX, spyY);
 			if (spy.getGun().getNumRounds() == 1 & moveStatus.msg == "You picked up a bullet!") {
 				moveStatus.msg = "Your ammo is full, can't pick this bullet!";
@@ -401,6 +431,7 @@ public class GameEngine {
 				{
 					if (!spy.isAlive())
 					{
+						clearAllNinjasDestinationCoordinate();
 						grid.setAsVisible(ninja.getX(), ninja.getY());
 						if (!spy.hasLives())
 						{
@@ -414,72 +445,88 @@ public class GameEngine {
 	}
 	
 	/**
-	 * The ninja looks in all four directions as far as {@link Ninja#SIGHT_RANGE}
-	 * with any {@link Room} blocking vision, and if {@link GameEngine#spy} is 
-	 * spotted then set {@link Ninja#destinationCoordinate} to the spy's coordinate
-	 * @param ninjaIndex
+	 * Each ninja looks a number of directions as far as {@link Ninja#getLookRange()}
+	 * with any {@link Room} blocking vision, and if {@link #spy} is 
+	 * spotted then call {@link Ninja#setDestinationCoordinate(int, int)} 
+	 * passing the spy's coordinate
 	 */
-	public void enemyLook(int ninjaIndex)
+	public void enemyLook()
 	{
-		Ninja ninja = ninjas.get(ninjaIndex);
-		int ninjaX = ninja.getX();
-		int ninjaY = ninja.getY();
-		
-		DIRECTION[] directions = GameEngine.HardMode ? DIRECTION.values(): ninja.getDirectionFacingAsArray();
-		// iterate over all four directions to check for spy
-		for (DIRECTION direction: directions) 
+		for (Ninja ninja: ninjas)
 		{
-			int x = ninjaX;
-			int y = ninjaY;
-			// iterate over each tile in a direction
-			for (int tileIndex = 0; tileIndex < ninja.getLookRange();)
+			int ninjaX = ninja.getX();
+			int ninjaY = ninja.getY();
+			
+			DIRECTION[] directions = difficulty == GAME_DIFFICULTY.EASY ? 
+					ninja.getDirectionFacingAsArray(): DIRECTION.values();
+			// iterate over all the directions
+			directionLoop:
+			for (DIRECTION direction: directions)
 			{
-				x += direction.deltaX;
-				y += direction.deltaY;
-				if (grid.inRange(x, y)) {
-					GameObject object = grid.getGameObject(x, y);
-					if (object instanceof Spy) {
-						ninja.setDestinationCoordinate(x, y);
-						ninja.setDirectionFacing(direction);
-						return;
+				int x = ninjaX;
+				int y = ninjaY;
+				// iterate over each tile in a direction
+				for (int tileIndex = 0; tileIndex < ninja.getLookRange(); tileIndex++)
+				{
+					x += direction.deltaX;
+					y += direction.deltaY;
+					if (grid.inRange(x, y)) {
+						GameObject object = grid.getGameObject(x, y);
+						if (object instanceof Spy) {
+							ninja.setDestinationCoordinate(x, y);
+							ninja.setDirectionFacing(direction); 
+							break directionLoop;
+						}
+						if (object instanceof Room) {
+							break;
+						}
 					}
-					if (object instanceof Room) {
+					else if (!grid.inRange(x, y))
 						break;
-					}
 				}
-				else if (!grid.inRange(x, y))
-					break;
 			}
 		}
 	}
 	
 	/**
-	 * For each ninja in {@link #ninjas} this makes the ninja look which checks in all four
+	 * For each ninja in {@link #ninjas} this makes the ninja look which checks in 
 	 * directions to see if spy is there. If spotted then stores the coordinate of the spy 
-	 * and changes the {@link Ninja#directionFacing} towards the spy. The ninja will move 
-	 * in the direction facing until it reaches {@link Ninja#destinationCoordinate} at which
-	 * point it'll use the {@link enemyMoveInRandomDirection(int)} method.
+	 * and calls {@link Ninja#setDirectionFacing(DIRECTION)} with dir towards the spy. The ninja will move 
+	 * in the direction facing until it reaches {@link Ninja#getDestinationCoordinate} at which
+	 * point it'll use the {@link #enemyMoveInRandomDirection(int)} method.
 	 */
 	public void enemyMove()
 	{
+		// each ninja looks
+		enemyLook();
+		// each ninja moves
 		for (int ninjaIndex = 0; ninjaIndex < ninjas.size(); ninjaIndex++) {
 			Ninja ninja = ninjas.get(ninjaIndex);
 			
-			if (ninja.arrivedAtDestination())
-				ninja.setDestinationCoordinate(null);
-			
-			if (ninja.getDestinationCoordinate() != null)
-				enemyMoveFoward(ninjaIndex);
-			else if (ninja.getDestinationCoordinate() == null)
+			if (difficulty == GAME_DIFFICULTY.RNG_EASY) {
 				enemyMoveInRandomDirection(ninjaIndex);
-			
-			enemyLook(ninjaIndex);
+				continue;
+			}
+			else {
+				if (ninja.getDestinationCoordinate() != null)
+					enemyMoveFoward(ninjaIndex);
+				else
+					enemyMoveInRandomDirection(ninjaIndex);
+				
+				if (difficulty.compareTo(GAME_DIFFICULTY.MEDIUM) <= 0 || 
+						ninja.arrivedAtDestination())
+					ninja.setDestinationCoordinate(null);
+			}
 		}
+		// ninjas are even more aware on harder difficulties
+		if (difficulty.compareTo(GAME_DIFFICULTY.HARD) >= 0)
+			enemyLook();
 	}
 	
 	/**
 	 * Moves the ninja in the direction its facing {@link Ninja#directionFacing}
 	 * @param ninjaIndex the index of {@link #ninjas} used to select a ninja
+	 * @return {@code true} if successfully moved, {@code false} otherwise
 	 */
 	public void enemyMoveFoward(int ninjaIndex)
 	{
@@ -488,12 +535,15 @@ public class GameEngine {
 		int ninjaY = ninja.getY();
 		DIRECTION ninjaDirection = ninja.getDirectionFacing();
 		
+		MOVE_RESULT moveResult = grid.checkMoveStatus(ninjaDirection, ninjaX, ninjaY).moveResult;
 		// if ninja can move in the ninjaDirection on the grid
-		if (grid.checkMoveStatus(ninjaDirection, ninjaX, ninjaY).moveResult == 
-				MOVE_RESULT.LEGAL) {
+		if (moveResult == MOVE_RESULT.LEGAL) {
 			grid.move(ninjaDirection, ninjaX, ninjaY);
 		}
-		else {
+		// else if ninja is stuck on grid boundary or room wall
+		else if (moveResult == MOVE_RESULT.UNMOVED || 
+				moveResult == MOVE_RESULT.UNMOVED_TURN_TAKEN ||
+				moveResult == MOVE_RESULT.WIN) {
 			ninja.setDestinationCoordinate(null);
 		}
 	}
@@ -541,6 +591,7 @@ public class GameEngine {
 			fileOut = new FileOutputStream(file);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 			objectOut.writeBoolean(DebugMode);
+			objectOut.writeObject(difficulty);
 			objectOut.writeObject(gameStatus);
 			objectOut.writeObject(spy);
 			objectOut.writeObject(ninjas);
@@ -569,6 +620,7 @@ public class GameEngine {
 			fileIn = new FileInputStream(file);
 			ObjectInputStream objectOut = new ObjectInputStream(fileIn);
 			DebugMode = objectOut.readBoolean();
+			difficulty = (GAME_DIFFICULTY)objectOut.readObject();
 			gameStatus = (GAME_STATE)objectOut.readObject();
 			spy = (Spy)objectOut.readObject();
 			ninjas = (ArrayList <Ninja>)objectOut.readObject();
@@ -593,6 +645,30 @@ public class GameEngine {
 		for (Ninja ninja: ninjas) {
 			ninja.setLookRange(lookRange);
 		}
+	}
+	
+	public void clearAllNinjasDestinationCoordinate() {
+		for (Ninja ninja: ninjas) {
+			ninja.setDestinationCoordinate(null);
+		}
+	}
+	
+	/**
+	 * Change {@link #difficulty} to the value of the (argument) newDifficulty
+	 * Call {@link #changeAllNinjasLookRangeTo(int)} to change ninjas' sight range
+	 * @param newDifficulty set {@link #difficulty} using the value from {@code newDifficulty}
+	 */
+	public void changeDifficulty(GAME_DIFFICULTY newDifficulty) {
+		difficulty = newDifficulty;
+		
+		if (difficulty == GAME_DIFFICULTY.HARD)
+			changeAllNinjasLookRangeTo(Ninja.DEFAULT_LOOK_RANGE);
+		else 
+			changeAllNinjasLookRangeTo(Grid.GRID_SIZE);
+		
+		// rng_easy, easy, or medium difficulty
+		if (difficulty.compareTo(GAME_DIFFICULTY.MEDIUM) <= 0)
+			clearAllNinjasDestinationCoordinate();
 	}
 	
 	/**
@@ -633,7 +709,7 @@ public class GameEngine {
 		spyInfoMessages.add("Invincible Turns: " + spy.getInvincibleTurns() + "\n");
 		spyInfoMessages.add("Radar: " + (spy.hasRadar() ? "Enabled": "Disabled") + "\n");
 		spyInfoMessages.add("---\n");
-		spyInfoMessages.add("Hard Mode: " + (GameEngine.HardMode ? "Enabled": "Disabled") + "\n");
+		spyInfoMessages.add("Difficulty: " + difficulty.name().toLowerCase() + "\n");
 		spyInfoMessages.add("Debug Mode: " + (GameEngine.DebugMode ? "Enabled": "Disabled") + "\n");
 		String board = "";
 		String gridString = grid.toString();
