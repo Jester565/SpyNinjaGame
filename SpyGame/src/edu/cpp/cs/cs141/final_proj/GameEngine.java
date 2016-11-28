@@ -369,6 +369,7 @@ public class GameEngine {
 				if (!ninjas.get(i).isAlive())
 				{
 					grid.removeGameObject(ninjas.get(i).getX(), ninjas.get(i).getY());
+					grid.setGameObject(ninjas.get(i).getBelowObject(), ninjas.get(i).getX(), ninjas.get(i).getY());
 					ninjas.remove(i);
 					i--;
 				}
