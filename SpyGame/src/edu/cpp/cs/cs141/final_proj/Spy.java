@@ -71,10 +71,7 @@ public class Spy extends Character implements Serializable {
 	@Override
 	public String getGridRepresentation() {
 		String mark = "*";
-		if (GameEngine.DebugMode) {
-			mark = "S";
-		}
-		else if (isVisible()) {
+		if (isVisible()) {
 			switch(getDirectionFacing()) {
 			case UP:
 				mark = "\u25b3";
