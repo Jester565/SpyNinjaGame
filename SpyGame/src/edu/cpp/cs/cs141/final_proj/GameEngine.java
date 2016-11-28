@@ -106,11 +106,6 @@ public class GameEngine {
 	private ArrayList<Ninja> ninjas;
 	
 	/**
-	 * Hard mode
-	 */
-	public static boolean HardMode = false;
-	
-	/**
 	 * Resets the visibility of the {@link #grid}.
 	 */
 	public void resetVisibility()
@@ -689,13 +684,6 @@ public class GameEngine {
 	public boolean[][] getGridVisibility()
 	{
 		return grid.getVisibility();
-	}
-
-	/**
-	 * Set hard mode
-	 */
-	public static void setHardMode(boolean mode) {
-		HardMode = mode;
 	}
 	
 	/**

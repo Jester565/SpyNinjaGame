@@ -482,16 +482,6 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Change {@link GameEngine#HardMode} to opposite boolean & print message indicating mode entered
-	 * Changes the sight or look range of all the ninjas to a either {@link Grid#GRID_SIZE} or 
-	 * {@link Ninja#DEFAULT_LOOK_RANGE} depending on whether debug mode was disabled or enabled
-	 */
-	private void toggleHardMode() {
-		GameEngine.setHardMode(GameEngine.HardMode ? false: true);
-		System.out.println("Hard Mode is " + (GameEngine.HardMode ? "activated": "deactivated"));
-	}
-	
-	/**
 	 * Change {@link GameEngine#DebugMode} to opposite boolean & print message indicating mode entered
 	 */
 	private void toggleDebugMode() {
