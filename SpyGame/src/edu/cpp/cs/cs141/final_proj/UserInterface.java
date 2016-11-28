@@ -98,6 +98,11 @@ public class UserInterface {
 	private String gameDifficultyOptions = "";
 	
 	/**
+	 * message describing game
+	 */
+	private String helpMessage = "";
+	
+	/**
 	 * Constructor for creating UserInterface objects
 	 * @param game set {@link #game} to (parameter) game used to call methods
 	 */
@@ -109,6 +114,26 @@ public class UserInterface {
 		for (GAME_DIFFICULTY difficulty: GAME_DIFFICULTY.values())
 			gameDifficultyOptions += difficulty.keyCode + ": " + difficulty.name().toLowerCase() + " | ";
 		gameDifficultyOptions = gameDifficultyOptions.substring(0, gameDifficultyOptions.length() - 3); 
+		
+		helpMessage = String.format("Symbol %s | Representation %11s | Description\n"
+				+ "----------------------------------------------------------------------------------------------------------------------\n"
+				+ "\u25b3 %5s | Spy %22s | You, the player\n"
+				+ "\u25b2 %5s | Ninja %20s | Capable of stalking and assassinating the spy\n"
+				+ "R %5s | Room %21s | Search one of the rooms from the top side to try & find the briefcase\n"
+				+ "b %5s | Room containing briefcase %s | Search this room to get the briefcase & win the game\n"
+				+ "r %5s | Radar %20s | Obtain this item and the room with the briefcase will be revealed\n"
+				+ "B %5s | Bullet %19s | Obtain this item to increase your ammo count by 1 if you don't have any bullets\n"
+				+ "I %5s | Invincibility %12s | Obtain this item to become invulernable to any Ninja attack for 5 turns\n"
+				+ "\nGame Description:\nYour objective is to find the top secret briefcase in 1 of the 9 rooms in the dark\n"
+				+ "building while avoiding the ninjas. Be sure to pick up items on the ground.\n",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "");
 	}
 	
 	/**
@@ -140,6 +165,9 @@ public class UserInterface {
 				}
 				break;
 			case 3:
+				System.out.println(helpMessage);
+				break;
+			case 4:
 				quit = true;
 				break;
 			default:
@@ -166,7 +194,8 @@ public class UserInterface {
 		System.out.println("Select an option:\n"
 				+ "1: Start New Game\n"
 				+ "2: Load Game\n"
-				+ "3: Exit");
+				+ "3: Help\n"
+				+ "4: Exit");
 		
 		while(!keyboard.hasNextInt()) {
 			keyboard.nextLine();
