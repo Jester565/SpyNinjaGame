@@ -50,23 +50,7 @@ public class Ninja extends Character implements Serializable {
 	public String getGridRepresentation() {
 		String mark = "*";
 		if (isVisible()) {
-			switch(getDirectionFacing()) {
-			case UP:
-				mark = "\u25b2";
-				break;
-			case RIGHT:
-				mark = "\u25b6";
-				break;
-			case DOWN:
-				mark = "\u25bc";
-				break;
-			case LEFT:
-				mark = "\u25c0";
-				break;
-			default:
-				mark = "N";
-				break;
-			}
+			mark = "N";
 		}
 		return mark;
 	}

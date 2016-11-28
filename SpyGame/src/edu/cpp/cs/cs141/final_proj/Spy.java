@@ -72,23 +72,7 @@ public class Spy extends Character implements Serializable {
 	public String getGridRepresentation() {
 		String mark = "*";
 		if (isVisible()) {
-			switch(getDirectionFacing()) {
-			case UP:
-				mark = "\u25b3";
-				break;
-			case RIGHT:
-				mark = "\u25b7";
-				break;
-			case DOWN:
-				mark = "\u25bd";
-				break;
-			case LEFT:
-				mark = "\u25c1";
-				break;
-			default:
-				mark = "S";
-				break;
-			}
+			mark = "S";
 		}
 		return mark;
 	}

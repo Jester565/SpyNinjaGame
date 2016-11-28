@@ -117,8 +117,8 @@ public class UserInterface {
 		
 		helpMessage = String.format("Symbol %s | Representation %11s | Description\n"
 				+ "----------------------------------------------------------------------------------------------------------------------\n"
-				+ "\u25b3 %5s | Spy %22s | You, the player\n"
-				+ "\u25b2 %5s | Ninja %20s | Capable of stalking and assassinating the spy\n"
+				+ "S %5s | Spy %22s | You, the player\n"
+				+ "N %5s | Ninja %20s | Capable of stalking and assassinating the spy\n"
 				+ "R %5s | Room %21s | Search one of the rooms from the top side to try & find the briefcase\n"
 				+ "b %5s | Room containing briefcase %s | Search this room to get the briefcase & win the game\n"
 				+ "r %5s | Radar %20s | Obtain this item and the room with the briefcase will be revealed\n"
