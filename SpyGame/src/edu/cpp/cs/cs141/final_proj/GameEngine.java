@@ -94,7 +94,7 @@ public class GameEngine {
 	/**
 	 * Stores all of the {@link Ninja}s in the {@link #grid}.
 	 */
-	private ArrayList<Ninja> ninjas;
+	protected ArrayList<Ninja> ninjas;
 	
 	/**
 	 * Hard mode
