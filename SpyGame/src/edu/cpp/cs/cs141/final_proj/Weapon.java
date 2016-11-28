@@ -17,12 +17,12 @@ public abstract class Weapon implements Serializable {
 	/**
 	 * This will store the amount of damage done by the sword or gun.
 	 */
-	int damage;
+	private int damage;
 	
 	/**
 	 * this integer stores the amount of grid spaces a {@link Character}'s weapon can travel.
 	 */
-	int range;
+	private int range;
 	
 	/**
 	 * This method is used in both the gun and sword class and it does damage 
@@ -83,6 +83,13 @@ public abstract class Weapon implements Serializable {
 		 	}
 		}
 		return targetHit;
+	}
+	
+	/**
+	 * @return {@link #damage}
+	 */
+	public int getDamage() {
+		return damage;
 	}
 		
 }

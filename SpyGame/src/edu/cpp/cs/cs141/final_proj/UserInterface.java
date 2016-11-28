@@ -3,6 +3,7 @@ package edu.cpp.cs.cs141.final_proj;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_DIFFICULTY;
 import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_STATE;
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
@@ -22,7 +23,7 @@ public class UserInterface {
 	 * Commands the user can do during the spy's turn
 	 */
 	public enum USER_COMMAND {
-		shoot("1"), debug("2"), options("3"), hardMode("4");
+		shoot("1"), debug("2"), options("3"), difficulty("4");
 		
 		public final String keyCode;
 		private USER_COMMAND(String code) {
@@ -92,6 +93,16 @@ public class UserInterface {
 	private String pauseMenuOptions = "";
 	
 	/**
+	 * options and hotkeys for the game difficulties
+	 */
+	private String gameDifficultyOptions = "";
+	
+	/**
+	 * message describing game
+	 */
+	private String helpMessage = "";
+	
+	/**
 	 * Constructor for creating UserInterface objects
 	 * @param game set {@link #game} to (parameter) game used to call methods
 	 */
@@ -100,6 +111,29 @@ public class UserInterface {
 		keyboard = new Scanner(System.in);
 		directionOptions = "W: Up | A: Left | S: Down | D: Right";
 		pauseMenuOptions = "1: Resume | 2: Save | 3: Main Menu | 4: Exit Game";
+		for (GAME_DIFFICULTY difficulty: GAME_DIFFICULTY.values())
+			gameDifficultyOptions += difficulty.keyCode + ": " + difficulty.name().toLowerCase() + " | ";
+		gameDifficultyOptions = gameDifficultyOptions.substring(0, gameDifficultyOptions.length() - 3); 
+		
+		helpMessage = String.format("Symbol %s | Representation %11s | Description\n"
+				+ "----------------------------------------------------------------------------------------------------------------------\n"
+				+ "\u25b3 %5s | Spy %22s | You, the player\n"
+				+ "\u25b2 %5s | Ninja %20s | Capable of stalking and assassinating the spy\n"
+				+ "R %5s | Room %21s | Search one of the rooms from the top side to try & find the briefcase\n"
+				+ "b %5s | Room containing briefcase %s | Search this room to get the briefcase & win the game\n"
+				+ "r %5s | Radar %20s | Obtain this item and the room with the briefcase will be revealed\n"
+				+ "B %5s | Bullet %19s | Obtain this item to increase your ammo count by 1 if you don't have any bullets\n"
+				+ "I %5s | Invincibility %12s | Obtain this item to become invulernable to any Ninja attack for 5 turns\n"
+				+ "\nGame Description:\nYour objective is to find the top secret briefcase in 1 of the 9 rooms in the dark\n"
+				+ "building while avoiding the ninjas. Be sure to pick up items on the ground.\n",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "",
+				"", "");
 	}
 	
 	/**
@@ -131,6 +165,9 @@ public class UserInterface {
 				}
 				break;
 			case 3:
+				System.out.println(helpMessage);
+				break;
+			case 4:
 				quit = true;
 				break;
 			default:
@@ -157,7 +194,8 @@ public class UserInterface {
 		System.out.println("Select an option:\n"
 				+ "1: Start New Game\n"
 				+ "2: Load Game\n"
-				+ "3: Exit");
+				+ "3: Help\n"
+				+ "4: Exit");
 		
 		while(!keyboard.hasNextInt()) {
 			keyboard.nextLine();
@@ -250,7 +288,7 @@ public class UserInterface {
 		{
 			question = "You cannot move... enter " + STAND_STILL_COMMAND + " to stand still or another command\n";
 		}
-		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options | 4: HardMode";
+		question += (gunHasAmmo ? "1: Shoot | ": "") +  "2: Debug | 3: More Options | 4: Change Difficulty";
 		String userInput;
 		USER_COMMAND command = null;
 
@@ -315,8 +353,8 @@ public class UserInterface {
 						return;
 					}
 					break;
-				case hardMode:
-					toggleHardMode();
+				case difficulty:
+					difficultyMenu();
 					break;
 				default:
 					break;
@@ -335,7 +373,7 @@ public class UserInterface {
 	private void playerLookLoop() {
 		String question = "Enter a direction to look in or another command\n"
 				+ directionOptions + "\n"
-				+ "2: Debug | 3: More Options";
+				+ "2: Debug | 3: More Options | 4: Change Difficulty";
 		String userInput;
 		
 		DIRECTION lookDirection = null;
@@ -368,6 +406,9 @@ public class UserInterface {
 					{
 						return;
 					}
+					break;
+				case difficulty:
+					difficultyMenu();
 					break;
 				default:
 					break;
@@ -424,6 +465,23 @@ public class UserInterface {
 	}
 	
 	/**
+	 * Once a valid input is entered by user, change the game difficulty using the
+	 * {@link GameEngine#changeDifficulty(GAME_DIFFICULTY)} method
+	 */
+	private void difficultyMenu() {
+		String userOptions = "Difficulty Menu\n" + gameDifficultyOptions;
+		String userInput;
+		
+		do {
+			System.out.println(userOptions);
+			userInput = keyboard.nextLine().toLowerCase().trim();
+		} while (!GAME_DIFFICULTY.keyCodes().containsKey(userInput));
+		
+		GAME_DIFFICULTY difficulty = GAME_DIFFICULTY.keyCodes().get(userInput);
+		game.changeDifficulty(difficulty);
+	}
+	
+	/**
 	 * Change {@link GameEngine#HardMode} to opposite boolean & print message indicating mode entered
 	 * Changes the sight or look range of all the ninjas to a either {@link Grid#GRID_SIZE} or 
 	 * {@link Ninja#DEFAULT_LOOK_RANGE} depending on whether debug mode was disabled or enabled
@@ -431,7 +489,6 @@ public class UserInterface {
 	private void toggleHardMode() {
 		GameEngine.setHardMode(GameEngine.HardMode ? false: true);
 		System.out.println("Hard Mode is " + (GameEngine.HardMode ? "activated": "deactivated"));
-		game.changeAllNinjasLookRangeTo(GameEngine.HardMode ? Grid.GRID_SIZE: Ninja.DEFAULT_LOOK_RANGE);
 	}
 	
 	/**
