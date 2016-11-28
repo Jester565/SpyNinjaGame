@@ -116,7 +116,6 @@ public class GameEngine {
 		//initialize objects
 		grid = new Grid();
 		spy = new Spy();
-		
 		//set gameStatus as unfinished
 		gameStatus = GAME_STATE.UNFINISHED;
 		//set debugMode as false
@@ -144,7 +143,7 @@ public class GameEngine {
 		spy.aliveAgain();
 		grid.removeGameObject(spy.getX(), spy.getY());
 		grid.setGameObject(spy.getBelowObject(), spy.getX(), spy.getY());
-		spy.setBelowObject(null);
+		spy.setBelowObject(new EmptyGridSlot());
 		for (int i = 0; i < ninjas.size(); i++)
 		{
 			if (Math.abs(ninjas.get(i).getX() - Spy.INITIAL_X) <= 2 && Math.abs(ninjas.get(i).getY() - Spy.INITIAL_Y) <= 2)
@@ -164,7 +163,7 @@ public class GameEngine {
 	/**
 	 * Set the player
 	 */
-	private void setPlayer()	{
+	private void setPlayer() {
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 	}
 	
@@ -240,6 +239,7 @@ public class GameEngine {
 			for (int x = 0; x < Grid.GRID_SIZE; x++) {
 				if (grid.getGameObject(x, y) == null) {
 					grid.setGameObject(new EmptyGridSlot(), x, y);
+					System.out.printf("%d, %d %n", x, y);
 				}
 			}
 		}
@@ -334,7 +334,7 @@ public class GameEngine {
 		MoveStatus moveStatus = grid.checkMoveStatus(direction, spyX, spyY);
 		
 		if (moveStatus.moveResult == MOVE_RESULT.LEGAL) { 
-			grid.setToInvisible();  //You messed up the order
+			grid.setToInvisible();
 			grid.move(direction, spyX, spyY);
 			if (spy.getGun().getNumRounds() == 1 & moveStatus.msg == "You picked up a bullet!") {
 				moveStatus.msg = "Your ammo is full, can't pick this bullet!";

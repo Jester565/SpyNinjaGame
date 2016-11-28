@@ -104,7 +104,7 @@ public class Spy extends Character implements Serializable {
 	{
 		if (getBelowObject() instanceof Useable) {
 			if (((Useable)getBelowObject()).useOn(this)){
-				setBelowObject(null);
+				setBelowObject(new EmptyGridSlot());
 			}
 		}
 	}

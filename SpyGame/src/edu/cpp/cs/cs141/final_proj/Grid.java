@@ -238,7 +238,8 @@ public class Grid implements Serializable {
 	 * @return {@code true} if the element is null, {@code false} otherwise.
 	 */
 	public boolean emptyGrid(int x, int y) {
-		return (getGameObject(x, y) instanceof EmptyGridSlot) ? true : false;
+		return (getGameObject(x, y) instanceof EmptyGridSlot) || getGameObject(x, y) == null ? 
+				true : false;
 	}
 	
 	/**
