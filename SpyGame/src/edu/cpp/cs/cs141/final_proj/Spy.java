@@ -68,13 +68,15 @@ public class Spy extends Character implements Serializable {
 	/**
 	 * Checks if the BelowObject is null and if it isn't then it calls the function to use the power-up.
 	 */
-	void usePowerups()
+	public boolean usePowerups()
 	{
 		if (getBelowObject() instanceof Useable) {
 			if (((Useable)getBelowObject()).useOn(this)){
 				setBelowObject(null);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	/**

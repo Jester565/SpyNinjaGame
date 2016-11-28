@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_OBJECT_TYPE;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
 
 /**
@@ -279,6 +280,73 @@ public class Grid implements Serializable {
 			gridString += "\n";
 		}
 		return gridString;
+	}
+	
+	public GAME_OBJECT_TYPE[][] getTypes(boolean showBriefcase)
+	{
+		GAME_OBJECT_TYPE[][] typeGrid = new GAME_OBJECT_TYPE[GRID_SIZE][GRID_SIZE];
+		for (int i = 0; i < GRID_SIZE; i++)
+		{
+			for (int j = 0; j < GRID_SIZE; j++)
+			{
+				if (gameObjects[i][j] == null || gameObjects[i][j] instanceof VisibleMark)
+				{
+					typeGrid[j][i] = null;
+				}
+				else if (gameObjects[i][j] instanceof Ninja)
+				{
+					typeGrid[j][i] = GAME_OBJECT_TYPE.ENEMY;
+				}
+				else if (gameObjects[i][j] instanceof Spy)
+				{
+					typeGrid[j][i] = GAME_OBJECT_TYPE.PLAYER;
+				}
+				else if (gameObjects[i][j] instanceof Room)
+				{
+					if (((Room)gameObjects[i][j]).hasBriefcase())
+					{
+						typeGrid[j][i] = GAME_OBJECT_TYPE.BRIEFCASE;
+					}
+					else
+					{
+						typeGrid[j][i] = GAME_OBJECT_TYPE.ROOM;
+					}
+				}
+				else if (gameObjects[i][j] instanceof Bullet)
+				{
+					typeGrid[j][i] = GAME_OBJECT_TYPE.BULLET;
+				}
+				else if (gameObjects[i][j] instanceof Radar)
+				{
+					typeGrid[j][i] = GAME_OBJECT_TYPE.RADAR;
+				}
+				else if (gameObjects[i][j] instanceof Invincibility)
+				{
+					typeGrid[j][i] = GAME_OBJECT_TYPE.INVINCIBILITY;
+				}
+			}
+		}
+		return typeGrid;
+	}
+	
+	public boolean[][] getVisibility()
+	{
+		boolean[][] visibleGrid = new boolean[GRID_SIZE][GRID_SIZE];
+		for (int i = 0; i < GRID_SIZE; i++)
+		{
+			for (int j = 0; j < GRID_SIZE; j++)
+			{
+				if (gameObjects[i][j] != null)
+				{
+					visibleGrid[j][i] = gameObjects[i][j].isVisible();
+				}
+				else
+				{
+					visibleGrid[j][i] = false;
+				}
+			}
+		}
+		return visibleGrid;
 	}
 	
 	/**

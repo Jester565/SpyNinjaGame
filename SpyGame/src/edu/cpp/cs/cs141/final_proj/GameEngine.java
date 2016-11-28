@@ -27,6 +27,15 @@ public class GameEngine {
 	public enum GAME_STATE {
 		UNFINISHED, WON, LOST;
 	}
+	
+	/**
+	 * Represents the possible objects on the grid.  Used by GUI.
+	 * @author ajcra
+	 *
+	 */
+	public enum GAME_OBJECT_TYPE {
+		ENEMY, PLAYER, RADAR, INVINCIBILITY, BULLET, ROOM, BRIEFCASE
+	}
 	/**
 	 * Describes the current status of the game.
 	 */
@@ -307,6 +316,14 @@ public class GameEngine {
 		return moveStatus;
 	}
 	
+	public MoveStatus checkPlayerMove(DIRECTION direction)
+	{
+		int spyX = spy.getX(); 
+		int spyY = spy.getY();
+		MoveStatus moveStatus = grid.checkMoveStatus(direction, spyX, spyY);
+		return moveStatus;
+	}
+	
 	/**
 	 * The {@link #spy} shoots in the direction specified.
 	 * @param direction The direction to shoot in.
@@ -346,8 +363,8 @@ public class GameEngine {
 	/**
 	 * Method to use powerups on the spy.
 	 */
-	public void useSpyPowerup(){
-		spy.usePowerups();
+	public boolean useSpyPowerup(){
+		return spy.usePowerups();
 	}
 	
 	/**
@@ -587,6 +604,16 @@ public class GameEngine {
 		DebugMode = mode;
 	}
 	
+	public GAME_OBJECT_TYPE[][] getGridTypes()
+	{
+		return grid.getTypes(spy.hasRadar());
+	}
+	
+	public boolean[][] getGridVisibility()
+	{
+		return grid.getVisibility();
+	}
+
 	/**
 	 * Set hard mode
 	 */
