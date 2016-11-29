@@ -80,10 +80,6 @@ public class TextField {
 					message = smartSubstr(message, cursorPos)+typedChar+smartSubstr(message,cursorPos,message.length());
 				}
 			}
-			if (cursorPos > message.length() - 1)
-			{
-				System.out.println("CURSOR POS EXCEEDED STRING");
-			}
 		}
 	}
 	private String smartSubstr(String str, int end)

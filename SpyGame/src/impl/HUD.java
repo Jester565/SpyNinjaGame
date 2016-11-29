@@ -418,7 +418,7 @@ public class HUD {
 				{
 					if (saveSuccess)
 					{
-						core.getTextRenderer().drawCenteredText("Save Success!", DisplayManager.DISPLAY_DEFAULT_W/2, buttonY + MENU_BUTTON_H * 1.7f, 20, 0, 0, 1, 1);
+						core.getTextRenderer().drawCenteredText("Save Success!", DisplayManager.DISPLAY_DEFAULT_W/2, buttonY + MENU_BUTTON_H * 1.7f, 20, 0, 1, 0, 1);
 					}
 					else
 					{
