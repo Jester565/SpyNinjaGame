@@ -87,6 +87,7 @@ public class DisplayManager {
 	
 	public void setBackgroundColor(float r, float g, float b, float a)
 	{
+		frame.getContentPane().setBackground(new Color(r, g, b, a));
 		frame.setBackground(new Color(r, g, b, a));
 	}
 	
