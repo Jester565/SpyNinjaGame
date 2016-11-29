@@ -106,6 +106,15 @@ public class GameEngine {
 	private ArrayList<Ninja> ninjas;
 	
 	/**
+	 * Accessor to {@link #difficulty}.
+	 * @return The difficulty of the game.
+	 */
+	public GAME_DIFFICULTY getDifficulty()
+	{
+		return difficulty;
+	}
+	
+	/**
 	 * Resets the visibility of the {@link #grid}.
 	 */
 	public void resetVisibility()
