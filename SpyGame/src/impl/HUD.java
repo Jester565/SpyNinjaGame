@@ -141,12 +141,17 @@ public class HUD {
 		items.add(item);
 	}
 	
+	private boolean inAnimation()
+	{
+		return !(core.getGameEngine().getGameStatus() == GAME_STATE.UNFINISHED && core.getGameEngine().getSpy().isAlive());
+	}
+	
 	public void draw()
 	{
 		if (core.getInputManager().isKeyTyped('m') && !saveFileField.isSelected())
 		{
 			drawMenu = !drawMenu;
-			if (!drawMenu)
+			if (!drawMenu && !inAnimation())
 			{
 				core.setPlayerMovement(true);
 			}
@@ -369,55 +374,67 @@ public class HUD {
 		core.setPlayerMovement(false);
 		core.getShapeRenderer().drawRect(MENU_X, MENU_Y, MENU_W, MENU_H, 0, .2f, 0, 1);
 		float buttonY = MENU_BUTTON_START_Y;
-		if (drawButton("Main Menu", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
+		if (!inAnimation())
 		{
-			saveButtonPressed = false;
-			saveFileField.reset();
-			core.exitToMenu();
+			if (drawButton("Main Menu", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
+			{
+				saveButtonPressed = false;
+				saveFileField.reset();
+				core.exitToMenu();
+			}
 		}
 		buttonY += MENU_BUTTON_H + MENU_BUTTON_Y_OFF;
-		if (!saveButtonPressed)
+		if (!inAnimation())
 		{
-			if (drawButton("Save", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
+			if (!saveButtonPressed)
 			{
-				saveButtonPressed = true;
+				if (drawButton("Save", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
+				{
+					saveButtonPressed = true;
+				}
 			}
+			else
+			{
+				if (drawButton("Save", MENU_BUTTON_X, buttonY, MENU_BUTTON_W/2, MENU_BUTTON_H))
+				{
+					if (core.save(saveFileField.getMessage()))
+					{
+						saveSuccess = true;
+					}
+					else
+					{
+						saveSuccess = false;
+					}
+					drawSaveErrorMsg = true;
+				}
+				if (drawButton("Cancel", MENU_BUTTON_X + MENU_BUTTON_W/2, buttonY, MENU_BUTTON_W/2, MENU_BUTTON_H))
+				{
+					saveButtonPressed = false;
+					drawSaveErrorMsg = false;
+					saveFileField.reset();
+				}
+				saveFileField.draw(MENU_BUTTON_X, buttonY + MENU_BUTTON_H);
+				if (drawSaveErrorMsg)
+				{
+					if (saveSuccess)
+					{
+						core.getTextRenderer().drawCenteredText("Save Success!", DisplayManager.DISPLAY_DEFAULT_W/2, buttonY + MENU_BUTTON_H * 1.7f, 20, 0, 0, 1, 1);
+					}
+					else
+					{
+						core.getTextRenderer().drawCenteredText("Save Failed...", DisplayManager.DISPLAY_DEFAULT_W/2, buttonY + MENU_BUTTON_H * 1.7f, 20, 1, 0, 0, 1);
+					}
+				}
+				buttonY += MENU_BUTTON_H/2;
+			}
+			buttonY += MENU_BUTTON_H + MENU_BUTTON_Y_OFF;
 		}
 		else
 		{
-			if (drawButton("Save", MENU_BUTTON_X, buttonY, MENU_BUTTON_W/2, MENU_BUTTON_H))
-			{
-				if (core.save(saveFileField.getMessage()))
-				{
-					saveSuccess = true;
-				}
-				else
-				{
-					saveSuccess = false;
-				}
-				drawSaveErrorMsg = true;
-			}
-			if (drawButton("Cancel", MENU_BUTTON_X + MENU_BUTTON_W/2, buttonY, MENU_BUTTON_W/2, MENU_BUTTON_H))
-			{
-				saveButtonPressed = false;
-				drawSaveErrorMsg = false;
-				saveFileField.reset();
-			}
-			saveFileField.draw(MENU_BUTTON_X, buttonY + MENU_BUTTON_H);
-			if (drawSaveErrorMsg)
-			{
-				if (saveSuccess)
-				{
-					core.getTextRenderer().drawCenteredText("Save Success!", DisplayManager.DISPLAY_DEFAULT_W/2, buttonY + MENU_BUTTON_H * 1.7f, 20, 0, 0, 1, 1);
-				}
-				else
-				{
-					core.getTextRenderer().drawCenteredText("Save Failed...", DisplayManager.DISPLAY_DEFAULT_W/2, buttonY + MENU_BUTTON_H * 1.7f, 20, 1, 0, 0, 1);
-				}
-			}
-			buttonY += MENU_BUTTON_H/2;
+			saveButtonPressed = false;
+			drawSaveErrorMsg = false;
+			saveFileField.reset();
 		}
-		buttonY += MENU_BUTTON_H + MENU_BUTTON_Y_OFF;
 		if (drawButton("Difficulty: " + core.getGameEngine().getDifficulty().name(), MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
 		{
 			difficultyButtonPressed = !difficultyButtonPressed;

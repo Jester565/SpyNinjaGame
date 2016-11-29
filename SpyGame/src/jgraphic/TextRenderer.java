@@ -20,13 +20,13 @@ public class TextRenderer {
 		fonts = new HashMap<String, HashMap<Float, Font>>();
 	}
 	
-	public int getTextWidth(String msg)
+	public float getTextWidth(String msg)
 	{
 		FontMetrics fm = dm.graphics.getFontMetrics();
-		return (int) (fm.stringWidth(msg));
+		return (float) fm.stringWidth(msg);
 	}
 	
-	public int getTextWidth(String msg, float fontSize)
+	public float getTextWidth(String msg, float fontSize)
 	{
 		fontSize *= (float)(dm.screenHScale * dm.screenWScale);
 		if (setFontToSize(fontSize))
@@ -36,7 +36,7 @@ public class TextRenderer {
 		return 0;
 	}
 	
-	public int getTextWidth(String msg, String fontName, float fontSize)
+	public float getTextWidth(String msg, String fontName, float fontSize)
 	{
 		if (setFont(fontName))
 		{
@@ -159,7 +159,7 @@ public class TextRenderer {
 		if (setFontToSize(fontSize))
 		{
 			dm.graphics.setColor(new Color(r, g, b, a));
-			dm.graphics.drawString(msg, (int)((x - getTextWidth(msg)/2d) * dm.screenWScale + dm.screenXOff), (int)(y * dm.screenHScale + dm.screenYOff));
+			dm.graphics.drawString(msg, (int)(x * dm.screenWScale + dm.screenXOff - getTextWidth(msg)/2d), (int)(y * dm.screenHScale + dm.screenYOff));
 		}
 	}
 	
@@ -171,7 +171,7 @@ public class TextRenderer {
 			if (setFontToSize(fontSize))
 			{
 				dm.graphics.setColor(new Color(r, g, b, a));
-				dm.graphics.drawString(msg, (int)((x - getTextWidth(msg)/2d) * dm.screenWScale + dm.screenXOff), (int)(y * dm.screenHScale + dm.screenYOff));
+				dm.graphics.drawString(msg, (int)(x * dm.screenWScale + dm.screenXOff - getTextWidth(msg)/2d), (int)(y * dm.screenHScale + dm.screenYOff));
 			}
 		}
 	}

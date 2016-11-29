@@ -365,9 +365,5 @@ public class GameCore extends Core {
 			}
 		}
 		fpsLogger.draw(20, 40, 40, 0, 1, 0, 1);
-		if (this.getInputManager().isKeyTyped('l'))
-		{
-			System.out.println(gameEngine.displayBoard());
-		}
 	}
 }

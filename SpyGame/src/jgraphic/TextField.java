@@ -24,7 +24,7 @@ public class TextField {
 	public boolean isSelected(){
 		return fieldSelected;
 	}
-	public void reset(){
+	public void reset() {
 		fieldSelected = false;
 		message = "";
 		cursorX = 30;
@@ -66,12 +66,24 @@ public class TextField {
 				else
 				{
 					typedChar = typedEvent.getKeyChar();
-					cursorPos++;
+					if (typedChar != KeyEvent.CHAR_UNDEFINED)
+					{
+						cursorPos++;
+					}
+					else
+					{
+						System.out.println("TRIGGERED");
+						typedChar = null;
+					}
 				}
-				if(typedChar != null && typedChar != KeyEvent.CHAR_UNDEFINED)
+				if(typedChar != null)
 				{
 					message = smartSubstr(message, cursorPos)+typedChar+smartSubstr(message,cursorPos,message.length());
 				}
+			}
+			if (cursorPos > message.length() - 1)
+			{
+				System.out.println("CURSOR POS EXCEEDED STRING");
 			}
 		}
 	}
@@ -137,7 +149,7 @@ public class TextField {
 		cursorX = (int) (core.getTextRenderer().getTextWidth(refinedExtendable().substring(0, cursorPos - cursorOff + 1), (3f * h)/4f));
 		if(cursorFlashTimer < 25)
 		{
-			core.getShapeRenderer().drawRect(cursorX + x + 1, y + (int)(h/6d), (int)(h/15d), h-(int)(h/4d),0,0,0,1);
+			core.getShapeRenderer().drawRect(cursorX/core.getDisplayManager().screenWScale + x + 1, y + (int)(h/6d), (int)(h/15d), h-(int)(h/4d),0,0,0,1);
 		}
 	}
 	private void mouseOnTextManager(float x, float y)
