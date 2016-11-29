@@ -19,7 +19,9 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Handles high level game logic and user movement.
  */
 public class GameEngine {
-	
+	/**
+	 * Returns a result after looking
+	 */
 	private static String[] LOOK_MESSAGES = new String[] {"Something is blocking your vision", "Clear", "Ninja Ahead!"};
 	
 	/**
@@ -349,7 +351,11 @@ public class GameEngine {
 		
 		return moveStatus;
 	}
-	
+	/**
+	 * Checks the status of a player move
+	 * @param direction
+	 * @return moveStatus
+	 */
 	public MoveStatus checkPlayerMove(DIRECTION direction)
 	{
 		int spyX = spy.getX(); 
@@ -645,13 +651,18 @@ public class GameEngine {
 		}
 		return false;
 	}
-	
+	/**
+	 * Edits the looking range for the ninjas
+	 * @param lookRange
+	 */
 	public void changeAllNinjasLookRangeTo(int lookRange) {
 		for (Ninja ninja: ninjas) {
 			ninja.setLookRange(lookRange);
 		}
 	}
-	
+	/**
+	 * Resets the ninja coordination
+	 */
 	public void clearAllNinjasDestinationCoordinate() {
 		for (Ninja ninja: ninjas) {
 			ninja.setDestinationCoordinate(null);
@@ -684,12 +695,18 @@ public class GameEngine {
 	{
 		DebugMode = mode;
 	}
-	
+	/**
+	 * 
+	 * @return grid types
+	 */
 	public GAME_OBJECT_TYPE[][] getGridTypes()
 	{
 		return grid.getTypes(spy.hasRadar());
 	}
-	
+	/**
+	 * 
+	 * @return grid visibility
+	 */
 	public boolean[][] getGridVisibility()
 	{
 		return grid.getVisibility();
