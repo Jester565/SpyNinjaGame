@@ -15,8 +15,8 @@ public class DoorWall implements Wall {
 	private static Sound ShotSound;
 	private static Sound BlowSound;
 	
-	private Sound doorOpenSound;
-	private Sound doorCloseSound;
+	private static Sound DoorOpenSound;
+	private static Sound DoorCloseSound;
 	
 	private Blocker side1;
 	private Blocker side2;
@@ -81,9 +81,9 @@ public class DoorWall implements Wall {
 			LightningImg.init("./resources/Imgs/Structure/lightning.png");
 			ShotSound = new Sound("./resources/Sounds/scavengerFire.wav");
 			BlowSound = new Sound("./resources/Sounds/scavengerBlowup.wav");
+			DoorOpenSound = new Sound("./resources/Sounds/doorOpen.wav");
+			DoorCloseSound = new Sound("./resources/Sounds/doorClose.wav");
 		}
-		doorOpenSound = new Sound("./resources/Sounds/doorOpen.wav");
-		doorCloseSound = new Sound("./resources/Sounds/doorClose.wav");
 		if (vertical)
 		{
 			wallImg = DoorWallImg;
@@ -179,7 +179,7 @@ public class DoorWall implements Wall {
 		{
 			if (closeSoundPlaying)
 			{
-				doorCloseSound.stopAndReset();
+				DoorCloseSound.stopAndReset();
 				closeSoundPlaying = false;
 			}
 			if (door.getH() > 0 && vertical|| door.getW() > 0 && !vertical)
@@ -194,8 +194,8 @@ public class DoorWall implements Wall {
 				}
 				if (!openSoundPlaying)
 				{
-					doorOpenSound.stopAndReset();
-					doorOpenSound.play();
+					DoorOpenSound.stopAndReset();
+					DoorOpenSound.play();
 					openSoundPlaying = true;
 				}
 				
@@ -213,13 +213,13 @@ public class DoorWall implements Wall {
 			}
 			if (openSoundPlaying)
 			{
-				doorOpenSound.stopAndReset();
+				DoorOpenSound.stopAndReset();
 				openSoundPlaying = false;
 			}
 			if (!closeSoundPlaying)
 			{
-				doorCloseSound.stopAndReset();
-				doorCloseSound.play();
+				DoorCloseSound.stopAndReset();
+				DoorCloseSound.play();
 				closeSoundPlaying = true;
 			}
 		}
@@ -227,12 +227,12 @@ public class DoorWall implements Wall {
 		{
 			if (openSoundPlaying)
 			{
-				doorOpenSound.stopAndReset();
+				DoorOpenSound.stopAndReset();
 				openSoundPlaying = false;
 			}
 			if (closeSoundPlaying)
 			{
-				doorCloseSound.stopAndReset();
+				DoorCloseSound.stopAndReset();
 				closeSoundPlaying = false;
 			}
 		}
