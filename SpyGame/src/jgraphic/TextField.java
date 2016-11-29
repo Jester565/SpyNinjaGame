@@ -72,7 +72,6 @@ public class TextField {
 					}
 					else
 					{
-						System.out.println("TRIGGERED");
 						typedChar = null;
 					}
 				}
