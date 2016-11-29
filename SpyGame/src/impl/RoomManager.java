@@ -285,7 +285,7 @@ public class RoomManager {
 		}
 		drawForceWaves();
 		
-		core.getShapeRenderer().drawRect((-BOUNDS_OFF + 30 - core.gameX) * core.gameScaleX, (-BOUNDS_OFF - core.gameY) * core.gameScaleY, (BOUNDS_OFF) * core.gameScaleX, (Room.ROOM_W * ROOMS_SIZE + BOUNDS_OFF * 2) * core.gameScaleY, boundColor);
+		core.getShapeRenderer().drawRect((-BOUNDS_OFF + 40 - core.gameX) * core.gameScaleX, (-BOUNDS_OFF - core.gameY) * core.gameScaleY, (BOUNDS_OFF) * core.gameScaleX, (Room.ROOM_W * ROOMS_SIZE + BOUNDS_OFF * 2) * core.gameScaleY, boundColor);
 		core.getShapeRenderer().drawRect((Room.ROOM_W * ROOMS_SIZE - core.gameX) * core.gameScaleX, (-BOUNDS_OFF - core.gameY) * core.gameScaleY, (BOUNDS_OFF) * core.gameScaleX, (Room.ROOM_W * ROOMS_SIZE + BOUNDS_OFF * 2) * core.gameScaleY, boundColor);
 		core.getShapeRenderer().drawRect((0 - core.gameX) * core.gameScaleX, (-BOUNDS_OFF - core.gameY) * core.gameScaleY, (Room.ROOM_W * ROOMS_SIZE) * core.gameScaleX, (BOUNDS_OFF) * core.gameScaleY, boundColor);
 		core.getShapeRenderer().drawRect((0 - core.gameX) * core.gameScaleX, (Room.ROOM_W * ROOMS_SIZE - core.gameY) * core.gameScaleY, (Room.ROOM_W * ROOMS_SIZE) * core.gameScaleX, (BOUNDS_OFF) * core.gameScaleY, boundColor);

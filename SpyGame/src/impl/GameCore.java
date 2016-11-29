@@ -144,6 +144,7 @@ public class GameCore extends Core {
 			String consolasName = this.getTextRenderer().loadFont("./resources/Fonts/Consolas.ttf");
 			fail |= consolasName == null;
 			fail |= !this.getTextRenderer().setFont(consolasName);
+			getDisplayManager().setBackgroundColor(0, 0, 0, 1);
 			fpsLogger = new FPSLogger(this);
 			mainMenu = new MainMenu(this);
 			collisionManager = new CollisionManager();
