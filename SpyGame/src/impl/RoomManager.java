@@ -377,10 +377,13 @@ public class RoomManager {
 		{
 			((ItemRoom)rooms.get(lastPlayerCol).get(lastPlayerRow)).setUsed(true);
 		}
-		core.getGameEngine().enemyAttack();
-		if (core.getGameEngine().getSpy().isAlive())
+		if (core.getGameEngine().getGameStatus() == GAME_STATE.UNFINISHED)
 		{
-			core.getGameEngine().enemyMove();
+			core.getGameEngine().enemyAttack();
+			if (core.getGameEngine().getSpy().isAlive())
+			{
+				core.getGameEngine().enemyMove();
+			}
 		}
 		updateAliens();
 		core.getGameEngine().updateSpyPowerups();
