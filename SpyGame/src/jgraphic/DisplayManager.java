@@ -41,6 +41,8 @@ public class DisplayManager {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize((int)screenSize.getWidth(), (int)((29.0 * screenSize.getHeight())/30.0));
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		frame.createBufferStrategy(2);
+		buffStrat = null;
 		isFullScreen = false;
 	}
 	
@@ -51,6 +53,8 @@ public class DisplayManager {
 		frame.setResizable(false);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setVisible(true);
+		frame.createBufferStrategy(2);
+		buffStrat = null;
 		isFullScreen = true;
 	}
 	
@@ -103,23 +107,19 @@ public class DisplayManager {
 			}
 			buffStrat.show();
 		}
-		buffStrat = frame.getBufferStrategy();
-		if (buffStrat == null)
+		BufferStrategy tempBuffStrat = frame.getBufferStrategy();
+		if (tempBuffStrat != null)
 		{
-			frame.createBufferStrategy(2);
-			buffStrat = frame.getBufferStrategy();
-		}
-		if (buffStrat != null)
-		{
+			buffStrat = tempBuffStrat;
 			graphics = (Graphics2D) buffStrat.getDrawGraphics();
+			if (antiAliasing)
+			{
+				graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			}
+			graphics.clearRect(screenXOff, screenYOff, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
+			graphics.setColor(backGroundColor);
+			graphics.drawRect(0, 0, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
 		}
-		if (antiAliasing)
-		{
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		}
-		graphics.clearRect(screenXOff, screenYOff, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
-		graphics.setColor(backGroundColor);
-		graphics.drawRect(0, 0, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
 	}
 	
 	void updateScreenSize()

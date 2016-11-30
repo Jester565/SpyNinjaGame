@@ -28,7 +28,10 @@ public abstract class Core {
 				long startTime = System.currentTimeMillis();
 	        	dm.update();
 	        	im.update();
-	        	draw();
+	        	if (dm.graphics != null)
+	        	{
+	        		draw();
+	        	}
 	        	long timeLeft = (long)(1000.0/frameRateCap - (System.currentTimeMillis() - startTime));
 	        	if (timeLeft > 0)
 	        	{
