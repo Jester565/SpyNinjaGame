@@ -18,6 +18,7 @@ public class DisplayManager {
 	
 	private boolean antiAliasing = true;
 	private boolean isFullScreen = false;
+	private Color backGroundColor = new Color(0, 0, 0, 1);
 	
 	DisplayManager()
 	{
@@ -88,25 +89,37 @@ public class DisplayManager {
 	public void setBackgroundColor(float r, float g, float b, float a)
 	{
 		frame.getContentPane().setBackground(new Color(r, g, b, a));
-		frame.setBackground(new Color(r, g, b, a));
+		backGroundColor = new Color(r, g, b, a);
+		frame.setBackground(backGroundColor);
 	}
 	
 	void update()
 	{
-		if (buffStrat == null || !buffStrat.contentsLost())
+		if (buffStrat != null)
 		{
-			if (buffStrat != null)
+			if (graphics != null)
 			{
-				buffStrat.show();
+				graphics.dispose();
 			}
-			buffStrat = frame.getBufferStrategy();
-			graphics = (Graphics2D)buffStrat.getDrawGraphics();
-			if (antiAliasing)
-			{
-				graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			}
-			graphics.clearRect(screenXOff, screenYOff, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
+			buffStrat.show();
 		}
+		buffStrat = frame.getBufferStrategy();
+		if (buffStrat == null)
+		{
+			frame.createBufferStrategy(2);
+			buffStrat = frame.getBufferStrategy();
+		}
+		if (buffStrat != null)
+		{
+			graphics = (Graphics2D) buffStrat.getDrawGraphics();
+		}
+		if (antiAliasing)
+		{
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		}
+		graphics.clearRect(screenXOff, screenYOff, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
+		graphics.setColor(backGroundColor);
+		graphics.drawRect(0, 0, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
 	}
 	
 	void updateScreenSize()
