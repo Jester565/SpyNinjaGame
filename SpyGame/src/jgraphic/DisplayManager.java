@@ -46,9 +46,9 @@ public class DisplayManager {
 	public void setFullScreen()
 	{
 		frame.dispose();
+		frame.setUndecorated(true);
 		frame.setResizable(false);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		frame.setUndecorated(true);
 		frame.setVisible(true);
 		isFullScreen = true;
 	}

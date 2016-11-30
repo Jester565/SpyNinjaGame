@@ -355,6 +355,7 @@ public class GameCore extends Core {
 		}
 		else
 		{
+			setPlayerMovement(false);
 			gameScaleX = GAME_MENU_SCALE_X;
 			gameScaleY = GAME_MENU_SCALE_Y;
 			roomManager.drawRoof();
