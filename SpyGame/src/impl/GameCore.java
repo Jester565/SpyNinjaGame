@@ -115,6 +115,7 @@ public class GameCore extends Core {
 	private HUD hud;
 	private ArrayList <Star> stars;
 	private boolean playerMovementEnabled = false;
+	private NotificationManager notificationManager;
 	
 	private static float GAME_SCALE_DEFAULT_X = .35f;
 	private static float GAME_SCALE_DEFAULT_Y = .35f;
@@ -141,6 +142,7 @@ public class GameCore extends Core {
 		if (super.init(WINDOW_NAME))
 		{
 			boolean fail = false;
+			notificationManager = new NotificationManager(this, 5);
 			String consolasName = this.getTextRenderer().loadFont("./resources/Fonts/Consolas.ttf");
 			fail |= consolasName == null;
 			fail |= !this.getTextRenderer().setFont(consolasName);
@@ -223,6 +225,7 @@ public class GameCore extends Core {
 		if (gameEngine.load(file))
 		{
 			reset();
+			notificationManager.addNotification("Load Successful!");
 			return true;
 		}
 		return false;
@@ -290,7 +293,10 @@ public class GameCore extends Core {
 			}
 			else
 			{
-				this.getDisplayManager().setFullScreen();
+				if (!this.getDisplayManager().setFullScreen())
+				{
+					notificationManager.addNotification("OS does not support full screen");
+				}
 			}
 		}
 		if (GameEngine.DebugMode)
@@ -365,5 +371,6 @@ public class GameCore extends Core {
 			}
 		}
 		fpsLogger.draw(20, 40, 40, 0, 1, 0, 1);
+		notificationManager.draw((float)(DisplayManager.DISPLAY_DEFAULT_W/2), (float)(DisplayManager.DISPLAY_DEFAULT_H - 50), 30);
 	}
 }

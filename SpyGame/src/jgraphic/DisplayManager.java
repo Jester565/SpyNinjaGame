@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
@@ -16,13 +17,17 @@ public class DisplayManager {
 	protected static final int SCREEN_Y_OFF_DEFAULT = 0;
 	protected static final int SCREEN_X_OFF_DEFAULT = 0;
 	
+	private boolean isLinux = false;
 	private boolean antiAliasing = true;
 	private boolean isFullScreen = false;
 	private Color backGroundColor = new Color(0, 0, 0, 1);
 	
 	DisplayManager()
 	{
-		
+		if (System.getProperty("os.name").contains("nux"))
+		{
+			isLinux = true;
+		}
 	}
 	
 	public boolean isFullScreen()
@@ -46,16 +51,21 @@ public class DisplayManager {
 		isFullScreen = false;
 	}
 	
-	public void setFullScreen()
+	public boolean setFullScreen()
 	{
-		frame.dispose();
-		frame.setUndecorated(true);
-		frame.setResizable(false);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frame.setVisible(true);	
-		frame.createBufferStrategy(2);
-		buffStrat = null;
-		isFullScreen = true;
+		if (!isLinux)
+		{
+			frame.dispose();
+			frame.setUndecorated(true);
+			frame.setResizable(false);
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			frame.setVisible(true);
+			frame.createBufferStrategy(2);
+			buffStrat = null;
+			isFullScreen = true;
+			return true;
+		}
+		return false;
 	}
 	
 	public void setAntiAliasing()
