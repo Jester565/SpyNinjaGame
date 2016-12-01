@@ -82,7 +82,10 @@ public class Sound implements Soundable {
 		return clip.isRunning();
 	}
 	public void setVolume(double scale){
-		volumeControl.setValue((float) ((scale)*(Math.abs(volumeControl.getMinimum()) + Math.abs(volumeControl.getMaximum())) + volumeControl.getMinimum()));
+		if (volumeControl != null)
+		{
+			volumeControl.setValue((float) (volumeControl.getMinimum() + Math.abs(volumeControl.getMaximum() - volumeControl.getMinimum()) * scale));
+		}
 	}
 
 	private void init(){
@@ -93,7 +96,22 @@ public class Sound implements Soundable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		volumeControl.setValue((float) (Math.abs(volumeControl.getMinimum() + Math.abs(volumeControl.getMaximum())) + volumeControl.getMinimum()));
+		try
+		{
+			volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			setVolume(DEFAULT_VOLUME_SCALE);
+		}
+		catch (IllegalArgumentException e)
+		{
+			try {
+				volumeControl = (FloatControl) clip.getControl(FloatControl.Type.VOLUME);
+				setVolume(DEFAULT_VOLUME_SCALE);
+			}
+			catch (IllegalArgumentException e2)
+			{
+				volumeControl = null;
+				System.err.println("Java does not allow for any form of volume control...");
+			}
+		}
 	}
 }

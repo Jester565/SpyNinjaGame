@@ -68,14 +68,13 @@ public class Music implements Soundable {
 	}
 	private class SoundThread implements Runnable{
 
-		private FloatControl volume;
+		private FloatControl volumeControl;
 		private boolean loop = false;
 		private AudioInputStream audioInputStream = null;
 		private SourceDataLine	line = null;
 		private boolean running = false;
 		private byte[]	abData;
 		private boolean alive = true;
-		private double lastScale = 1;
 		private int nBytesRead;
 		public SoundThread(String loc){
 			createStream(loc);
@@ -106,9 +105,23 @@ public class Music implements Soundable {
 				e.printStackTrace();
 				System.exit(1);
 			}
-			//line.start();
-			volume = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-			setVolume(lastScale);
+			try
+			{
+				volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+				setVolume(DEFAULT_VOLUME_SCALE);
+			}
+			catch (IllegalArgumentException ex)
+			{
+				try {
+					volumeControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+					setVolume(DEFAULT_VOLUME_SCALE);
+				}
+				catch (IllegalArgumentException ex2)
+				{
+					volumeControl = null;
+					System.err.println("Java doesn't support music volume control");
+				}
+			}
 		}
 		
 		public void run() {
@@ -164,8 +177,10 @@ public class Music implements Soundable {
 			createLine();
 		}
 		public synchronized void setVolume(double scale){
-			lastScale = scale;
-			volume.setValue((float) (scale*(Math.abs(volume.getMinimum()) + Math.abs(volume.getMaximum())) + volume.getMinimum()));
+			if (volumeControl != null)
+			{
+				volumeControl.setValue((float) (volumeControl.getMinimum() + Math.abs(volumeControl.getMaximum() - volumeControl.getMinimum()) * scale));
+			}
 		}
 		public synchronized void playFromStart(){
 			resetPlaying();
