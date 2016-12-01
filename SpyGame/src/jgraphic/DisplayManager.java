@@ -51,7 +51,9 @@ public class DisplayManager {
 		frame.dispose();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setSize((int)screenSize.getWidth(), (int)screenSize.getHeight());
 		frame.setVisible(true);
 		frame.createBufferStrategy(2);
 		buffStrat = null;
