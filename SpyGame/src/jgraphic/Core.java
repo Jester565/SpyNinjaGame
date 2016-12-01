@@ -78,6 +78,7 @@ public abstract class Core {
 	
 	protected boolean init(String windowName)
 	{
+		System.setProperty("sun.java2d.opengl", "true");
 		dm = new DisplayManager();
 		im = new InputManager(dm);
         if (!dm.init(im, windowName))
