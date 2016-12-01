@@ -33,7 +33,7 @@ public class Grid implements Serializable {
 		}
 		
 		/**
-		 * @return {@code {"UP", "RIGHT", "DOWN", "LEFT"}} in an ArrayList<String> 
+		 * @return {@code {"UP", "RIGHT", "DOWN", "LEFT"}} in an ArrayList.
 		 */
 		public static ArrayList<String> names() {
 			ArrayList<String> names = new ArrayList<String>();
@@ -76,7 +76,7 @@ public class Grid implements Serializable {
 	/**
 	 * If there is a {@link GameObject} at the coordinates, it is set to visible.  If there is no object, 
 	 * a {@link VisibleMark} is put in the coordinates.
-	 * Any element set to these coordinates is also appended to {@link #visiblePairs}.
+	 * Any element set to these coordinates is also appended to {@link #visibleObjects}.
 	 * @param x The column of the element to set to visible.
 	 * @param y The row of the element to set to visible.
 	 * @return {@code true} if the position was set to visible, {@code false} otherwise.
@@ -170,7 +170,7 @@ public class Grid implements Serializable {
 	 * @param x The column in {@link #gameObjects} of the element to check the {@link MoveStatus} of.
 	 * @param y THe row in {@link #gameObjects} of the elemnt to check the {@link MoveStatus} of.
 	 * @return {@link MoveStatus} given when attempting to move a {@link GameObject}
-	 * in a {@link #DIRECTION}.
+	 * in a {@link DIRECTION}.
 	 */
 	public MoveStatus checkMoveStatus(DIRECTION direction, int x, int y) {
 		int[] coord = getCoordinate(direction, x, y);

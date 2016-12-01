@@ -88,7 +88,7 @@ public class UserInterface {
 	private String directionOptions = "";
 	
 	/**
-	 * options and hotkeys for {@link #PAUSE_COMMAND}
+	 * options and hotkeys for {@link PAUSE_COMMAND}.
 	 */
 	private String pauseMenuOptions = "";
 	
@@ -367,8 +367,8 @@ public class UserInterface {
 	 * Ask the user for a direction to look in then
 	 * change the tiles that are visible to the spy by 
 	 * calling {@link GameEngine#playerLook(DIRECTION)}
-	 * {@link #USER_COMMAND} can also be entered here 
-	 * though {@link #USER_COMMAND#shoot} is ignored
+	 * {@link USER_COMMAND} can also be entered here 
+	 * though {@link USER_COMMAND#shoot} is ignored.
 	 */
 	private void playerLookLoop() {
 		String question = "Enter a direction to look in or another command\n"
@@ -482,7 +482,7 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Change {@link GameEngine#DebugMode} to opposite boolean & print message indicating mode entered
+	 * Change {@link GameEngine#DebugMode} to opposite boolean and print message indicating mode entered.
 	 */
 	private void toggleDebugMode() {
 		GameEngine.SetDebugMode(GameEngine.DebugMode ? false: true);
@@ -492,8 +492,9 @@ public class UserInterface {
 	/**
 	 * Continually ask user to enter a direction, and then use the String
 	 * the user entered as a key to get the value from the map returned by
-	 * {@link Grid#DIRECTION#abbreviatedNames}
-	 * @return the {@link Grid#DIRECTION} corresponding to String entered by the user
+	 * {@link DIRECTION#keyCodes()}
+	 * @param action The user input to be converted into a {@link DIRECTION}.
+	 * @return the {@link DIRECTION} corresponding to String entered by the user
 	 */
 	private DIRECTION getUserDirection(String action) {
 		String question = "Enter direction to " + action + "\n"

@@ -76,6 +76,7 @@ public class Spy extends Character implements Serializable {
 	
 	/**
 	 * Checks if the BelowObject is null and if it isn't then it calls the function to use the power-up.
+	 * @return {@code true} if a powerup was consumed, {@code false} otherwise.
 	 */
 	public boolean usePowerups()
 	{
@@ -106,7 +107,8 @@ public class Spy extends Character implements Serializable {
 	}
 	
 	/**
-	 * Check if the player is run of the live
+	 * Check if the player is run of the live.
+	 * @return {@code true} if {@link #lives} is greater than 0, {@code false} otherwise.
 	 */
 	public boolean hasLives() {
 		if (lives <= 0 ) {
@@ -134,8 +136,8 @@ public class Spy extends Character implements Serializable {
 	 * Sets {@link #invincibleTurns} to the parameter turns.
 	 * @param turns Amount of turns to grant invincibility for.
 	 */
-	public void setInvincibility(int Turns) {
-		invincibleTurns = Turns;
+	public void setInvincibility(int turns) {
+		invincibleTurns = turns;
 	}
 
 	/**

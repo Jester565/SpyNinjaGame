@@ -57,6 +57,7 @@ public class Gun extends Weapon implements Serializable {
 	/**
 	 * This method is called when a {@link Character} is hit with a weapon. This instance uses
 	 * the {@link #GUN_DAMAGE} of 1.
+	 * @param character The {@link Character} to call {@link Character#takeDamage(int)} on.
 	 */
 	public void hit(Character character){
 		character.takeDamage(GUN_DAMAGE);
@@ -64,7 +65,7 @@ public class Gun extends Weapon implements Serializable {
 	
 	/**
 	 * This method simply returns the number of rounds the {@link Spy} has left.
-	 * @return
+	 * @return The {@link #numRounds} in {@code this} {@link Gun}.
 	 */
 	public int getNumRounds() {	
 		return numRounds;

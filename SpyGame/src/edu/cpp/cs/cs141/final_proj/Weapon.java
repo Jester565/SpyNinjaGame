@@ -24,7 +24,8 @@ public abstract class Weapon implements Serializable {
 	/**
 	 * This method is used in both the gun and sword class and it does damage 
 	 * to a player or enemy.
-	 * @param damage The amount of damage that will dealt in {@link #attack(Character)}.
+	 * @param damage The amount of damage that will dealt in {@link #attack(int, int, Character, Grid)}.
+	 * @param range The number of elements from the attackers position in the {@link Grid} the projectile/weapon can try to deal damage to in one attack.
 	 */
 	public Weapon(int damage, int range){
 		this.damage = damage;
@@ -36,10 +37,10 @@ public abstract class Weapon implements Serializable {
 	 * This is the attack method that will be called by {@link GameEngine}. It calls on the 
 	 * other attack method, passing in different int's depending on the direction the player
 	 * shot in.
-	 * @param shootDirection
-	 * @param character
-	 * @param grid
-	 * @return
+	 * @param shootDirection The direction to attack to.
+	 * @param character The {@link Character} where the attack will be originating from.
+	 * @param grid The environment that will be checked when attacking.
+	 * @return {@code true} if a {@link Character} is hit, {@code false} otherwise.
 	 */
 	public boolean attack(DIRECTION shootDirection, Character character, Grid grid) {
 		return attack(shootDirection.deltaX, shootDirection.deltaY, character, grid);
@@ -48,11 +49,11 @@ public abstract class Weapon implements Serializable {
 	/**
 	 * This method is called by the previous attack method. It checks if the weapon hit another
 	 * {@link Character} or if it ran into a {@link Room}.
-	 * @param dX
-	 * @param dY
-	 * @param character
-	 * @param grid
-	 * @return
+	 * @param dX The horizontal velocity of the weapon/projectile.
+	 * @param dY The vertical velocity of the weapon/projectile.
+	 * @param character The {@link Character} who is attacking.
+	 * @param grid The environment to check for damage in.
+	 * @return {@code true} if a {@link Character} is hit, {@code false} otherwise.
 	 */
 	protected boolean attack(int dX, int dY, Character character, Grid grid){
 		int bX = character.getX();

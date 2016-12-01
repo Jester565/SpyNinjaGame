@@ -78,8 +78,8 @@ public class Ninja extends Character implements Serializable {
 	
 	/**
 	 * Sets the {@link #destinationCoordinate} value to an array containing x and y
-	 * @param x
-	 * @param y
+	 * @param x The column of the destination coordinate.
+	 * @param y The row of the destination coordinate.
 	 */
 	public void setDestinationCoordinate(int x, int y) {
 		int[] coord = {x, y};
@@ -87,14 +87,15 @@ public class Ninja extends Character implements Serializable {
 	}
 	
 	/**
-	 * Sets the {@link #destinationCoordinate} value to coord
-	 * @param coord
+	 * Sets the {@link #destinationCoordinate} value to coord.
+	 * @param coord The coordinate to set {@link #destinationCoordinate} to.
 	 */
 	public void setDestinationCoordinate(int[] coord) {
 		destinationCoordinate = coord;
 	}
 	
 	/**
+	 * Accessor for {@link #destinationCoordinate}.
 	 * @return {@link #destinationCoordinate}
 	 */
 	public int[] getDestinationCoordinate() {

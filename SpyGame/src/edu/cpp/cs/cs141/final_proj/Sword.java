@@ -30,6 +30,7 @@ public class Sword extends Weapon implements Serializable {
 	/**
 	 * This method is called when a {@link Character} is hit with a weapon. This instance uses
 	 * the {@link #SWORD_DAMAGE} of 1.
+	 * @param character The {@link Character} to deal damage to.
 	 */
 	public void hit(Character character){
 		character.takeDamage(SWORD_DAMAGE);
