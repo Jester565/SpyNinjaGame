@@ -118,7 +118,7 @@ public class DisplayManager {
 			}
 			graphics.clearRect(screenXOff, screenYOff, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
 			graphics.setColor(backGroundColor);
-			graphics.drawRect(0, 0, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
+			graphics.fillRect(0, 0, (int)(DISPLAY_DEFAULT_W * screenWScale), (int)(DISPLAY_DEFAULT_H * screenHScale));
 		}
 	}
 	
