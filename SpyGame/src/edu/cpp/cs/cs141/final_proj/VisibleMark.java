@@ -7,9 +7,6 @@ import java.io.Serializable;
  * @author ajcra
  */
 public class VisibleMark extends GameObject implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4887396807856126040L;
 
 	/**

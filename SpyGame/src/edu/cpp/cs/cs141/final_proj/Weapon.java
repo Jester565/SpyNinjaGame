@@ -8,10 +8,7 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
  * Represents a Weapon that can attack {@link Character}s.
  */
 public abstract class Weapon implements Serializable {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -5302248009740573761L;
 
 	/**
@@ -86,6 +83,7 @@ public abstract class Weapon implements Serializable {
 	}
 	
 	/**
+	 * Accessor for the {@link #damage} field.
 	 * @return {@link #damage}
 	 */
 	public int getDamage() {

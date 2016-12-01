@@ -9,9 +9,6 @@ import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
  * Spy and Ninja
  */
 public abstract class Character extends GameObject implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7397173327731318547L;
 	
 	/**
@@ -49,7 +46,8 @@ public abstract class Character extends GameObject implements Serializable {
 	}
 	
 	/**
-	 * Set health number
+	 * Moddifier for the {@link #health} attribute.
+	 * @param The value to set {@link #health} to.
 	 */
 	public void setHealth(int health) {
 		this.health = health;

@@ -13,9 +13,6 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public class Radar extends GameObject implements Useable, Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8261583359429564007L;
 
 	/**

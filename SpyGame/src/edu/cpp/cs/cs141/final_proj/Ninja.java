@@ -10,9 +10,6 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * @author Hao, ajcra
  */
 public class Ninja extends Character implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8819870751929612695L;
 
 	/**

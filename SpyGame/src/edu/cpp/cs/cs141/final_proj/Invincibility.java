@@ -12,9 +12,6 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  *
  */
 public class Invincibility extends GameObject implements Useable, Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5977137733391818570L;
 	/**
 	 * This field represents the number of turns that the player

@@ -175,14 +175,14 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Set the player
+	 * Set the player to the initial position.
 	 */
 	private void setPlayer()	{
 		grid.setGameObject(spy, Spy.INITIAL_X, Spy.INITIAL_Y);
 	}
 	
 	/**
-	 * Set six rooms
+	 * Sets the six rooms onto the {@link #grid}. Also sets {@link #briefcaseRoom}.
 	 */
 	public void setRooms() {
 		int briefRoomIndex = rng.nextInt(ROOMS_SIZE);
@@ -201,7 +201,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Set three items.
+	 * Puts the {@link Useable}s on the {@link #grid}.
 	 */
 	public void setItems() {
 		int diceX, diceY;
@@ -228,7 +228,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Set the enemies
+	 * Puts {@link #NINJAS_SIZE} amount of {@link Ninja}s on the {@link #grid} and initializes and populates the {@link #ninjas}
 	 */
 	public void setNinjas() {
 		ninjas = new ArrayList<Ninja>();
@@ -246,7 +246,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Checks status of the game
+	 * Accessor for {@link #gameStatus} to check if the game has been completed and whether it was won or lost.
 	 * @return {@link #gameStatus} to check current status
 	 */
 	public GAME_STATE getGameStatus(){
@@ -256,6 +256,7 @@ public class GameEngine {
 	/**
 	 * The {@link GameObject}s next to the {@link #spy} are set to visible.
 	 * @param lookDirection The direction to look in.
+	 * @return A message indicating if there was a {@link Ninja}, the view was obstructed, or there was nothing in the direction.
 	 */
 	public String playerLook(DIRECTION lookDirection) {
 		spy.setDirectionFacing(lookDirection);
@@ -267,6 +268,7 @@ public class GameEngine {
 	 * @param dX The change in x from the {@link #spy} to set to visible.
 	 * @param dY The change in y from the {@link #spy} to set to visible.
 	 * @param range The amount of elements from the {@link #spy} to set to visible.
+	 * @return A message indicating if there was a {@link Ninja}, the view was obstructed, or there was nothing in the direction.
 	 */
 	private String playerLook(int dX, int dY, int range)
 	{
@@ -352,9 +354,9 @@ public class GameEngine {
 		return moveStatus;
 	}
 	/**
-	 * Checks the status of a player move
-	 * @param direction
-	 * @return moveStatus
+	 * Gets the {@link MoveStatus} of the {@link #spy} moving in the {@link DIRECTION} specified.
+	 * @param direction The {@link DIRECTION} to move in.
+	 * @return moveStatus The result of the attempted move.
 	 */
 	public MoveStatus checkPlayerMove(DIRECTION direction)
 	{
@@ -365,9 +367,9 @@ public class GameEngine {
 	}
 	
 	/**
-	 * The {@link #spy} shoots in the direction specified.
+	 * The {@link #spy} shoots in the direction specified. Will remove {@link Ninja}s that are no longer alive.
 	 * @param direction The direction to shoot in.
-	 * @return {@code true} is enemy hit, {@code} false otherwise.
+	 * @return {@code true} if enemy hit, {@code false} otherwise.
 	 */
 	public boolean playerShoot(DIRECTION direction)
 	{
@@ -391,9 +393,7 @@ public class GameEngine {
 
 	
 	/**
-	 * Updates the spy's attributes when upon using powerups.
-	 * Reduces the invincibilty counter one and reveals the briefcase
-	 * to the player.
+	 * Updates the power up effects, like radar and invinciblity, on the {@link #spy} and will apply their effects on the {@link #grid}.
 	 */
 	public void updateSpyPowerups(){
 		spy.reduceInvincibility();
@@ -402,15 +402,16 @@ public class GameEngine {
 		}
 	}
 	/**
-	 * Method to use powerups on the spy.
+	 * Calls {@link Spy#usePowerups()}.
+	 * @return {@code true} if a powerup was able to be used.  {@code false} otherwise.
 	 */
 	public boolean useSpyPowerup(){
 		return spy.usePowerups();
 	}
 	
 	/**
-	 * For each ninja in {@link #ninjas} attack spy with {@link Ninja#weapon}
-	 * if spy is in range
+	 * For each ninja in {@link #ninjas} attack {@link #spy} with {@link Ninja#weapon}
+	 * if {@link #spy} is in range
 	 */
 	public void enemyAttack() {		
 		for (Ninja ninja: ninjas) {
@@ -456,7 +457,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Each ninja looks a number of directions as far as {@link Ninja#getLookRange()}
+	 * Each element in {@link #ninjas} looks a number of directions as far as {@link Ninja#getLookRange()}
 	 * with any {@link Room} blocking vision, and if {@link #spy} is 
 	 * spotted then call {@link Ninja#setDestinationCoordinate(int, int)} 
 	 * passing the spy's coordinate
@@ -500,7 +501,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * For each ninja in {@link #ninjas} this makes the ninja look which checks in 
+	 * For each element in {@link #ninjas}, this makes the ninja look which checks in 
 	 * directions to see if spy is there. If spotted then stores the coordinate of the spy 
 	 * and calls {@link Ninja#setDirectionFacing(DIRECTION)} with dir towards the spy. The ninja will move 
 	 * in the direction facing until it reaches {@link Ninja#getDestinationCoordinate} at which
@@ -535,8 +536,8 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Moves the ninja in the direction its facing {@link Ninja#directionFacing}
-	 * @param ninjaIndex the index of {@link #ninjas} used to select a ninja
+	 * Moves the {@link Ninja} in the direction its facing {@link Ninja#directionFacing}.
+	 * @param ninjaIndex the index the element to use in {@link #ninjas}.
 	 * @return {@code true} if successfully moved, {@code false} otherwise
 	 */
 	public void enemyMoveFoward(int ninjaIndex)
@@ -560,7 +561,7 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Move a ninja from {@link #ninjas} in a random direction & set the ninja {@link Ninja#directionFacing}
+	 * Move an element from {@link #ninjas} in a random direction & set the ninja {@link Ninja#directionFacing}
 	 * to the direction moved in
 	 * @param ninjaIndex the index of {@link #ninjas} used to select a ninja
 	 */
@@ -585,6 +586,7 @@ public class GameEngine {
 	}
 	
 	/**
+	 * Accessor for {@link #spy}.
 	 * @return {@link #spy}
 	 */
 	public Spy getSpy() {
@@ -592,8 +594,8 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Saves the file to the fileName specified by the parameter.
-	 * @param fileDir The directory to save in.
+	 * Saves the game information to the fileName specified by the parameter. Will revert progress back to the last move.
+	 * @param fileDir The filename to save in.
 	 */
 	public boolean save(String fileDir) {
 		try {
@@ -621,8 +623,8 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Loads a previous session of the game from the directory specified.
-	 * @param fileDir The file to load from.
+	 * Loads a previous session of the game from the file specified.
+	 * @param fileDir The file name to load from.
 	 */
 	public boolean load(String fileDir) {
 		try {
@@ -643,16 +645,14 @@ public class GameEngine {
 		} catch (FileNotFoundException e) {
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
 	}
 	/**
-	 * Edits the looking range for the ninjas
+	 * Edits the looking range for all elements of {@link #ninjas} by calling {@link Ninja#setLookRange(int)}.
 	 * @param lookRange
 	 */
 	public void changeAllNinjasLookRangeTo(int lookRange) {
@@ -661,7 +661,7 @@ public class GameEngine {
 		}
 	}
 	/**
-	 * Resets the ninja coordination
+	 * Resets the last coordinates the {@link #ninjas} saw the {@link #spy} when the difficulty is changed to an easier difficulty.
 	 */
 	public void clearAllNinjasDestinationCoordinate() {
 		for (Ninja ninja: ninjas) {
@@ -696,16 +696,16 @@ public class GameEngine {
 		DebugMode = mode;
 	}
 	/**
-	 * 
-	 * @return grid types
+	 * Returns a 2D array of {@link GAME_OBJECT_TYPE}s where its elements represent the {@link #grid}.  Generated by calling {@link Grid#getTypes(boolean)}.
+	 * @return A 2D array with the {@link GAME_OBJECT_TYPE}s where its elements represent the {@link #grid}.
 	 */
 	public GAME_OBJECT_TYPE[][] getGridTypes()
 	{
-		return grid.getTypes(spy.hasRadar());
+		return grid.getTypes();
 	}
 	/**
-	 * 
-	 * @return grid visibility
+	 * Returns a 2D array of booleans where the elements represent if a element in the {@link #grid} is visible.
+	 * @return 2D array of booleans representing the visiblity of elements in the {@link #grid}.
 	 */
 	public boolean[][] getGridVisibility()
 	{

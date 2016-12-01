@@ -10,9 +10,6 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  */
 public class Room extends GameObject implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2582178436693933013L;
 	
 	/**

@@ -62,12 +62,12 @@ public class Grid implements Serializable {
 	private GameObject[][] gameObjects = new GameObject[GRID_SIZE][GRID_SIZE];
 	
 	/**
-	 * Stores the {@link GameObject}s set to visible inside of the {@link VisiblePair} elements.
+	 * Stores the {@link GameObject}s that were effected by {@link #setAsVisible(int, int)} elements.
 	 */
 	private ArrayList<GameObject> visibleObjects;
 
 	/**
-	 * Creates instance of {@link Grid} initializing {@link #visiblePairs}.
+	 * Creates instance of {@link Grid} initializing {@link #visibleObjects}.
 	 */
 	public Grid() {
 		visibleObjects = new ArrayList<GameObject>();
@@ -107,7 +107,8 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Sets all elements that were set to visible as invisible.  Clears {@link #visiblePairs}.
+	 * Sets all elements in {@link #visibleObjects} as invisible. If the element is an instance of {@link VisibleMark}, it is removed from {@link #gameObjects}.
+	 *  Clears {@link #visibleObjects}.
 	 */
 	public void setToInvisible()
 	{
@@ -149,12 +150,12 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Helper method - gives the array (coordinate) of something located at (parameters) x and y
-	 * in the direction of (parameter) direction
-	 * @param direction direction heading to
-	 * @param x current horizontal position
-	 * @param y current vertical position
-	 * @return array of integers representing the coordinate after moving in the (parameter) direction
+	 * Helper method - returns an array representing the coordinate of something located at (parameters) x and y after being moved
+	 * in the direction of the (parameter) direction.
+	 * @param direction Direction to move in.
+	 * @param x current Horizontal position.
+	 * @param y current Vertical position.
+	 * @return array Integers representing the x and y coordinates after moving in the (parameter) direction.
 	 */
 	private int[] getCoordinate(DIRECTION direction, int x, int y) {
 		int moveX = x + direction.deltaX;
@@ -164,8 +165,12 @@ public class Grid implements Serializable {
 	}
 	
 	/**
+	 * Checks if the element at the specified coordinates in {@link #gameObjects} can move in the given direction.
+	 * @param direction The {@link DIRECTION} to check if a move is possible.
+	 * @param x The column in {@link #gameObjects} of the element to check the {@link MoveStatus} of.
+	 * @param y THe row in {@link #gameObjects} of the elemnt to check the {@link MoveStatus} of.
 	 * @return {@link MoveStatus} given when attempting to move a {@link GameObject}
-	 * in a {@link #DIRECTION}
+	 * in a {@link #DIRECTION}.
 	 */
 	public MoveStatus checkMoveStatus(DIRECTION direction, int x, int y) {
 		int[] coord = getCoordinate(direction, x, y);
@@ -184,11 +189,10 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Moves the element at the coordinates in the direction specified.
-	 * @param direction The direction to move the element in.
+	 * Moves the element at the coordinates in {@link #gameObjects} in the direction specified.
+	 * @param direction The {@link DIRECTION} to move the {@link GameObject} in.
 	 * @param x The column of the element to move.
-	 * @param y The column of the element to move.
-	 * @return The status of the move represented as a {@link MoveStatus}.
+	 * @param y The row of the element to move.
 	 */
 	public void move(DIRECTION direction, int x, int y) {
 		int[] coord = getCoordinate(direction, x, y);
@@ -198,7 +202,7 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Moves the element at the coordinates x and y to the coordinates moveX and moveY.
+	 * Moves the element at the coordinates x and y in {@link #gameObjects} to the coordinates moveX and moveY in {@link #gameObjects}.
 	 * @param x The column of the element to move.
 	 * @param y The row of the element to move.
 	 * @param moveX The column to move the element to.
@@ -218,8 +222,8 @@ public class Grid implements Serializable {
 	
 	/**
 	 * Checks if a {@link Ninja} can be placed at the coordinates specified.
-	 * @param x The column to put the {@link Ninja}.
-	 * @param y The row to put the {@link Ninja}.
+	 * @param x The column to check if a {@link Ninja} can be placed.
+	 * @param y The row to check if a {@link Ninja} can be placed.
 	 * @return {@code true} if the {@link Ninja} can be put at the coordinates, {@code false} otherwise.
 	 */
 	public boolean canSetNinja(int x, int y) {
@@ -255,8 +259,8 @@ public class Grid implements Serializable {
 	
 	/**
 	 * Checks if the coordinates are inside the bounds of {@link #gameObjects}.
-	 * @param x The column.
-	 * @param y The row.
+	 * @param x The column to check if in range.
+	 * @param y The row to check if in range.
 	 * @return {@code true} if inside the bounds, {@code false} otherwise.
 	 */
 	public boolean inRange(int x, int y)
@@ -265,7 +269,8 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Draws the {@link #gameObjects} to String.
+	 * Appends the {@link #gameObjects} to a String.
+	 * @return A visualization of the {@link #gameObjects}. Generated by calling {@link GameObject#getGridRepresentation()} on each element.
 	 */
 	public String toString() {
 		String gridString = "";
@@ -282,7 +287,12 @@ public class Grid implements Serializable {
 		return gridString;
 	}
 	
-	public GAME_OBJECT_TYPE[][] getTypes(boolean showBriefcase)
+	/**
+	 * Iterates over {@link #gameObjects} and generates each element to their corresponding {@link GAME_OBJECT_TYPE} based on their type. And stores them in a 2D array with the same dimensions
+	 * as {@link #gameObjects}.
+	 * @return A 2D array of {@link GAME_OBJECT_TYPE}s that represents the types of {@link #gameObjects}.
+	 */
+	public GAME_OBJECT_TYPE[][] getTypes()
 	{
 		GAME_OBJECT_TYPE[][] typeGrid = new GAME_OBJECT_TYPE[GRID_SIZE][GRID_SIZE];
 		for (int i = 0; i < GRID_SIZE; i++)
@@ -329,6 +339,11 @@ public class Grid implements Serializable {
 		return typeGrid;
 	}
 	
+	/**
+	 * Iterates over {@link #gameObjects} and converts each element to a boolean representing their visiblity. And stores them in a 2D array with the same dimensions
+	 * as {@link #gameObjects}.
+	 * @return A 2D array of booleans that represents the visibility of elements in {@link #gameObjects}.
+	 */
 	public boolean[][] getVisibility()
 	{
 		boolean[][] visibleGrid = new boolean[GRID_SIZE][GRID_SIZE];
@@ -350,10 +365,10 @@ public class Grid implements Serializable {
 	}
 	
 	/**
-	 * Called when deserializing a Grid object.  Uses the default deserialization but calls setToInvisible()
-	 * @param ois The input stream to deserialize from
-	 * @throws ClassNotFoundException Thrown when a class is not found or cannot be deserialized properly.
-	 * @throws IOException Something is wrong with ois.
+	 * Called when deserializing a Grid object.  Uses the default deserialization but calls setToInvisible() so the look turn is undone.
+	 * @param ois The input stream to parse from.
+	 * @throws ClassNotFoundException Thrown when a class is not found or cannot be parsed properly.
+	 * @throws IOException Thrown when something is wrong with the ois.
 	 */
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException 
 	{

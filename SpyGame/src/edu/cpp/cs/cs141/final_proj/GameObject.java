@@ -9,9 +9,6 @@ import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
  * Represents an object that can be stored and drawn by the {@link Grid}.
  */
 public abstract class GameObject implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6983278314945628251L;
 
 	/**
@@ -20,12 +17,12 @@ public abstract class GameObject implements Serializable {
 	private GameObject belowObject = null;
 	
 	/**
-	 * The column of the grid the {@link GameObject} is stored on.
+	 * The column of the {@link Grid} the {@link GameObject} is stored on.
 	 */
 	protected int x;
 	
 	/**
-	 * The row of the grid the {@link GameObject} is stored on.
+	 * The row of the {@link Grid} the {@link GameObject} is stored on.
 	 */
 	protected int y;
 	
@@ -35,7 +32,7 @@ public abstract class GameObject implements Serializable {
 	protected boolean visible = false;
 	
 	/**
-	 * Stores the characters that will be drawn to the {@link Grid}.  Set by constructor.
+	 * Stores the characters that will be printed when {@link Grid#toString()} is called.  Set by constructor.
 	 */
 	protected String gridRepresentation;
 	
@@ -49,14 +46,16 @@ public abstract class GameObject implements Serializable {
 	}
 	
 	/**
-	 * When a {@link Character} attempts to step onto the {@link GameObject}, this will indicate the result of it.
-	 * @param approachDirection The direction the {@link Character} is approaching from.
-	 * @return A {@link MoveStatus} that indicates the status of the move.
+	 * When a {@link Character} attempts to step onto the {@link GameObject}, this will indicate what the outcome WILL be. This will not actually move the {@link GameObject}.
+	 * It only gives a {@link MoveStatus} to attempting to step onto {@code this}.
+	 * @param approachDirection The direction another {@link GameObject} is approaching {@code this} from.
+	 * @return A {@link MoveStatus} that indicates the legality and result of the move.
 	 */
 	public MoveStatus stepOn(DIRECTION approachDirection)
 	{
 		return new MoveStatus(MOVE_RESULT.LEGAL, "Moved");
 	}
+	
 	/**
 	 * Modifier for the {@link #x} and {@link #y} fields.
 	 * @param x The column {@code this} is on.
@@ -103,7 +102,7 @@ public abstract class GameObject implements Serializable {
 	}
 	
 	/**
-	 * Gets the characters that will be drawn in the {@link Grid}.
+	 * Gets the characters that will be drawn in the {@link Grid#toString} function.
 	 * @return The characters representing the {@link GameObject}.
 	 */
 	public String getGridRepresentation() {

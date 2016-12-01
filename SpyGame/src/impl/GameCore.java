@@ -1,5 +1,6 @@
 package impl;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import edu.cpp.cs.cs141.final_proj.GameEngine;
@@ -106,7 +107,6 @@ public class GameCore extends Core {
 	}
 	
 	static final String WINDOW_NAME = "CS141 Final";
-	private String goodTimeName;
 	private Player player;
 	private CollisionManager collisionManager;
 	private FPSLogger fpsLogger;
@@ -164,7 +164,6 @@ public class GameCore extends Core {
 				stars.add(new Star(this, (float)(Math.random() * 100000 - 50000), (float)(Math.random() * 100000 - 50000)));
 			}
 			this.setFrameRateCap(200);
-			this.getDisplayManager().setBackgroundColor(0f, 0f, 0f, 1);
 			return !fail;
 		}
 		return false;
