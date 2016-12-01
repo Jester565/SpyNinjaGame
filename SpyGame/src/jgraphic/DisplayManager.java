@@ -54,6 +54,7 @@ public class DisplayManager {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);	
 		frame.createBufferStrategy(2);
+		frame.setAlwaysOnTop(true);
 		buffStrat = null;
 		isFullScreen = true;
 	}
