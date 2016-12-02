@@ -114,6 +114,8 @@ public class MainMenu {
 		 }
 		 if (buttonPressed)
 		 {
+			 loadFileField.reset();
+			 loadFieldY = 10;
 			 loadButtonPressed = false;
 			 showError = false;
 			 buttonY = 10;

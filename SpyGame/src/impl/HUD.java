@@ -531,10 +531,7 @@ public class HUD {
 				saveFileField.reset();
 				core.exitToMenu();
 			}
-		}
-		buttonY += MENU_BUTTON_H + MENU_BUTTON_Y_OFF;
-		if (!inAnimation())
-		{
+			buttonY += MENU_BUTTON_H + MENU_BUTTON_Y_OFF;
 			if (!saveButtonPressed)
 			{
 				if (drawButton("Save", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
