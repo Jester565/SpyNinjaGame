@@ -116,6 +116,7 @@ public class UserInterface {
 		keyboard = new Scanner(System.in);
 		directionOptions = "W: Up | A: Left | S: Down | D: Right";
 		pauseMenuOptions = "1: Resume | 2: Save | 3: Main Menu | 4: Exit Game";
+		gameDifficultyOptions = "?: Help (More info on the difficulties)\n";
 		for (GAME_DIFFICULTY difficulty: GAME_DIFFICULTY.values())
 			gameDifficultyOptions += difficulty.keyCode + ": " + difficulty.name().toLowerCase() + " | ";
 		gameDifficultyOptions = gameDifficultyOptions.substring(0, gameDifficultyOptions.length() - 3); 
@@ -497,6 +498,8 @@ public class UserInterface {
 		do {
 			System.out.println(userOptions);
 			userInput = keyboard.nextLine().toLowerCase().trim();
+			if (userInput.equals("?"))
+				System.out.println(difficultyHelpMessage);
 		} while (!GAME_DIFFICULTY.keyCodes().containsKey(userInput));
 		
 		GAME_DIFFICULTY difficulty = GAME_DIFFICULTY.keyCodes().get(userInput);
