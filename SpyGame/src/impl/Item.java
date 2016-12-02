@@ -23,6 +23,9 @@ public abstract class Item {
 		blueprintImg.draw(x, y, w, h);
 	}
 	
+	public abstract String getDescription();
+	
 	public abstract boolean isExpired();
-	public abstract void appyEffect();
+
+	public abstract void appyEffect(boolean displayNotification);
 }

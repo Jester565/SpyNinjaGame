@@ -47,6 +47,10 @@ public class DoorWall implements Wall {
 	
 	private GameCore core;
 	
+	public enum BUTTON_RESULT {
+		PRESSED, NOT_FACING, TOO_FAR
+	}
+	
 	public DoorWall(GameCore core, float x, float y, float w, float h, boolean vertical)
 	{
 		this.core = core;
@@ -135,35 +139,46 @@ public class DoorWall implements Wall {
 		return null;
 	}
 	
-	public boolean checkButton()
+	public BUTTON_RESULT checkButton()
 	{
-		if (core.getInputManager().isKeyTyped('e'))
+		if (playerInButtonRange())
 		{
-			float playerX = core.getPlayer().getX()  + core.getPlayer().getW()/2;
-			float playerY = core.getPlayer().getY()  + core.getPlayer().getH()/2;
-			float wallX = x;
-			float wallW = w;
-			float wallY = y;
-			float wallH = h;
-			if (vertical)
+			if (playerFacingButton())
 			{
-				wallX -= DOOR_BUTTON_OFF;
-				wallW += DOOR_BUTTON_OFF * 2;
+				return BUTTON_RESULT.PRESSED;
 			}
 			else
 			{
-				wallY -= DOOR_BUTTON_OFF;
-				wallH += DOOR_BUTTON_OFF * 2;
-			}
-			if (playerX > wallX && playerX < wallX + wallW && playerY > wallY && playerY < wallY + wallH)
-			{
-				if (GameCore.IsFacing(core.getPlayer(), x, y, x + w, y + h))
-				{
-					return true;
-				}
+				return BUTTON_RESULT.NOT_FACING;
 			}
 		}
-		return false;
+		return BUTTON_RESULT.TOO_FAR;
+	}
+	
+	private boolean playerInButtonRange()
+	{
+		float playerX = core.getPlayer().getX()  + core.getPlayer().getW()/2;
+		float playerY = core.getPlayer().getY()  + core.getPlayer().getH()/2;
+		float wallX = x;
+		float wallW = w;
+		float wallY = y;
+		float wallH = h;
+		if (vertical)
+		{
+			wallX -= DOOR_BUTTON_OFF;
+			wallW += DOOR_BUTTON_OFF * 2;
+		}
+		else
+		{
+			wallY -= DOOR_BUTTON_OFF;
+			wallH += DOOR_BUTTON_OFF * 2;
+		}
+		return (playerX > wallX && playerX < wallX + wallW && playerY > wallY && playerY < wallY + wallH);
+	}
+	
+	private boolean playerFacingButton()
+	{
+		return GameCore.IsFacing(core.getPlayer(), x, y, x + w, y + h);
 	}
 	
 	public void manageDoor(boolean doorsLocked)
@@ -258,13 +273,6 @@ public class DoorWall implements Wall {
 	}
 	
 	public boolean checkShoot() {
-		if (core.getInputManager().isMouseClicked())
-		{
-			if (GameCore.IsFacing(core.getPlayer(), x, y, x + w, y + h))
-			{
-				return true;
-			}
-		}
-		return false;
+		return GameCore.IsFacing(core.getPlayer(), x, y, x + w, y + h);
 	}
 }

@@ -11,6 +11,7 @@ public class ItemRoom extends Room {
 	private static GameImage SpinnerCoverUpImg;
 	private static GameImage SpinnerCoverDownImg;
 	private static Sound CoverOpenSound;
+	private static boolean PowerUpNotificationDisplayed = false;
 	
 	private static float ITEM_VELOCITY = .035f;
 	private static float CONTAIN_ITEM_W = 50;
@@ -58,6 +59,11 @@ public class ItemRoom extends Room {
 	{
 		if (visible || GameEngine.DebugMode)
 		{
+			if (!PowerUpNotificationDisplayed)
+			{
+				core.getNotificationManager().addNotification("Hover mouse over power up (the spinning circle) to see description");
+				PowerUpNotificationDisplayed = true;
+			}
 			FloorImg.draw(x, y, ROOM_W, ROOM_W);
 			for (int i = 0; i < walls.length; i++)
 			{
@@ -79,6 +85,14 @@ public class ItemRoom extends Room {
 			SpinnerCoverUpImg.draw(x + Room.ROOM_W/2 - SPINNER_DIAM/2, y + Room.ROOM_W/2 - SPINNER_DIAM/2 + coverOut, SPINNER_DIAM, SPINNER_DIAM);
 			SpinnerCoverDownImg.draw(x + Room.ROOM_W/2 - SPINNER_DIAM/2, y + Room.ROOM_W/2 - SPINNER_DIAM/2 - coverOut, SPINNER_DIAM, SPINNER_DIAM);
 			drawOccupants();
+			if (containItem != null)
+			{
+				if (core.getButtonManager().overRect((x + Room.ROOM_W/2 - SPINNER_DIAM/2 - core.gameX) * core.gameScaleX, 
+						(y + Room.ROOM_W/2 - SPINNER_DIAM/2 - core.gameY) * core.gameScaleY, SPINNER_DIAM * core.gameScaleX, SPINNER_DIAM * core.gameScaleY))
+				{
+					core.getHUD().setPowerUpDescription(containItem.getDescription());
+				}
+			}
 		}
 	}
 	

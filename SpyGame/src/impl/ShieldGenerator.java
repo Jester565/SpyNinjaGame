@@ -26,8 +26,12 @@ public class ShieldGenerator extends Item{
 	}
 
 	@Override
-	public void appyEffect() {
+	public void appyEffect(boolean displayNotification) {
 		core.getPlayer().setDrawShield(true);
+		if (displayNotification)
+		{
+			core.getNotificationManager().addNotification("You now have 5 turns of invinciblity. Keep an eye on that battery.");
+		}
 	}
 	
 	@Override
@@ -40,7 +44,13 @@ public class ShieldGenerator extends Item{
 	public void drawBlueprint(float x, float y, float w, float h)
 	{
 		blueprintImg.draw(x, y, w, h);
-		float batteryH = ((float)core.getGameEngine().getSpy().getInvincibleTurns() / ((float)edu.cpp.cs.cs141.final_proj.Invincibility.INVINCIBLE_TURNS - 1)) * 50.0f;
-		core.getShapeRenderer().drawRect(x + w - 32, y + 8 + (50 - batteryH), 26, batteryH, .8f, .8f, 1, 1);
+		float batteryH = ((float)core.getGameEngine().getSpy().getInvincibleTurns() / ((float)edu.cpp.cs.cs141.final_proj.Invincibility.INVINCIBLE_TURNS - 1)) * 49.0f;
+		core.getShapeRenderer().drawRect(x + w - 31, y + 8 + (50 - batteryH), 26, batteryH, .8f, .8f, 1, 1);
+	}
+	
+	@Override
+	public String getDescription()
+	{
+		return "Shield Generator: Protected from aliens for 5 turns";
 	}
 }

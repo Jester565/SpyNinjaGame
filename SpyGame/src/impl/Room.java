@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.cpp.cs.cs141.final_proj.GameEngine;
 import edu.cpp.cs.cs141.final_proj.Grid.DIRECTION;
 import edu.cpp.cs.cs141.final_proj.MoveStatus.MOVE_RESULT;
+import impl.DoorWall.BUTTON_RESULT;
 
 public class Room {
 	
@@ -145,23 +146,90 @@ public class Room {
 		}
 	}
 	
-	public DIRECTION manageButtons()
+	public BUTTON_RESULT getButtonResult()
 	{
 		DIRECTION dir = null;
 		int numButtonsPressed = 0;
+		boolean notFacing = false;
 		for (int i = 0; i < walls.length; i++)
 		{
-			if (walls[i] instanceof DoorWall && ((DoorWall)walls[i]).checkButton())
+			if (walls[i] instanceof DoorWall)
 			{
-				dir = WallDirections[i];
-				numButtonsPressed++;
+				BUTTON_RESULT buttonResult = ((DoorWall)walls[i]).checkButton();
+				if (buttonResult == BUTTON_RESULT.PRESSED)
+				{
+					dir = WallDirections[i];
+					numButtonsPressed++;
+				}
+				else if (buttonResult == BUTTON_RESULT.NOT_FACING)
+				{
+					notFacing = true;
+				}
 			}
 		}
 		if (numButtonsPressed > 1)
 		{
+			return BUTTON_RESULT.NOT_FACING;
+		}
+		else if (dir != null)
+		{
+			return BUTTON_RESULT.PRESSED;
+		}
+		else
+		{
+			if (notFacing)
+			{
+				return BUTTON_RESULT.NOT_FACING;
+			}
+			else
+			{
+				return BUTTON_RESULT.TOO_FAR;
+			}
+		}
+	}
+	
+	public DIRECTION manageButtons()
+	{
+		DIRECTION dir = null;
+		int numButtonsPressed = 0;
+		boolean notFacing = false;
+		for (int i = 0; i < walls.length; i++)
+		{
+			if (walls[i] instanceof DoorWall)
+			{
+				BUTTON_RESULT buttonResult = ((DoorWall)walls[i]).checkButton();
+				if (buttonResult == BUTTON_RESULT.PRESSED)
+				{
+					dir = WallDirections[i];
+					numButtonsPressed++;
+				}
+				else if (buttonResult == BUTTON_RESULT.NOT_FACING)
+				{
+					notFacing = true;
+				}
+			}
+		}
+		if (numButtonsPressed > 1)
+		{
+			core.getNotificationManager().addNotification("Not clearly facing a single door");
 			return null;
 		}
-		return dir;
+		else if (dir != null)
+		{
+			return dir;
+		}
+		else
+		{
+			if (notFacing)
+			{
+				core.getNotificationManager().addNotification("Must face the door you want to turn the lights on for");
+			}
+			else
+			{
+				core.getNotificationManager().addNotification("Must stand next to the door you want to turn the lights on for");
+			}
+			return null;
+		}
 	}
 	
 	public ForceWave createForceWave()

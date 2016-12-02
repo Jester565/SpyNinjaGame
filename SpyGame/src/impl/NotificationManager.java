@@ -62,20 +62,31 @@ public class NotificationManager {
 		}
 	}
 	
-	private int maxNotifications;
+	private int maxShownNotifications;
 	private GameCore core;
 	private LinkedList <Notification> notifications;
+	private int MAX_NUM_NOTIFICATIONS = 20;
+	private float stopNotificationTimer = 0;
 	
-	public NotificationManager(GameCore core, int maxNotifications)
+	public NotificationManager(GameCore core, int maxShownNotifications)
 	{
 		this.core = core;
-		this.maxNotifications = maxNotifications;
+		this.maxShownNotifications = maxShownNotifications;
 		notifications = new LinkedList<Notification>();
 	}
 	
 	public void addNotification(String msg)
 	{
-		notifications.add(new Notification(core, msg));
+		if (stopNotificationTimer <= 0)
+		{
+			notifications.add(new Notification(core, msg));
+			if (notifications.size() > MAX_NUM_NOTIFICATIONS)
+			{
+				notifications.clear();
+				stopNotificationTimer = 100;
+				notifications.add(new Notification(core, "You can try to break this game... but don't expect to be successful"));
+			}
+		}
 	}
 	
 	public void draw(float x, float y, float fontSize)
@@ -92,10 +103,14 @@ public class NotificationManager {
 				iter.remove();
 			}
 			iterCount++;
-			if (iterCount >= maxNotifications)
+			if (iterCount >= maxShownNotifications)
 			{
 				break;
 			}
+		}
+		if (stopNotificationTimer > 0)
+		{
+			stopNotificationTimer -= core.rate;
 		}
 	}
 }

@@ -25,8 +25,16 @@ public class RadarDish extends Item {
 	}
 
 	@Override
-	public void appyEffect() {
-		
+	public void appyEffect(boolean displayNotification) {
+		if (displayNotification)
+		{
+			core.getNotificationManager().addNotification("You now have radar. Press R to activate/deactive it.");
+		}
 	}
 	
+	@Override
+	public String getDescription()
+	{
+		return "Radar: Points to the functional server room";
+	}
 }

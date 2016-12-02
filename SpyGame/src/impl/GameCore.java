@@ -1,15 +1,12 @@
 package impl;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import edu.cpp.cs.cs141.final_proj.GameEngine;
-import edu.cpp.cs.cs141.final_proj.Grid;
 import jgraphic.Core;
 import jgraphic.DisplayManager;
 import jgraphic.FPSLogger;
 import jgraphic.Music;
-import jphys.Blocker;
 import jphys.CollisionManager;
 import jphys.Vector2D;
 
@@ -117,8 +114,8 @@ public class GameCore extends Core {
 	private boolean playerMovementEnabled = false;
 	private NotificationManager notificationManager;
 	
-	private static float GAME_SCALE_DEFAULT_X = .35f;
-	private static float GAME_SCALE_DEFAULT_Y = .35f;
+	public static float GAME_SCALE_DEFAULT_X = .35f;
+	public static float GAME_SCALE_DEFAULT_Y = .35f;
 	
 	public static float GAME_MENU_SCALE_X = .017f;
 	public static float GAME_MENU_SCALE_Y = .017f; 
@@ -208,6 +205,16 @@ public class GameCore extends Core {
 		return gameEngine;
 	}
 	
+	public NotificationManager getNotificationManager()
+	{
+		return notificationManager;
+	}
+	
+	public boolean isPlayerMovementEnabled()
+	{
+		return playerMovementEnabled;
+	}
+	
 	public void exitToMenu()
 	{
 		gameEngine.reset();
@@ -225,6 +232,10 @@ public class GameCore extends Core {
 		if (gameEngine.load(file))
 		{
 			reset();
+			if (GameEngine.DebugMode)
+			{
+				notificationManager.addNotification("Debug Mode Is Active... Press X to zoom in or V to disable debug mode");
+			}
 			notificationManager.addNotification("Load Successful!");
 			return true;
 		}
@@ -333,6 +344,13 @@ public class GameCore extends Core {
 				{
 					gameScaleX = GAME_SCALE_DEFAULT_X;
 					gameScaleY = GAME_SCALE_DEFAULT_Y;
+					notificationManager.addNotification("Debug Mode Deactivated");
+				}
+				else
+				{
+					notificationManager.addNotification("Warning: Death animations will not look as intended");
+					notificationManager.addNotification("Press X to zoom in   Press Z to zoom out");
+					notificationManager.addNotification("Debug Mode Activated");
 				}
 				roomManager.updateVisibility();
 			}

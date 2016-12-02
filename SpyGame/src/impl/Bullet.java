@@ -26,8 +26,16 @@ public class Bullet extends Item {
 	}
 
 	@Override
-	public void appyEffect() {
-		
+	public void appyEffect(boolean displayNotification) {
+		if (displayNotification)
+		{
+			core.getNotificationManager().addNotification("You now have ammo");
+		}
 	}
 	
+	@Override
+	public String getDescription()
+	{
+		return "Bullet: Grants 1 Electro Round if you don't have one already";
+	}
 }

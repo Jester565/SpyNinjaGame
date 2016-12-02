@@ -228,6 +228,11 @@ public class RoomManager {
 		return row;
 	}
 	
+	public Room getPlayerRoom()
+	{
+		return rooms.get(getPlayerRoomColumn()).get(getPlayerRoomRow());
+	}
+	
 	public void draw()
 	{
 		if (GameEngine.DebugMode)
@@ -238,7 +243,7 @@ public class RoomManager {
 		{
 			render();
 		}
-		if (core.getGameEngine().getSpy().isAlive())
+		if (core.getGameEngine().getSpy().isAlive() && core.getGameEngine().getGameStatus() == GAME_STATE.UNFINISHED)
 		{
 			if (!isShooting)
 			{
@@ -289,11 +294,6 @@ public class RoomManager {
 		core.getShapeRenderer().drawRect((Room.ROOM_W * ROOMS_SIZE - core.gameX) * core.gameScaleX, (-BOUNDS_OFF - core.gameY) * core.gameScaleY, (BOUNDS_OFF) * core.gameScaleX, (Room.ROOM_W * ROOMS_SIZE + BOUNDS_OFF * 2) * core.gameScaleY, boundColor);
 		core.getShapeRenderer().drawRect((0 - core.gameX) * core.gameScaleX, (-BOUNDS_OFF - core.gameY) * core.gameScaleY, (Room.ROOM_W * ROOMS_SIZE) * core.gameScaleX, (BOUNDS_OFF) * core.gameScaleY, boundColor);
 		core.getShapeRenderer().drawRect((0 - core.gameX) * core.gameScaleX, (Room.ROOM_W * ROOMS_SIZE - core.gameY) * core.gameScaleY, (Room.ROOM_W * ROOMS_SIZE) * core.gameScaleX, (BOUNDS_OFF) * core.gameScaleY, boundColor);
-		
-		//RightStationImg.draw(Room.ROOM_W * ROOMS_SIZE, -Room.ROOM_W, STATION_WALL_W, Room.ROOM_W * ROOMS_SIZE + Room.ROOM_W * 2);
-		//LeftStationImg.draw(-STATION_WALL_W, -Room.ROOM_W, STATION_WALL_W, Room.ROOM_W * ROOMS_SIZE + Room.ROOM_W * 2);
-		//UpStationImg.draw(-Room.ROOM_W, -STATION_WALL_W, Room.ROOM_W * ROOMS_SIZE + Room.ROOM_W * 2, STATION_WALL_W);
-		//DownStationImg.draw(-Room.ROOM_W, Room.ROOM_W * ROOMS_SIZE, Room.ROOM_W * ROOMS_SIZE + Room.ROOM_W * 2, STATION_WALL_W);
 		
 		engineTimer += core.rate * engineTimerChange;
 		if (engineTimer > MAX_ENGINE_TIME)
@@ -358,14 +358,29 @@ public class RoomManager {
 	{
 		int playerCol = getPlayerRoomColumn();
 		int playerRow = getPlayerRoomRow();
-		DIRECTION dir = rooms.get(playerCol).get(playerRow).manageButtons();
-		if (dir != null)
+		DIRECTION terminalDirection = rooms.get(lastPlayerCol).get(lastPlayerRow).checkTerminalUsed();
+		if (core.isPlayerMovementEnabled() && core.getInputManager().isKeyTyped('e'))
 		{
-			LightSound.stopAndReset();
-			LightSound.play();
-			core.getGameEngine().playerLook(dir);
-			updateVisibility();
-			moveTurn = true;
+			if (terminalDirection != null)
+			{
+				core.getNotificationManager().addNotification("Must turn on the lights before using terminal");
+			}
+			else
+			{
+				DIRECTION dir = rooms.get(playerCol).get(playerRow).manageButtons();
+				if (dir != null)
+				{
+					LightSound.stopAndReset();
+					LightSound.play();
+					core.getGameEngine().playerLook(dir);
+					updateVisibility();
+					moveTurn = true;
+				}
+			}
+		}
+		if (core.getInputManager().isMouseClicked() && !core.getHUD().inMenu() && core.isPlayerMovementEnabled() && core.gameScaleX >= GameCore.GAME_SCALE_DEFAULT_X)
+		{
+			core.getNotificationManager().addNotification("Must turn on the lights before shooting");
 		}
 	}
 	
@@ -407,19 +422,34 @@ public class RoomManager {
 			core.getGameEngine().playerMove(terminalDirection);
 			precedeMoveTurnCall();
 		}
-		else if (playerCol == lastPlayerCol && playerRow == lastPlayerRow)
+		else if (core.getInputManager().isMouseClicked())
 		{
 			if (core.getGameEngine().getSpy().getGun().getNumRounds() > 0 && !core.getHUD().inMenu())
 			{
-				DIRECTION shootDirection = rooms.get(playerCol).get(playerRow).manageShoot();
-				if (shootDirection != null)
+				if (playerCol == lastPlayerCol && playerRow == lastPlayerRow)
 				{
-					isShooting = true;
-					core.getPlayer().setShoot(true);
+					DIRECTION shootDirection = rooms.get(playerCol).get(playerRow).manageShoot();
+					if (shootDirection != null)
+					{
+						isShooting = true;
+						core.getPlayer().setShoot(true);
+					}
+					else
+					{
+						core.getNotificationManager().addNotification("Must be clearly facing a CLOSED door to shoot");
+					}
+				}
+				else
+				{
+					core.getNotificationManager().addNotification("Must go back to the room you came from to shoot");
 				}
 			}
+			else if (!core.getHUD().inMenu())
+			{
+				core.getNotificationManager().addNotification("Out of ammo");
+			}
 		}
-		else
+		if (terminalDirection == null && (playerCol != lastPlayerCol || playerRow != lastPlayerRow))
 		{
 			if (!rooms.get(playerCol).get(playerRow).isLeaveable())
 			{

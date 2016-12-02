@@ -6,6 +6,7 @@ import java.util.Iterator;
 import edu.cpp.cs.cs141.final_proj.GameEngine;
 import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_DIFFICULTY;
 import edu.cpp.cs.cs141.final_proj.GameEngine.GAME_STATE;
+import impl.DoorWall.BUTTON_RESULT;
 import jgraphic.DisplayManager;
 import jgraphic.Image;
 import jgraphic.Sound;
@@ -13,6 +14,13 @@ import jgraphic.TextField;
 
 public class HUD {
 	private static Image InstructionImg;
+	private static Image MoveInstructionImg;
+	private static Image LightInstructionImg;
+	private static Image RoomInstructionImg;
+	private static Image ShootInstructionImg;
+	private static Image ShootInstructionImg2;
+	private static Image TerminalInstructionImg;
+	
 	private static final float INSTRUCTION_BOX_W = 405;
 	private static final float INSTRUCTION_BOX_H = 500;
 	private static final float INSTRUCTION_BOX_X = 0;
@@ -64,6 +72,8 @@ public class HUD {
 	
 	private static final float STATUS_TIME = 300;
 	
+	private static int InstructionStage = 0;
+	
 	private boolean inTerminal = false;
 	private float terminalLoadBarW = 0;
 	private float terminalStatusTimer = 0;
@@ -82,6 +92,7 @@ public class HUD {
 	private float statusAlpha = 0;
 	private boolean drawStatus = false;
 	private float statusTimer = 0;
+	private String powerUpDescription = null;
 	
 	public HUD(GameCore core)
 	{
@@ -90,6 +101,18 @@ public class HUD {
 		{
 			InstructionImg = new Image(core.getDisplayManager());
 			InstructionImg.init("./resources/Imgs/Menu/insturctions.png");
+			MoveInstructionImg = new Image(core.getDisplayManager());
+			MoveInstructionImg.init("./resources/Imgs/Menu/moveInsturctions.png");
+			LightInstructionImg = new Image(core.getDisplayManager());
+			LightInstructionImg.init("./resources/Imgs/Menu/lightInsturctions.png");
+			RoomInstructionImg = new Image(core.getDisplayManager());
+			RoomInstructionImg.init("./resources/Imgs/Menu/roomInstructions.png");
+			ShootInstructionImg = new Image(core.getDisplayManager());
+			ShootInstructionImg.init("./resources/Imgs/Menu/shootInstructions.png");
+			ShootInstructionImg2 = new Image(core.getDisplayManager());
+			ShootInstructionImg2.init("./resources/Imgs/Menu/shootInstructions2.png");
+			TerminalInstructionImg = new Image(core.getDisplayManager());
+			TerminalInstructionImg.init("./resources/Imgs/Menu/terminalInstructions.png");
 			TerminalImg1 = new Image(core.getDisplayManager());
 			TerminalImg2 = new Image(core.getDisplayManager());
 			TerminalErrorImg = new Image(core.getDisplayManager());
@@ -106,6 +129,11 @@ public class HUD {
 		reset();
 	}
 	
+	public void setPowerUpDescription(String description)
+	{
+		powerUpDescription = description;
+	}
+	
 	public void enableDrawStatus()
 	{
 		drawStatus = true;
@@ -116,6 +144,11 @@ public class HUD {
 		return drawMenu;
 	}
 	
+	public boolean inTextField()
+	{
+		return saveFileField.isSelected();
+	}
+	
 	public void reset()
 	{
 		drawSaveErrorMsg = false;
@@ -123,21 +156,27 @@ public class HUD {
 		items = new ArrayList<Item>();
 		if (core.getGameEngine().getSpy().getGun().getNumRounds() > 0)
 		{
-			items.add(new Bullet(core));
+			Item item = new Bullet(core);
+			item.appyEffect(false);
+			items.add(item);
 		}
 		if (core.getGameEngine().getSpy().getInvincibleTurns() > 0)
 		{
-			items.add(new ShieldGenerator(core));
+			Item item = new ShieldGenerator(core);
+			item.appyEffect(false);
+			items.add(item);
 		}
 		if (core.getGameEngine().getSpy().hasRadar())
 		{
-			items.add(new RadarDish(core));
+			Item item = new RadarDish(core);
+			item.appyEffect(false);
+			items.add(item);
 		}
 	}
 	
 	public void addItem(Item item)
 	{
-		item.appyEffect();
+		item.appyEffect(true);
 		items.add(item);
 	}
 	
@@ -184,8 +223,6 @@ public class HUD {
 		core.getShapeRenderer().drawRect(LIVE_BOX_X, LIVE_BOX_Y, LIVE_BOX_W, LIVE_BOX_H, .3f, .6f, .3f, 1);
 		core.getTextRenderer().drawCenteredText("LIVES: " + core.getGameEngine().getSpy().getLives(), LIVE_BOX_X + LIVE_BOX_W/2, LIVE_BOX_Y + LIVE_BOX_H * .7f, 60, 0, 0, 1, 1);
 		
-		InstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
-		
 		float y = ITEM_BOX_Y + ITEM_OFF_H; 
 		for (int i = 0; i < items.size(); i++)
 		{
@@ -200,6 +237,8 @@ public class HUD {
 		}
 		core.getShapeRenderer().drawRect(ITEM_BOX_X, ITEM_BOX_Y + scanY, ITEM_BOX_W, 5, 0, 0, 1, .02f);
 		core.getShapeRenderer().drawRect(ITEM_BOX_X, ITEM_BOX_Y + ITEM_BOX_H - scanY, ITEM_BOX_W, 5, 0, 0, 1, .02f);
+		
+		DrawInstructions();
 		
 		if (inTerminal)
 		{
@@ -216,6 +255,7 @@ public class HUD {
 				radarEnabled = false;
 			}
 		}
+		drawPowerUpDescription();
 		if (drawStatus)
 		{
 			drawStatus();
@@ -223,6 +263,106 @@ public class HUD {
 		if (drawMenu)
 		{
 			drawMenu();
+		}
+	}
+	
+	private void drawPowerUpDescription()
+	{
+		if (powerUpDescription != null)
+		{
+			float strWidth = core.getTextRenderer().getTextWidth(powerUpDescription, 30);
+			core.getShapeRenderer().drawRect(DisplayManager.DISPLAY_DEFAULT_W/2 - (strWidth/2)/core.getDisplayManager().screenWScale, 10, strWidth/core.getDisplayManager().screenWScale, 40, 0, 0, 0, 1);
+			core.getTextRenderer().drawCenteredText(powerUpDescription, DisplayManager.DISPLAY_DEFAULT_W/2, 40, 30, 1, 1, 1, 1);
+			powerUpDescription = null;
+		}
+	}
+	
+	private void DrawInstructions()
+	{
+		if (InstructionStage == 0)
+		{
+			MoveInstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
+			if (core.getInputManager().isKeyPressed('w'))
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 154, INSTRUCTION_BOX_Y + 92, 94, 90, 0, 1, 0, .6f);
+			}
+			if (core.getInputManager().isKeyPressed('a'))
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 49, INSTRUCTION_BOX_Y + 199, 97, 99, 0, 1, 0, .6f);
+			}
+			if (core.getInputManager().isKeyPressed('s'))
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 154, INSTRUCTION_BOX_Y + 199, 97, 97, 0, 1, 0, .6f);
+			}
+			if (core.getInputManager().isKeyPressed('d'))
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 255, INSTRUCTION_BOX_Y + 199, 97, 99, 0, 1, 0, .6f);
+			}
+			if (core.getRoomManager().getPlayerRoom().getButtonResult() != BUTTON_RESULT.TOO_FAR)
+			{
+				if (core.getRoomManager().getPlayerRoom().getButtonResult() == BUTTON_RESULT.PRESSED && core.getInputManager().isKeyTyped('e'))
+				{
+					InstructionStage++;
+				}
+				InstructionStage++;
+			}
+		}
+		else if (InstructionStage == 1)
+		{
+			LightInstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
+			BUTTON_RESULT buttonResult = core.getRoomManager().getPlayerRoom().getButtonResult();
+			if (buttonResult != BUTTON_RESULT.TOO_FAR)
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 46, INSTRUCTION_BOX_Y + 120, 30, 30, 0, 1, 0, 1);
+			}
+			if (buttonResult == BUTTON_RESULT.PRESSED)
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 46, INSTRUCTION_BOX_Y + 193, 30, 30, 0, 1, 0, 1);
+				if (core.getInputManager().isKeyTyped('e'))
+				{
+					InstructionStage++;
+				}
+			}
+			if (core.getInputManager().isKeyTyped('e'))
+			{
+				core.getShapeRenderer().drawRect(INSTRUCTION_BOX_X + 46, INSTRUCTION_BOX_Y + 266, 30, 30, 0, 1, 0, 1);
+			}
+		}
+		else if (InstructionStage == 2)
+		{
+			RoomInstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
+			if (core.getInputManager().isKeyTyped('i'))
+			{
+				InstructionStage++;
+			}
+		}
+		else if (InstructionStage == 3)
+		{
+			ShootInstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
+			if (core.getInputManager().isKeyTyped('i'))
+			{
+				InstructionStage++;
+			}
+		}
+		else if (InstructionStage == 4)
+		{
+			ShootInstructionImg2.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
+			if (core.getInputManager().isKeyTyped('i'))
+			{
+				InstructionStage++;
+			}
+		}
+		else if (InstructionStage == 5)
+		{
+			TerminalInstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
+			if (core.getInputManager().isKeyTyped('i'))
+			{
+				InstructionStage++;
+			}
+		}
+		else
+		{
+			InstructionImg.draw(INSTRUCTION_BOX_X, INSTRUCTION_BOX_Y, INSTRUCTION_BOX_W, INSTRUCTION_BOX_H);
 		}
 	}
 	
