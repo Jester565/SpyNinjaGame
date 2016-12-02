@@ -501,9 +501,9 @@ public class GameEngine {
 	}
 	
 	/**
-	 * For each element in {@link #ninjas}, this makes the ninja look which checks in 
-	 * directions to see if spy is there. If spotted then stores the coordinate of the spy 
-	 * and calls {@link Ninja#setDirectionFacing(DIRECTION)} with dir towards the spy. The ninja will move 
+	 * For each {@link Ninja} in {@link #ninjas}, have the ninja look which checks in 
+	 * directions to see if {@link Spy} is there. If spotted then stores the coordinate of the spy 
+	 * and calls {@link Character#setDirectionFacing(DIRECTION)} with dir towards the spy. The ninja will move 
 	 * in the direction facing until it reaches {@link Ninja#getDestinationCoordinate} at which
 	 * point it'll use the {@link #enemyMoveInRandomDirection(int)} method.
 	 */

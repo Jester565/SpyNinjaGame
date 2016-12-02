@@ -46,7 +46,7 @@ public abstract class Character extends GameObject implements Serializable {
 	}
 	
 	/**
-	 * Moddifier for the {@link #health} attribute.
+	 * Modifier for the {@link #health} attribute.
 	 * @param health The value to set {@link #health} to.
 	 */
 	public void setHealth(int health) {
