@@ -579,9 +579,18 @@ public class HUD {
 		{
 			difficultyButtonPressed = !difficultyButtonPressed;
 		}
-		buttonY += MENU_BUTTON_H;
 		if (difficultyButtonPressed)
 		{
+			if (core.getButtonManager().overRect(MENU_BUTTON_X + 10, buttonY, MENU_BUTTON_W - 20, MENU_BUTTON_H))
+			{
+				core.getShapeRenderer().drawRect(MENU_BUTTON_X + 10, buttonY, MENU_BUTTON_W, MENU_BUTTON_H, 0, 0, 0, 1);
+				core.getTextRenderer().drawText("Difficulty: " + core.getGameEngine().getDifficulty().name(), MENU_BUTTON_X + 15, buttonY + 20, 20, 1, 1, 1, 1);
+				String difficultyDescription[] = getDifficultyDescription(core.getGameEngine().getDifficulty());
+				core.getTextRenderer().drawText("Direction(s) searched: " + difficultyDescription[0], MENU_BUTTON_X + 15, buttonY + 40, 20, 1, 1, 1, 1);
+				core.getTextRenderer().drawText("Look range: " + difficultyDescription[1], MENU_BUTTON_X + 15, buttonY + 60, 20, 1, 1, 1, 1);
+				core.getTextRenderer().drawText("Behavior: " + difficultyDescription[2], MENU_BUTTON_X + 15, buttonY + 80, 20, 1, 1, 1, 1);
+			}
+			buttonY += MENU_BUTTON_H;
 			Iterator<GAME_DIFFICULTY> iter = GAME_DIFFICULTY.keyCodes().values().iterator();
 			while (iter.hasNext())
 			{
@@ -592,14 +601,51 @@ public class HUD {
 					{
 						core.getGameEngine().changeDifficulty(gameDifficulty);
 					}
+					if (core.getButtonManager().overRect(MENU_BUTTON_X + 10, buttonY, MENU_BUTTON_W - 20, MENU_BUTTON_H))
+					{
+						core.getShapeRenderer().drawRect(MENU_BUTTON_X + 10, buttonY, MENU_BUTTON_W - 20, MENU_BUTTON_H, 0, 0, 0, 1);
+						core.getTextRenderer().drawText("Difficulty: " + gameDifficulty.name(), MENU_BUTTON_X + 15, buttonY + 20, 20, 1, 1, 1, 1);
+						String difficultyDescription[] = getDifficultyDescription(gameDifficulty);
+						core.getTextRenderer().drawText("Direction(s) searched: " + difficultyDescription[0], MENU_BUTTON_X + 15, buttonY + 40, 20, 1, 1, 1, 1);
+						core.getTextRenderer().drawText("Look range: " + difficultyDescription[1], MENU_BUTTON_X + 15, buttonY + 60, 20, 1, 1, 1, 1);
+						core.getTextRenderer().drawText("Behavior: " + difficultyDescription[2], MENU_BUTTON_X + 15, buttonY + 80, 20, 1, 1, 1, 1);
+					}
 					buttonY += MENU_BUTTON_H;
 				}
 			}
+		}
+		else
+		{
+			buttonY += MENU_BUTTON_H;
 		}
 		buttonY += MENU_BUTTON_Y_OFF;
 		if (drawButton("Exit", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
 		{
 			System.exit(0);
+		}
+	}
+	
+	private String[] getDifficultyDescription(GAME_DIFFICULTY difficulty)
+	{
+		if (difficulty == GAME_DIFFICULTY.RNG_EASY)
+		{
+			return new String[] {"N/A", "N/A", "Move in random direction"};
+		}
+		else if (difficulty == GAME_DIFFICULTY.EASY)
+		{
+			return new String[] {"Direction facing", "2", "Move toward player if spotted"};
+		}
+		else if (difficulty == GAME_DIFFICULTY.MEDIUM)
+		{
+			return new String[] {"All four", "9", "Move toward player if spotted"};
+		}
+		else if (difficulty == GAME_DIFFICULTY.HARD)
+		{
+			return new String[] {"All four", "2", "Move toward last position player was spotted"};
+		}
+		else
+		{
+			return new String[] {"All four", "9", "Move toward last position player was spotted"};
 		}
 	}
 	

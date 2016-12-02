@@ -85,7 +85,7 @@ public class ItemRoom extends Room {
 			SpinnerCoverUpImg.draw(x + Room.ROOM_W/2 - SPINNER_DIAM/2, y + Room.ROOM_W/2 - SPINNER_DIAM/2 + coverOut, SPINNER_DIAM, SPINNER_DIAM);
 			SpinnerCoverDownImg.draw(x + Room.ROOM_W/2 - SPINNER_DIAM/2, y + Room.ROOM_W/2 - SPINNER_DIAM/2 - coverOut, SPINNER_DIAM, SPINNER_DIAM);
 			drawOccupants();
-			if (containItem != null)
+			if (containItem != null && !core.getHUD().inMenu())
 			{
 				if (core.getButtonManager().overRect((x + Room.ROOM_W/2 - SPINNER_DIAM/2 - core.gameX) * core.gameScaleX, 
 						(y + Room.ROOM_W/2 - SPINNER_DIAM/2 - core.gameY) * core.gameScaleY, SPINNER_DIAM * core.gameScaleX, SPINNER_DIAM * core.gameScaleY))
