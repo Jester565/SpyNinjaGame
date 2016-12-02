@@ -51,12 +51,12 @@ public class HUD {
 	private static Sound TerminalDeathSound;
 	
 	private static final float MENU_W = 800;
-	private static final float MENU_H = 1000;
+	private static final float MENU_H = 1080;
 	private static final float MENU_X = (float) (DisplayManager.DISPLAY_DEFAULT_W/2 - MENU_W/2);
 	private static final float MENU_Y = (float) (DisplayManager.DISPLAY_DEFAULT_H/2 - MENU_H/2);
 	private static final float MENU_BUTTON_W = 600;
 	private static final float MENU_BUTTON_H = 100;
-	private static final float MENU_BUTTON_Y_OFF = 30;
+	private static final float MENU_BUTTON_Y_OFF = 20;
 	private static final float MENU_BUTTON_X = (float) (DisplayManager.DISPLAY_DEFAULT_W/2 - MENU_BUTTON_W/2);
 	private static final float MENU_BUTTON_START_Y = MENU_Y + MENU_BUTTON_Y_OFF;
 	private static final float TERMINAL_W = 800;
@@ -514,6 +514,15 @@ public class HUD {
 		core.setPlayerMovement(false);
 		core.getShapeRenderer().drawRect(MENU_X, MENU_Y, MENU_W, MENU_H, 0, .2f, 0, 1);
 		float buttonY = MENU_BUTTON_START_Y;
+		if (drawButton("Resume", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
+		{
+			drawMenu = !drawMenu;
+			if (!drawMenu && !inAnimation())
+			{
+				core.setPlayerMovement(true);
+			}
+		}
+		buttonY += MENU_BUTTON_H + MENU_BUTTON_Y_OFF;
 		if (!inAnimation())
 		{
 			if (drawButton("Main Menu", MENU_BUTTON_X, buttonY, MENU_BUTTON_W, MENU_BUTTON_H))
@@ -547,7 +556,7 @@ public class HUD {
 					}
 					drawSaveErrorMsg = true;
 				}
-				if (drawButton("Cancel", MENU_BUTTON_X + MENU_BUTTON_W/2, buttonY, MENU_BUTTON_W/2, MENU_BUTTON_H))
+				if (drawButton("Close", MENU_BUTTON_X + MENU_BUTTON_W/2, buttonY, MENU_BUTTON_W/2, MENU_BUTTON_H))
 				{
 					saveButtonPressed = false;
 					drawSaveErrorMsg = false;
