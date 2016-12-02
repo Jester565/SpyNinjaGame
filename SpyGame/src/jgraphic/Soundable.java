@@ -1,7 +1,7 @@
 package jgraphic;
 
 public interface Soundable {
-	double DEFAULT_VOLUME_SCALE = .75;
+	double DEFAULT_VOLUME_SCALE = .95;
 	
 	void setLoop(boolean mode);
 	void play();
