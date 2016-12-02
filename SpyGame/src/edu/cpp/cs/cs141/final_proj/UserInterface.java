@@ -103,6 +103,11 @@ public class UserInterface {
 	private String helpMessage = "";
 	
 	/**
+	 * message describing the differences between difficulties
+	 */
+	private String difficultyHelpMessage = "";
+	
+	/**
 	 * Constructor for creating UserInterface objects
 	 * @param game set {@link #game} to (parameter) game used to call methods
 	 */
@@ -115,10 +120,11 @@ public class UserInterface {
 			gameDifficultyOptions += difficulty.keyCode + ": " + difficulty.name().toLowerCase() + " | ";
 		gameDifficultyOptions = gameDifficultyOptions.substring(0, gameDifficultyOptions.length() - 3); 
 		
-		helpMessage = String.format("Symbol %s | Representation %11s | Description\n"
+		helpMessage = String.format("----------------------------------------------------------------------------------------------------------------------\n"
+				+ "Symbol %s | Representation %11s | Description\n"
 				+ "----------------------------------------------------------------------------------------------------------------------\n"
 				+ "S %5s | Spy %22s | You, the player\n"
-				+ "N %5s | Ninja %20s | Capable of stalking and assassinating the spy\n"
+				+ "N %5s | Ninja %20s | Capable of stalking and assassinating the Spy\n"
 				+ "R %5s | Room %21s | Search one of the rooms from the top side to try & find the briefcase\n"
 				+ "b %5s | Room containing briefcase %s | Search this room to get the briefcase & win the game\n"
 				+ "r %5s | Radar %20s | Obtain this item and the room with the briefcase will be revealed\n"
@@ -134,6 +140,21 @@ public class UserInterface {
 				"", "",
 				"", "",
 				"", "");
+		difficultyHelpMessage = String.format("Each difficulty results in the ninjas behaving differently\n"
+				+ "------------------------------------------------------------------------------------------------------------------------\n"
+				+ "Difficulty %6s | Direction(s) Looked in %s | Sight Range %s | Behavior\n"
+				+ "------------------------------------------------------------------------------------------------------------------------\n"
+				+ "rng_easy %8s | N/A %19s | N/A %8s | Move in a random direction\n"
+				+ "easy %12s | Direction facing %6s | 2 %10s | Move toward Spy if spotted\n"
+				+ "medium (default) %s | All four %14s | 9 %10s | Move toward Spy if spotted\n"
+				+ "hard %12s | All four %14s | 2 %10s | Move toward Spy if spotted or last known whereabouts of Spy\n"
+				+ "very_hard %7s | All four %14s | 9 %10s | Move toward Spy if spotted or last known whereabouts of Spy\n",
+				"", "", "",
+				"", "", "",
+				"", "", "",
+				"", "", "",
+				"", "", "",
+				"", "", "");
 	}
 	
 	/**
@@ -166,6 +187,7 @@ public class UserInterface {
 				break;
 			case 3:
 				System.out.println(helpMessage);
+				System.out.println(difficultyHelpMessage);
 				break;
 			case 4:
 				quit = true;
