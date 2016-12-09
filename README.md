@@ -14,7 +14,7 @@ To run the game with the GUI pass `-g` as a command line argument.
 
 ![ae gui](http://i.imgur.com/Hboahld.png)
 
-![text ui](https://gfycat.com/MiniatureNearArabianoryx)
+![text ui](http://i.imgur.com/1ABzcyh.png)
 
 ### Description
 
